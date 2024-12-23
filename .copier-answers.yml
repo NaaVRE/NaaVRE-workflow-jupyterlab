@@ -11,4 +11,3 @@ project_short_description: NaaVRE workflow editor frontend on Jupyter Lab
 python_name: NaaVRE_workflow_jupyterlab
 repository: https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab
 test: true
-

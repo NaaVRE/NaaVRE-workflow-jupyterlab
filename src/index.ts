@@ -13,17 +13,28 @@ const plugin: JupyterFrontEndPlugin<void> = {
   description: 'NaaVRE workflow editor frontend on Jupyter Lab',
   autoStart: true,
   optional: [ISettingRegistry],
-  activate: (app: JupyterFrontEnd, settingRegistry: ISettingRegistry | null) => {
-    console.log('JupyterLab extension @naavre/workflow-jupyterlab is activated!');
+  activate: (
+    app: JupyterFrontEnd,
+    settingRegistry: ISettingRegistry | null
+  ) => {
+    console.log(
+      'JupyterLab extension @naavre/workflow-jupyterlab is activated!'
+    );
 
     if (settingRegistry) {
       settingRegistry
         .load(plugin.id)
         .then(settings => {
-          console.log('@naavre/workflow-jupyterlab settings loaded:', settings.composite);
+          console.log(
+            '@naavre/workflow-jupyterlab settings loaded:',
+            settings.composite
+          );
         })
         .catch(reason => {
-          console.error('Failed to load settings for @naavre/workflow-jupyterlab.', reason);
+          console.error(
+            'Failed to load settings for @naavre/workflow-jupyterlab.',
+            reason
+          );
         });
     }
   }
