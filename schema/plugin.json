@@ -1,0 +1,8 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "@naavre/workflow-jupyterlab",
+  "description": "@naavre/workflow-jupyterlab settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}
