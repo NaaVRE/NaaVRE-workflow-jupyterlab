@@ -3,6 +3,25 @@
   "title": "@naavre/workflow-jupyterlab",
   "description": "@naavre/workflow-jupyterlab settings.",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "virtualLab": {
+      "type": ["string"],
+      "title": "Virtual lab",
+      "description": "Slug of the current virtual lab (example: vl-my-project)",
+      "default": ""
+    },
+    "workflowServiceUrl": {
+      "type": ["string"],
+      "title": "Workflow service URL",
+      "description": "URL of the workflow service (example: https://my-naavre.example.com/NaaVRE-workflow-service)",
+      "default": "/NaaVRE-workflow-service"
+    },
+    "catalogueServiceUrl": {
+      "type": ["string"],
+      "title": "Catalogue service URL",
+      "description": "URL of the catalogue service (example: https://my-naavre.example.com/NaaVRE-catalogue-service)",
+      "default": "/NaaVRE-catalogue-service"
+    }
+  },
   "additionalProperties": false
 }
