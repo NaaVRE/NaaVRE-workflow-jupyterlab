@@ -26,7 +26,7 @@ import { WorkflowModel } from './model';
 
 import { ReactWidget } from '@jupyterlab/apputils';
 import lodash from 'lodash';
-import { Composer } from './Composer';
+import { Composer } from './components/Composer';
 import React from 'react';
 
 /**

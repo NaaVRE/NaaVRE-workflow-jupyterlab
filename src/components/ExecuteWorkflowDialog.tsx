@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TextField from '@mui/material/TextField';
 
-import { theme } from './Theme';
+import { theme } from '../Theme';
 import { NaaVRECatalogue } from '../naavre-common/types';
 import { requestAPI } from '../naavre-common/handler';
 
