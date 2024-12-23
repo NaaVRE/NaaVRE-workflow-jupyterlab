@@ -123,3 +123,9 @@ dmypy.json
 
 # Yarn cache
 .yarn/
+
+# JetBrains IDEs
+.idea/
+
+# package manager lock files
+package-lock.json
