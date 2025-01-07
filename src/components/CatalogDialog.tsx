@@ -59,11 +59,11 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
   }
 
   onCellSelection = (cell_index: number) => {
-    let cell = this.state.catalog_elements[cell_index];
-    let chart = cell['chart_obj'];
-    let node = chart['nodes'][Object.keys(chart['nodes'])[0]];
-    this.cellPreviewRef.current.updateChart(chart);
-    this.cellInfoRef.current.updateCell(node, cell['types']);
+    const cell = this.state.catalog_elements[cell_index];
+    const chart = cell['chart_obj'];
+    const node = chart['nodes'][Object.keys(chart['nodes'])[0]];
+    this.cellPreviewRef.current?.updateChart(chart);
+    this.cellInfoRef.current?.updateCell(node, cell['types']);
 
     this.setState({
       current_cell: cell,
@@ -72,8 +72,10 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
   };
 
   onCellAddition = () => {
-    this.props.addCellAction(this.state.current_cell);
-    this.setState({ current_cell_in_workspace: true });
+    if (this.state.current_cell !== undefined) {
+      this.props.addCellAction(this.state.current_cell);
+      this.setState({ current_cell_in_workspace: true });
+    }
   };
 
   getCatalog = async () => {

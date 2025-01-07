@@ -1,7 +1,7 @@
 export namespace NaaVRECatalogue {
   export namespace BaseAssets {
     export interface IBaseAsset {
-      id?: string;
+      id: string;
       title: string;
       description?: string;
       created?: string;

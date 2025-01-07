@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { NaaVRECatalogue } from '../naavre-common/types';
 import { WorkspaceItem } from './WorkspaceItem';
+import { cellToChartNode } from '../naavre-common/CellPreview';
 
 interface IState {
   workspace_elements: Map<string, NaaVRECatalogue.WorkflowCells.ICell>;
@@ -16,7 +17,7 @@ export class Workspace extends React.Component {
 
   addElement = (element: NaaVRECatalogue.WorkflowCells.ICell) => {
     let currElements = this.state.workspace_elements;
-    currElements.set(element.node_id, element);
+    currElements.set(element.id, element);
     this.setState({ workspace_elements: currElements });
   };
 
@@ -27,7 +28,7 @@ export class Workspace extends React.Component {
   };
 
   hasElement = (element: NaaVRECatalogue.WorkflowCells.ICell) => {
-    return this.state.workspace_elements.has(element.node_id);
+    return this.state.workspace_elements.has(element.id);
   };
 
   getElement = (nodeId: string) => {
@@ -38,16 +39,15 @@ export class Workspace extends React.Component {
     const items: JSX.Element[] = [];
 
     map.forEach((value, key) => {
-      let nodes = value.chart_obj.nodes;
-      let element = nodes[Object.keys(nodes)[0]];
+      const chart_node = cellToChartNode(value);
 
       items.push(
         <WorkspaceItem
           key={key}
           itemKey={key}
-          type={element['type']}
-          ports={element['ports']}
-          properties={element['properties']}
+          type={chart_node.type}
+          ports={chart_node.ports}
+          properties={chart_node.properties}
           itemDeleteAction={this.removeElement}
         />
       );

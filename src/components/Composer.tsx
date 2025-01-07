@@ -3,7 +3,12 @@ import { Dialog, ReactWidget } from '@jupyterlab/apputils';
 import styled from 'styled-components';
 import { mapValues } from 'lodash';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
-import { FlowChart, IChart, IConfig } from '@mrblenny/react-flow-chart';
+import {
+  FlowChart,
+  IChart,
+  IConfig,
+  INodeDefaultProps
+} from '@mrblenny/react-flow-chart';
 import { ThemeProvider } from '@material-ui/core';
 
 import { emptyChart } from '../naavre-common/emptyChart';
@@ -50,16 +55,11 @@ export class Composer extends React.Component<IProps, IState> {
   }
 
   handleAddCellToWorkspace = (cell: NaaVRECatalogue.WorkflowCells.ICell) => {
-    this.workspaceRef.current.addElement(cell);
+    this.workspaceRef.current?.addElement(cell);
   };
 
   handleIsCellInWorkspace = (cell: NaaVRECatalogue.WorkflowCells.ICell) => {
-    return this.workspaceRef.current.hasElement(cell);
-  };
-
-  getWorkspaceElementFromChartId = (chartId: string): NaaVRECatalogue.WorkflowCells.ICell => {
-    let nodeId = this.state.chart.nodes[chartId].properties['og_node_id'];
-    return this.workspaceRef.current.getElement(nodeId);
+    return this.workspaceRef.current?.hasElement(cell) || false;
   };
 
   getCatalogDialogOptions = (): Partial<Dialog.IOptions<any>> => {
@@ -86,8 +86,8 @@ export class Composer extends React.Component<IProps, IState> {
   };
 
   chartStateActions = mapValues(actions, (func: any) => (...args: any) => {
-    let newChartTransformer = func(...args);
-    let newChart = newChartTransformer(this.state.chart);
+    const newChartTransformer = func(...args);
+    const newChart = newChartTransformer(this.state.chart);
     this.setState({
       chart: { ...this.state.chart, ...newChart }
     });
@@ -101,7 +101,7 @@ export class Composer extends React.Component<IProps, IState> {
 
   exportWorkflow = async () => {
     try {
-      let resp = await requestAPI<any>('expmanager/export', {
+      const resp = await requestAPI<any>('expmanager/export', {
         body: JSON.stringify({
           ...this.state.chart
         }),
@@ -118,7 +118,10 @@ export class Composer extends React.Component<IProps, IState> {
   };
 
   getNodeEditor = () => {
-    let node = this.state.chart.nodes[this.state.chart.selected.id];
+    if (this.state.chart.selected.id === undefined) {
+      throw 'Chart element has no id';
+    }
+    const node = this.state.chart.nodes[this.state.chart.selected.id];
     switch (node.type) {
       case 'splitter':
         return (
@@ -185,7 +188,7 @@ export class Composer extends React.Component<IProps, IState> {
               callbacks={this.chartStateActions}
               config={this.chartConfig}
               Components={{
-                Node: NodeCustom,
+                Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
                 NodeInner: NodeInnerCustom,
                 Port: PortCustom
               }}

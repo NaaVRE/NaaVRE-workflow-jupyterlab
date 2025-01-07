@@ -33,17 +33,17 @@ const CatalogBody = styled('div')({
   flexDirection: 'column'
 });
 
-interface ExecuteWorkflowDialogProps {
+interface IExecuteWorkflowDialogProps {
   chart: IChart;
 }
 
-export class ExecuteWorkflowDialog extends React.Component<ExecuteWorkflowDialogProps> {
+export class ExecuteWorkflowDialog extends React.Component<IExecuteWorkflowDialogProps> {
   state = DefaultState;
   global_params: string[] = [];
   global_secrets: string[] = [];
   chart_node_ids: string[] = [];
 
-  constructor(props: ExecuteWorkflowDialogProps) {
+  constructor(props: IExecuteWorkflowDialogProps) {
     super(props);
     const nodes = props.chart.nodes;
 
@@ -77,10 +77,10 @@ export class ExecuteWorkflowDialog extends React.Component<ExecuteWorkflowDialog
     });
     const params = this.state.params;
     // Extract param values for cells that are in the current workflow
-    catalog.forEach((catalogItem: NaaVRECatalogue.WorkflowCells.ICell) => {
-      if (this.chart_node_ids.includes(catalogItem.node_id)) {
-        Object.keys(catalogItem.param_values).forEach(paramName => {
-          params[paramName] = catalogItem.param_values[paramName];
+    catalog.forEach((cell: NaaVRECatalogue.WorkflowCells.ICell) => {
+      if (this.chart_node_ids.includes(cell.id)) {
+        cell.params.forEach(param => {
+          params[param.name] = param.default_value;
         });
       }
     });
@@ -100,7 +100,7 @@ export class ExecuteWorkflowDialog extends React.Component<ExecuteWorkflowDialog
     });
 
     try {
-      let resp = await requestAPI<any>('expmanager/execute', {
+      const resp = await requestAPI<any>('expmanager/execute', {
         body: body,
         method: 'POST'
       });
@@ -140,17 +140,17 @@ export class ExecuteWorkflowDialog extends React.Component<ExecuteWorkflowDialog
   };
 
   allValuesFilled = () => {
-    var all_filled = true;
+    let all_filled = true;
 
     if (Object.values(this.state.params).length > 0) {
       Object.values(this.state.params).forEach(value => {
-        all_filled = all_filled && value != null;
+        all_filled = all_filled && value !== null;
       });
     }
 
     if (Object.values(this.state.secrets).length > 0) {
       Object.values(this.state.secrets).forEach(value => {
-        all_filled = all_filled && value != null;
+        all_filled = all_filled && value !== null;
       });
     }
 

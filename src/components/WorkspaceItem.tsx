@@ -45,7 +45,7 @@ export const WorkspaceItem = ({
   type,
   ports,
   properties,
-  itemDeleteAction = null
+  itemDeleteAction = undefined
 }: ISidebarItemProps) => {
   return (
     <Outer
@@ -65,7 +65,7 @@ export const WorkspaceItem = ({
           <div
             style={{ marginTop: '5px', cursor: 'pointer' }}
             onClick={() => {
-              itemDeleteAction(itemKey);
+              itemDeleteAction && itemDeleteAction(itemKey);
             }}
           >
             <DeleteOutlinedIcon fontSize="small" />
