@@ -57,6 +57,8 @@
         "watch:labextension": "jupyter labextension watch ."
     },
     "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.0",
         "@jupyter/collaborative-drive": "^3.1.0",
         "@jupyterlab/application": "^4.0.0",
         "@jupyterlab/launcher": "^4.3.4",
