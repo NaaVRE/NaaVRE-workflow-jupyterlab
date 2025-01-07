@@ -5,10 +5,22 @@
   "type": "object",
   "jupyter.lab.toolbars": {
     "NaaVRE workflow editor": [
-      { "name": "cellsCatalog", "rank": 10 },
-      { "name": "saveWorkflow", "rank": 20},
-      { "name": "exportWorkflow", "rank": 30},
-      { "name": "runWorkflow", "rank": 40}
+      {
+        "name": "cellsCatalog",
+        "rank": 10
+      },
+      {
+        "name": "saveWorkflow",
+        "rank": 20
+      },
+      {
+        "name": "exportWorkflow",
+        "rank": 30
+      },
+      {
+        "name": "runWorkflow",
+        "rank": 40
+      }
     ]
   },
   "jupyter.lab.transform": true,
