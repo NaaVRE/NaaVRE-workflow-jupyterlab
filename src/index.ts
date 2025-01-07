@@ -39,7 +39,7 @@ export const IWorkflowTracker = new Token<IWidgetTracker<WorkflowWidget>>(
  * Initialization data for the documents extension.
  */
 const extension: JupyterFrontEndPlugin<void> = {
-  id: '@jupyter_vre/experiment-manager:extension',
+  id: '@naavre/workflow-jupyterlab:plugin',
   autoStart: true,
   requires: [
     ILayoutRestorer,
