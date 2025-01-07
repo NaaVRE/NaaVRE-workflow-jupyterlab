@@ -57,7 +57,7 @@ export const WorkspaceItem = ({
         );
       }}
     >
-      {type != 'splitter' && type != 'merger' && type != 'visualizer' ? (
+      {type !== 'splitter' && type !== 'merger' && type !== 'visualizer' ? (
         <div>
           <Tooltip title={properties['title']}>
             <Title>{properties['title']}</Title>

@@ -8,27 +8,23 @@ export namespace CommandIDs {
   export const createNew = 'create-vre-composer';
 }
 
-export namespace Commands {
-  async function createNew(
-    commands: CommandRegistry,
-    cwd: any,
-    FACTORY: string
-  ) {
-    const model = await commands.execute('docmanager:new-untitled', {
-      path: cwd,
-      type: 'file',
-      ext: 'naavrewf'
-    });
-    if (model !== undefined) {
-      const widget = (await commands.execute('docmanager:open', {
-        path: model.path,
-        factory: FACTORY
-      })) as unknown as WorkflowWidget;
-      widget.isUntitled = true;
-      return widget;
-    }
+async function createNew(commands: CommandRegistry, cwd: any, FACTORY: string) {
+  const model = await commands.execute('docmanager:new-untitled', {
+    path: cwd,
+    type: 'file',
+    ext: 'naavrewf'
+  });
+  if (model !== undefined) {
+    const widget = (await commands.execute('docmanager:open', {
+      path: model.path,
+      factory: FACTORY
+    })) as unknown as WorkflowWidget;
+    widget.isUntitled = true;
+    return widget;
   }
+}
 
+export namespace Commands {
   export function addCommands(
     commands: CommandRegistry,
     browserFactory: IFileBrowserFactory,

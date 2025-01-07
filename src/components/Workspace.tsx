@@ -16,13 +16,13 @@ export class Workspace extends React.Component {
   state = DefaultState;
 
   addElement = (element: NaaVRECatalogue.WorkflowCells.ICell) => {
-    let currElements = this.state.workspace_elements;
+    const currElements = this.state.workspace_elements;
     currElements.set(element.id, element);
     this.setState({ workspace_elements: currElements });
   };
 
   removeElement = (key: string) => {
-    let currElements = this.state.workspace_elements;
+    const currElements = this.state.workspace_elements;
     currElements.delete(key);
     this.setState({ workspace_elements: currElements });
   };
@@ -35,7 +35,9 @@ export class Workspace extends React.Component {
     return this.state.workspace_elements.get(nodeId);
   };
 
-  renderItems(map: Map<string, NaaVRECatalogue.WorkflowCells.ICell>): JSX.Element[] {
+  renderItems(
+    map: Map<string, NaaVRECatalogue.WorkflowCells.ICell>
+  ): JSX.Element[] {
     const items: JSX.Element[] = [];
 
     map.forEach((value, key) => {
@@ -60,7 +62,7 @@ export class Workspace extends React.Component {
     return (
       <div style={{ flex: 'auto', minHeight: '200px' }}>
         <p className="section-header">Workspace</p>
-        {this.state.workspace_elements.size == 0 ? (
+        {this.state.workspace_elements.size === 0 ? (
           <div className={'empty-workspace'}>
             The workspace is empty, click on 'Cells catalog' to add cells.
           </div>

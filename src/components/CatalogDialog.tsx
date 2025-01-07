@@ -108,7 +108,7 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
             <div>
               <CellPreview ref={this.cellPreviewRef} />
               <CellInfo ref={this.cellInfoRef} />
-              {this.state.current_cell != null ? (
+              {this.state.current_cell !== null ? (
                 <Button
                   color="primary"
                   disabled={this.state.current_cell_in_workspace}

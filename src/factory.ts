@@ -102,15 +102,10 @@ export class WorkflowModelFactory
   /**
    * Create a new instance of WorkflowModel.
    *
-   * @param languagePreference Language
-   * @param modelDB Model database
-   * @param isInitialized - Whether the model is initialized or not.
-   * @param collaborationEnabled - Whether collaboration is enabled at the application level or not (default `false`).
+   * @param options Model options
    * @returns The model
    */
-  createNew(
-    options: DocumentRegistry.IModelOptions<Workflow>
-  ): WorkflowModel {
+  createNew(options: DocumentRegistry.IModelOptions<Workflow>): WorkflowModel {
     return new WorkflowModel(options);
   }
 
