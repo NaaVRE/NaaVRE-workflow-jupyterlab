@@ -28,6 +28,7 @@ import { ReactWidget } from '@jupyterlab/apputils';
 import lodash from 'lodash';
 import { Composer } from './components/Composer';
 import React from 'react';
+import { emptyChart } from './naavre-common/emptyChart';
 
 /**
  * DocumentWidget: widget that represents the view or editor for a file type.
@@ -135,7 +136,8 @@ export class ExperimentManagerWidget extends ReactWidget {
               this.composerRef.current?.state.chart
             )
           ) {
-            this._model.chart = this.composerRef.current?.state.chart;
+            this._model.chart =
+              this.composerRef.current?.state.chart || emptyChart;
           }
           break;
       }

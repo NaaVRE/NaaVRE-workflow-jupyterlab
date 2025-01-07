@@ -17,7 +17,9 @@ export namespace ToolbarItems {
       tooltip: 'Open the cells catalog',
       icon: addIcon,
       onClick: () =>
-        showDialog(widget.content.composerRef.current.getCatalogDialogOptions())
+        showDialog(
+          widget.content.composerRef.current?.getCatalogDialogOptions()
+        )
     });
   }
 
@@ -41,7 +43,7 @@ export namespace ToolbarItems {
       tooltip: 'Export the workflow',
       icon: codeIcon,
       onClick: () => {
-        widget.content.composerRef.current.exportWorkflow();
+        widget.content.composerRef.current?.exportWorkflow();
       }
     });
   }
@@ -53,7 +55,7 @@ export namespace ToolbarItems {
       icon: runIcon,
       onClick: () =>
         showDialog(
-          widget.content.composerRef.current.getExecuteWorkflowDialogOptions()
+          widget.content.composerRef.current?.getExecuteWorkflowDialogOptions()
         )
     });
   }

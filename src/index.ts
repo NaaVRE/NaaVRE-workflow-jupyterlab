@@ -1,3 +1,4 @@
+import { ICollaborativeDrive } from '@jupyter/collaborative-drive';
 import {
   ILayoutRestorer,
   JupyterFrontEnd,
@@ -19,6 +20,7 @@ import { IObservableList } from '@jupyterlab/observables';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 
 import { WorkflowModelFactory, WorkflowWidgetFactory } from './factory';
+import { Workflow } from './model';
 import { WorkflowWidget } from './widget';
 import { ToolbarItems } from './toolbarItems';
 import { Commands, CommandIDs } from './commands';
@@ -47,6 +49,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     ISettingRegistry,
     IFileBrowserFactory
   ],
+  optional: [ICollaborativeDrive],
   provides: IWorkflowTracker,
   activate: (
     app: JupyterFrontEnd,
@@ -55,7 +58,8 @@ const extension: JupyterFrontEndPlugin<void> = {
     translator: ITranslator,
     toolbarRegistry: IToolbarWidgetRegistry | null,
     settingRegistry: ISettingRegistry | null,
-    browserFactory: IFileBrowserFactory
+    browserFactory: IFileBrowserFactory,
+    drive: ICollaborativeDrive | null
   ) => {
     Commands.addCommands(app.commands, browserFactory, FACTORY);
 
@@ -128,6 +132,19 @@ const extension: JupyterFrontEndPlugin<void> = {
       fileFormat: 'text',
       contentType: 'naavrewfdoc' as any
     });
+
+    // Creating and registering the shared model factory
+    // As the third-party jupyter-collaboration package is not part of JupyterLab core,
+    // we should support collaboration feature absence.
+    if (drive) {
+      const sharedWorkflowFactory = () => {
+        return Workflow.create();
+      };
+      drive.sharedModelFactory.registerDocumentFactory(
+        'naavrewfdoc',
+        sharedWorkflowFactory
+      );
+    }
 
     // Creating and registering the model factory for our custom DocumentModel
     const modelFactory = new WorkflowModelFactory();

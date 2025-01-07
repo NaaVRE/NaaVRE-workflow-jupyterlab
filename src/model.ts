@@ -2,13 +2,11 @@
 // Copyright 2023 Project Jupyter Contributors; licensed under the BSD 3-Clause License license:
 // https://github.com/jupyterlab/extension-examples/blob/main/LICENSE
 
-import { DocumentRegistry } from '@jupyterlab/docregistry';
-
-import { YDocument, DocumentChange } from '@jupyterlab/shared-models';
-
-import { IModelDB, ModelDB } from '@jupyterlab/observables';
+import { YDocument, DocumentChange } from '@jupyter/ydoc';
 
 import { IChangedArgs } from '@jupyterlab/coreutils';
+
+import { DocumentRegistry } from '@jupyterlab/docregistry';
 
 import { PartialJSONObject, PartialJSONValue } from '@lumino/coreutils';
 
@@ -33,22 +31,20 @@ export class WorkflowModel implements DocumentRegistry.IModel {
   /**
    * Construct a new WorkflowModel.
    *
-   * @param languagePreference Language
-   * @param modelDB Document model database
-   * @param collaborationEnabled Whether collaboration is enabled at the application level or not
+   * @param options The options used to create a document model.
    */
-  constructor(
-    languagePreference?: string,
-    modelDB?: IModelDB,
-    collaborationEnabled?: boolean
-  ) {
-    this.modelDB = modelDB ?? new ModelDB();
+  constructor(options: DocumentRegistry.IModelOptions<Workflow>) {
+    const { collaborationEnabled, sharedModel } = options;
+    this._collaborationEnabled = !!collaborationEnabled;
+    if (sharedModel) {
+      this.sharedModel = sharedModel;
+    } else {
+      this.sharedModel = Workflow.create();
+    }
 
     // Listening for changes on the shared model to propagate them
     this.sharedModel.changed.connect(this._onSharedModelChanged);
     this.sharedModel.awareness.on('change', this._onClientChanged);
-
-    this._collaborationEnabled = !!collaborationEnabled;
   }
 
   /**
@@ -102,16 +98,6 @@ export class WorkflowModel implements DocumentRegistry.IModel {
   get isDisposed(): boolean {
     return this._isDisposed;
   }
-
-  /**
-   * modelBD is the datastore for the content of the document.
-   * modelDB is not a shared datastore so we don't use it on this example since
-   * this example is a shared document.
-   *
-   * ### Notes
-   * It will be removed in JupyterLab 4
-   */
-  readonly modelDB: IModelDB;
 
   /**
    * The read only state of the document.
@@ -203,10 +189,7 @@ export class WorkflowModel implements DocumentRegistry.IModel {
    * @returns The data
    */
   toString(): string {
-    const obj = {
-      chart: this.sharedModel.get('chart') ?? emptyChart
-    };
-    return JSON.stringify(obj, null, 2);
+    return this.sharedModel.getSource();
   }
 
   /**
@@ -217,14 +200,7 @@ export class WorkflowModel implements DocumentRegistry.IModel {
    * @param data Serialized data
    */
   fromString(data: string): void {
-    let chart: IChart = emptyChart;
-    if (data) {
-      const obj = JSON.parse(data);
-      chart = obj.chart;
-    }
-    this.sharedModel.transact(() => {
-      this.sharedModel.set('chart', chart);
-    });
+    this.sharedModel.setSource(data);
   }
 
   /**
@@ -347,6 +323,36 @@ export class Workflow extends YDocument<WorkflowChange> {
     // Creating a new shared object and listen to its changes
     this._content = this.ydoc.getMap('content');
     this._content.observe(this._contentObserver);
+  }
+
+  readonly version: string = '1.0.0';
+
+  /**
+   * Get the document source
+   *
+   * @returns The source
+   */
+  getSource(): string {
+    const obj = {
+      chart: this.get('chart') ?? emptyChart
+    };
+    return JSON.stringify(obj, null, 2);
+  }
+
+  /**
+   * Set the document source
+   *
+   * @param value The source to set
+   */
+  setSource(value: string): void {
+    let chart: IChart = emptyChart;
+    if (value) {
+      const obj = JSON.parse(value);
+      chart = obj.chart;
+    }
+    this.transact(() => {
+      this.set('chart', chart);
+    });
   }
 
   /**

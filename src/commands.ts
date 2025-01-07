@@ -11,7 +11,7 @@ export namespace CommandIDs {
 export namespace Commands {
   async function createNew(
     commands: CommandRegistry,
-    cwd: string,
+    cwd: any,
     FACTORY: string
   ) {
     const model = await commands.execute('docmanager:new-untitled', {
@@ -37,11 +37,11 @@ export namespace Commands {
     commands.addCommand(CommandIDs.createNew, {
       label: 'Experiment Manager',
       caption: 'Launch Workflow Composition',
-      icon: args => (args['isPalette'] ? null : launcherIcon),
+      icon: args => (args['isPalette'] ? undefined : launcherIcon),
       execute: args => {
         return createNew(
           commands,
-          (args.cwd || browserFactory.defaultBrowser.model.path) as string, // FIXME
+          args.cwd || browserFactory.tracker.currentWidget?.model.path,
           FACTORY
         );
       }

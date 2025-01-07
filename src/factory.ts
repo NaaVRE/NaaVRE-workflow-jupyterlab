@@ -1,12 +1,10 @@
 import { ABCWidgetFactory, DocumentRegistry } from '@jupyterlab/docregistry';
 
-import { IModelDB } from '@jupyterlab/observables';
-
 import { Contents } from '@jupyterlab/services';
 
 import { WorkflowWidget, ExperimentManagerWidget } from './widget';
 
-import { WorkflowModel } from './model';
+import { Workflow, WorkflowModel } from './model';
 
 /**
  * A widget factory to create new instances of WorkflowWidget.
@@ -73,6 +71,8 @@ export class WorkflowModelFactory
     return 'text';
   }
 
+  readonly collaborative: boolean = true;
+
   /**
    * Get whether the model factory has been disposed.
    *
@@ -109,12 +109,9 @@ export class WorkflowModelFactory
    * @returns The model
    */
   createNew(
-    languagePreference?: string,
-    modelDB?: IModelDB,
-    isInitialized?: boolean,
-    collaborationEnabled?: boolean
+    options: DocumentRegistry.IModelOptions<Workflow>
   ): WorkflowModel {
-    return new WorkflowModel(languagePreference, modelDB, collaborationEnabled);
+    return new WorkflowModel(options);
   }
 
   private _disposed = false;
