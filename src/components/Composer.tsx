@@ -64,7 +64,7 @@ export class Composer extends React.Component<IProps, IState> {
 
   getCatalogDialogOptions = (): Partial<Dialog.IOptions<any>> => {
     return {
-      title: '',
+      title: <p className="section-header">Explore Cell Catalogs</p>,
       body: ReactWidget.create(
         <CatalogDialog
           addCellAction={this.handleAddCellToWorkspace}
@@ -77,7 +77,7 @@ export class Composer extends React.Component<IProps, IState> {
 
   getExecuteWorkflowDialogOptions = (): Partial<Dialog.IOptions<any>> => {
     return {
-      title: '',
+      title: <p className="section-header">Execute Workflow</p>,
       body: ReactWidget.create(
         <ExecuteWorkflowDialog chart={this.state.chart} />
       ) as Dialog.IBodyWidget<any>,

@@ -4,19 +4,18 @@
   https://jupyterlab.readthedocs.io/en/stable/developer/css.html
 */
 
+/* Entire widget */
 .vre-composer {
   display: flex;
 }
 
+/* Cells list when populated */
 .workspace-items-container {
   overflow-y: scroll;
   max-height: 460px;
 }
 
-.btn-export-workflow {
-  margin: 20px !important;
-}
-
+/* Cell preview in catalogue */
 .lw-panel-editor {
   margin: 15px;
   width: 350px;
@@ -25,29 +24,24 @@
   border-radius: 5px;
 }
 
+/* Section and popup titles */
 .section-header {
+  width: 100%;
   padding: 10px;
+  margin-top: 0;
   text-align: center;
-  background: lightseagreen;
+  background: #3c8f49;
   color: white;
   font-size: medium;
 }
 
+/* Popup displayed when clicking on cell in workflow */
 .section-header.cell-editor {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
 
-.add-cell-to-ws {
-  width: 190px;
-  margin: 15px;
-}
-
-.jp-Dialog-content,
-.jp-Dialog-header {
-  padding: 0 !important;
-}
-
+/* Cells list when empty */
 .empty-workspace {
   padding: 15px;
   text-align: center;
@@ -55,16 +49,19 @@
   line-height: 23px;
 }
 
+/* "Workflow submitted! You can track it <a class=".wf-submit-link">here</a> */
 .wf-submit-link {
   color: #106ba3;
   text-decoration: underline;
 }
 
+/* <p className="wf-submit-text">Workflow submitted! You can track it here</p> */
 .wf-submit-text {
   font-size: medium;
   margin: 10px;
 }
 
+/* Popup confirming wf submission */
 .wf-submit-box {
   padding: 10px;
   align-items: center;

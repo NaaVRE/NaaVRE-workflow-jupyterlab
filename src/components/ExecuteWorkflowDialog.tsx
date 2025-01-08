@@ -160,7 +160,6 @@ export class ExecuteWorkflowDialog extends React.Component<IExecuteWorkflowDialo
   render(): React.ReactElement {
     return (
       <ThemeProvider theme={theme}>
-        <p className="section-header">Execute Workflow</p>
         <CatalogBody>
           {this.state.submitted_workflow ? (
             <div className="wf-submit-box">

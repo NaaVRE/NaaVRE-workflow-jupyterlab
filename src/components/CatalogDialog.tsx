@@ -89,7 +89,6 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
   render(): React.ReactElement {
     return (
       <ThemeProvider theme={theme}>
-        <p className="section-header">Explore Cell Catalogs</p>
         <CatalogBody>
           <div>
             <Autocomplete
