@@ -61,6 +61,9 @@ const extension: JupyterFrontEndPlugin<void> = {
     browserFactory: IFileBrowserFactory,
     drive: ICollaborativeDrive | null
   ) => {
+    console.log(
+      'JupyterLab extension @naavre/workflow-jupyterlab is activated!'
+    );
     Commands.addCommands(app.commands, browserFactory, FACTORY);
 
     if (launcher) {
