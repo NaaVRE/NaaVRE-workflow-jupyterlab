@@ -1,22 +1,11 @@
-import * as React from 'react';
-import { cloneDeep, mapValues } from 'lodash';
-import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
-import {
-  FlowChart,
-  IChart,
-  INode,
-  INodeDefaultProps
-} from '@mrblenny/react-flow-chart';
 import ColorHash from 'color-hash';
-import { sha1 } from 'js-sha1';
 import sortKeysRecursive from 'sort-keys-recursive';
+import { IChart, INode } from '@mrblenny/react-flow-chart';
+import { sha1 } from 'js-sha1';
 
-import { NodeCustom } from './NodeCustom';
-import { NodeInnerCustom } from './NodeInnerCustom';
-import { PortCustom } from './PortCustom';
-import { NaaVRECatalogue } from './types';
+import { NaaVRECatalogue } from '../naavre-common/types';
 
-const defaultChart: IChart = {
+export const defaultChart: IChart = {
   offset: {
     x: 0,
     y: 0
@@ -121,38 +110,4 @@ export function cellsToChartNode(
     selected: {},
     hovered: {}
   };
-}
-
-export class CellPreview extends React.Component {
-  public state = cloneDeep(defaultChart);
-
-  updateChart = (chart: IChart) => {
-    this.setState(chart);
-  };
-
-  public render() {
-    const chart = this.state;
-    const stateActions = mapValues(
-      actions,
-      (func: any) =>
-        (...args: any) =>
-          this.setState(func(...args))
-    ) as typeof actions;
-
-    return (
-      <div>
-        <div className={'lw-panel-editor'}>
-          <FlowChart
-            chart={chart}
-            callbacks={stateActions}
-            Components={{
-              Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
-              NodeInner: NodeInnerCustom,
-              Port: PortCustom
-            }}
-          />
-        </div>
-      </div>
-    );
-  }
 }

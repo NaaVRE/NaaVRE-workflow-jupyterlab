@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
-import { CellInfo } from './CellInfo';
+import { CellInfo } from '../common/CellInfo';
 import {
   IConfig,
   IFlowChartCallbacks,

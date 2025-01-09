@@ -11,10 +11,10 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TextField from '@mui/material/TextField';
 
-import { theme } from '../Theme';
-import { NaaVRECatalogue } from '../naavre-common/types';
-import { IWorkflowWidgetSettings } from '../widget';
-import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
+import { theme } from '../../Theme';
+import { NaaVRECatalogue } from '../../naavre-common/types';
+import { IWorkflowWidgetSettings } from '../../widget';
+import { MockNaaVREExternalService } from '../../naavre-common/mockHandler';
 
 interface IState {
   params: { [name: string]: any };

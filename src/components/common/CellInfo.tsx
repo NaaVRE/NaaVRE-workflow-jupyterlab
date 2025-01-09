@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import * as React from 'react';
 import ColorHash from 'color-hash';
-import { NaaVRECatalogue } from '../naavre-common/types';
+import { NaaVRECatalogue } from '../../naavre-common/types';
 
 interface IState {
   cell?: NaaVRECatalogue.WorkflowCells.ICell;

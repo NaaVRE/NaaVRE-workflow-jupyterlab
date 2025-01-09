@@ -13,7 +13,7 @@ import { PartialJSONObject, PartialJSONValue } from '@lumino/coreutils';
 import { ISignal, Signal } from '@lumino/signaling';
 
 import { IChart } from '@mrblenny/react-flow-chart';
-import { emptyChart } from './naavre-common/emptyChart';
+import { defaultChart } from './utils/chart';
 
 import * as Y from 'yjs';
 
@@ -334,7 +334,7 @@ export class Workflow extends YDocument<WorkflowChange> {
    */
   getSource(): string {
     const obj = {
-      chart: this.get('chart') ?? emptyChart
+      chart: this.get('chart') ?? defaultChart
     };
     return JSON.stringify(obj, null, 2);
   }
@@ -345,7 +345,7 @@ export class Workflow extends YDocument<WorkflowChange> {
    * @param value The source to set
    */
   setSource(value: string): void {
-    let chart: IChart = emptyChart;
+    let chart: IChart = defaultChart;
     if (value) {
       const obj = JSON.parse(value);
       chart = obj.chart;
@@ -386,7 +386,7 @@ export class Workflow extends YDocument<WorkflowChange> {
     const data = this._content.get(key);
     switch (key) {
       case 'chart':
-        return data ? JSON.parse(data) : emptyChart;
+        return data ? JSON.parse(data) : defaultChart;
       default:
         return data ?? '';
     }

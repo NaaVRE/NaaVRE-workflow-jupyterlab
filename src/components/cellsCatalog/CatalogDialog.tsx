@@ -3,14 +3,15 @@ import * as React from 'react';
 import { Button, styled, TextField, ThemeProvider } from '@material-ui/core';
 import { Autocomplete } from '@mui/material';
 
-import { CellPreview, cellsToChartNode } from '../naavre-common/CellPreview';
-import { NaaVRECatalogue } from '../naavre-common/types';
-import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
+import { CellPreview } from './CellPreview';
+import { NaaVRECatalogue } from '../../naavre-common/types';
+import { MockNaaVREExternalService } from '../../naavre-common/mockHandler';
 
-import { CellInfo } from './CellInfo';
+import { CellInfo } from '../common/CellInfo';
 import { VirtualizedList } from './VirtualizedList';
-import { theme } from '../Theme';
-import { IWorkflowWidgetSettings } from '../widget';
+import { theme } from '../../Theme';
+import { IWorkflowWidgetSettings } from '../../widget';
+import { cellsToChartNode } from '../../utils/chart';
 
 const catalogs = [{ label: 'Local' }];
 

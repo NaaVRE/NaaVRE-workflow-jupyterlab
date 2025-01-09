@@ -28,7 +28,7 @@ import { ReactWidget } from '@jupyterlab/apputils';
 import lodash from 'lodash';
 import { Composer } from './components/Composer';
 import React from 'react';
-import { emptyChart } from './naavre-common/emptyChart';
+import { defaultChart } from './utils/chart';
 
 export interface IWorkflowWidgetSettings {
   virtualLab?: string;
@@ -153,7 +153,7 @@ export class ExperimentManagerWidget extends ReactWidget {
             )
           ) {
             this._model.chart =
-              this.composerRef.current?.state.chart || emptyChart;
+              this.composerRef.current?.state.chart || defaultChart;
           }
           break;
       }

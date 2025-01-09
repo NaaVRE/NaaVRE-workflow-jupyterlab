@@ -1,8 +1,9 @@
 import * as React from 'react';
 
-import { NaaVRECatalogue } from '../naavre-common/types';
+import { NaaVRECatalogue } from '../../naavre-common/types';
 import { WorkspaceItem } from './WorkspaceItem';
-import { cellToChartNode } from '../naavre-common/CellPreview';
+
+import { cellToChartNode } from '../../utils/chart';
 
 interface IState {
   workspace_elements: Map<string, NaaVRECatalogue.WorkflowCells.ICell>;

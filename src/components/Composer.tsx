@@ -11,21 +11,21 @@ import {
 } from '@mrblenny/react-flow-chart';
 import { ThemeProvider } from '@material-ui/core';
 
-import { emptyChart } from '../naavre-common/emptyChart';
+import { defaultChart } from '../utils/chart';
 import { NaaVRECatalogue } from '../naavre-common/types';
-import { NodeCustom } from '../naavre-common/NodeCustom';
-import { NodeInnerCustom } from '../naavre-common/NodeInnerCustom';
-import { PortCustom } from '../naavre-common/PortCustom';
+import { NodeCustom } from './workflowEditor/NodeCustom';
+import { NodeInnerCustom } from './workflowEditor/NodeInnerCustom';
+import { PortCustom } from './workflowEditor/PortCustom';
 import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
-import { CatalogDialog } from './CatalogDialog';
-import { CellEditor } from './CellEditor';
-import { ChartElementEditor } from './ChartElementEditor';
-import { ExecuteWorkflowDialog } from './ExecuteWorkflowDialog';
+import { CatalogDialog } from './cellsCatalog/CatalogDialog';
+import { CellEditor } from './workflowEditor/CellEditor';
+import { ChartElementEditor } from './workflowEditor/ChartElementEditor';
+import { ExecuteWorkflowDialog } from './workflowSubmitDialog/ExecuteWorkflowDialog';
 import { Page } from './Page';
-import { Parallelization } from './Parallelization';
+import { Parallelization } from './cellsWorkspace/Parallelization';
 import { theme } from '../Theme';
-import { Visualization } from './Visualization';
-import { Workspace } from './Workspace';
+import { Visualization } from './cellsWorkspace/Visualization';
+import { Workspace } from './cellsWorkspace/Workspace';
 import { IWorkflowWidgetSettings } from '../widget';
 
 export const CenterContent = styled.div`
@@ -44,7 +44,7 @@ export interface IState {
 }
 
 export const DefaultState: IState = {
-  chart: emptyChart
+  chart: defaultChart
 };
 
 export class Composer extends React.Component<IProps, IState> {
