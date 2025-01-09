@@ -30,6 +30,12 @@ import { Composer } from './components/Composer';
 import React from 'react';
 import { emptyChart } from './naavre-common/emptyChart';
 
+export interface IWorkflowWidgetSettings {
+  virtualLab?: string;
+  workflowServiceUrl?: string;
+  catalogueServiceUrl?: string;
+}
+
 /**
  * DocumentWidget: widget that represents the view or editor for a file type.
  */
@@ -41,6 +47,10 @@ export class WorkflowWidget extends DocumentWidget<
     options: DocumentWidget.IOptions<ExperimentManagerWidget, WorkflowModel>
   ) {
     super(options);
+  }
+
+  updateSettings(settings: Partial<IWorkflowWidgetSettings>) {
+    this.content.updateSettings(settings);
   }
 
   /**
@@ -57,6 +67,7 @@ export class WorkflowWidget extends DocumentWidget<
  */
 export class ExperimentManagerWidget extends ReactWidget {
   composerRef: React.RefObject<Composer>;
+  settings: IWorkflowWidgetSettings = {};
   private _model: WorkflowModel;
 
   /**
@@ -82,8 +93,13 @@ export class ExperimentManagerWidget extends ReactWidget {
     this._onContentChanged();
   }
 
+  updateSettings(settings: Partial<IWorkflowWidgetSettings>) {
+    this.settings = { ...this.settings, ...settings };
+    this.update();
+  }
+
   render() {
-    return <Composer ref={this.composerRef} />;
+    return <Composer ref={this.composerRef} settings={this.settings} />;
   }
 
   /**

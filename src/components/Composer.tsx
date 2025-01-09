@@ -26,6 +26,7 @@ import { Parallelization } from './Parallelization';
 import { theme } from '../Theme';
 import { Visualization } from './Visualization';
 import { Workspace } from './Workspace';
+import { IWorkflowWidgetSettings } from '../widget';
 
 export const CenterContent = styled.div`
   display: flex;
@@ -34,7 +35,9 @@ export const CenterContent = styled.div`
   overflow: hidden;
 `;
 
-export interface IProps {}
+export interface IProps {
+  settings: IWorkflowWidgetSettings;
+}
 
 export interface IState {
   chart: IChart;
@@ -69,6 +72,7 @@ export class Composer extends React.Component<IProps, IState> {
         <CatalogDialog
           addCellAction={this.handleAddCellToWorkspace}
           isCellInWorkspace={this.handleIsCellInWorkspace}
+          settings={this.props.settings}
         />
       ) as Dialog.IBodyWidget<any>,
       buttons: [Dialog.okButton({ label: 'Close' })]
@@ -79,7 +83,10 @@ export class Composer extends React.Component<IProps, IState> {
     return {
       title: <p className="section-header">Execute Workflow</p>,
       body: ReactWidget.create(
-        <ExecuteWorkflowDialog chart={this.state.chart} />
+        <ExecuteWorkflowDialog
+          chart={this.state.chart}
+          settings={this.props.settings}
+        />
       ) as Dialog.IBodyWidget<any>,
       buttons: [Dialog.okButton({ label: 'Close' })]
     };

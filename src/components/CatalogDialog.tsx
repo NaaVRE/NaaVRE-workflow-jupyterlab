@@ -10,6 +10,7 @@ import { requestAPI } from '../naavre-common/handler';
 import { CellInfo } from './CellInfo';
 import { VirtualizedList } from './VirtualizedList';
 import { theme } from '../Theme';
+import { IWorkflowWidgetSettings } from '../widget';
 
 const catalogs = [{ label: 'Local' }];
 
@@ -41,6 +42,7 @@ const PreviewWindow = styled('div')({
 interface ICatalogDialogProps {
   addCellAction: (cell: NaaVRECatalogue.WorkflowCells.ICell) => void;
   isCellInWorkspace: (cell: NaaVRECatalogue.WorkflowCells.ICell) => boolean;
+  settings: IWorkflowWidgetSettings;
 }
 
 export class CatalogDialog extends React.Component<ICatalogDialogProps> {

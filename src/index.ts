@@ -21,7 +21,7 @@ import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 
 import { WorkflowModelFactory, WorkflowWidgetFactory } from './factory';
 import { Workflow } from './model';
-import { WorkflowWidget } from './widget';
+import { IWorkflowWidgetSettings, WorkflowWidget } from './widget';
 import { ToolbarItems } from './toolbarItems';
 import { Commands, CommandIDs } from './commands';
 
@@ -124,6 +124,30 @@ const extension: JupyterFrontEndPlugin<void> = {
         args: widget => ({ path: widget.context.path, factory: FACTORY }),
         name: widget => widget.context.path
       });
+    }
+
+    // Load settings
+    if (settingRegistry) {
+      const loadSettings = settingRegistry.load(extension.id);
+
+      Promise.all([loadSettings, app.restored])
+        .then(([settings]) => {
+          function onSettingsChanged(
+            settings: ISettingRegistry.ISettings
+          ): void {
+            tracker.currentWidget?.updateSettings(
+              settings.composite as Partial<IWorkflowWidgetSettings>
+            );
+          }
+          settings.changed.connect(onSettingsChanged);
+          onSettingsChanged(settings);
+        })
+        .catch(reason => {
+          console.error(
+            'Failed to load settings for @naavre/containerizer-jupyterlab.',
+            reason
+          );
+        });
     }
 
     // register the filetype

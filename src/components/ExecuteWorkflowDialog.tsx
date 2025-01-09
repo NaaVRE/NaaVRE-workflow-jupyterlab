@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField';
 
 import { theme } from '../Theme';
 import { NaaVRECatalogue } from '../naavre-common/types';
-import { requestAPI } from '../naavre-common/handler';
+import { IWorkflowWidgetSettings } from '../widget';
 
 interface IState {
   params: { [name: string]: any };
@@ -35,6 +35,7 @@ const CatalogBody = styled('div')({
 
 interface IExecuteWorkflowDialogProps {
   chart: IChart;
+  settings: IWorkflowWidgetSettings;
 }
 
 export class ExecuteWorkflowDialog extends React.Component<IExecuteWorkflowDialogProps> {
