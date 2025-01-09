@@ -17,7 +17,7 @@ interface ICellEditorProps {
 export const CellEditor = (props: ICellEditorProps): React.ReactElement => {
   const cellInfoRef: React.RefObject<CellInfo> = useRef(null);
   useEffect(() => {
-    cellInfoRef.current?.updateCell(props.node, []);
+    cellInfoRef.current?.updateCell(props.node.properties.cell);
   });
 
   return (

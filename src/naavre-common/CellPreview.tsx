@@ -48,6 +48,7 @@ export function cellToChartNode(
     type: 'input-output',
     position: { x: 35, y: 15 },
     properties: {
+      cell: cell,
       title: cell.title,
       params: cell.params.map(v => v.name),
       secrets: cell.secrets.map(v => v.name),

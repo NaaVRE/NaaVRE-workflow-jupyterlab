@@ -7,50 +7,76 @@ import {
   TableRow
 } from '@material-ui/core';
 import * as React from 'react';
+import ColorHash from 'color-hash';
+import { NaaVRECatalogue } from '../naavre-common/types';
 
 interface IState {
-  cell: any;
-  types: [];
+  cell?: NaaVRECatalogue.WorkflowCells.ICell;
 }
 
-export const DefaultState: IState = {
-  cell: null,
-  types: []
-};
-
 export class CellInfo extends React.Component {
-  state = DefaultState;
+  state: IState = {};
 
-  updateCell = (cell: any, types: []) => {
-    this.setState({ cell: cell, types: types });
+  updateCell = (cell: NaaVRECatalogue.WorkflowCells.ICell) => {
+    this.setState({ cell: cell });
   };
+
+  colorHash = new ColorHash();
 
   render() {
     return (
       <div>
-        {this.state.cell ? (
+        {this.state.cell && (
           <div>
-            <p className={'lw-panel-preview'}>Inputs and Outputs</p>
+            <p className={'lw-panel-preview'}>Inputs</p>
             <TableContainer component={Paper} className={'lw-panel-table'}>
               <Table aria-label="simple table">
                 <TableBody>
-                  {this.state.cell['properties']['vars'].map(
-                    (variable: any) => (
+                  {this.state.cell.inputs.map(variable => {
+                    return (
                       <TableRow key={variable.name}>
                         <TableCell component="th" scope="row">
-                          <p style={{ color: variable.color, fontSize: '1em' }}>
+                          <p
+                            style={{
+                              color: this.colorHash.hex(variable.name),
+                              fontSize: '1em'
+                            }}
+                          >
                             {variable.name}
                           </p>
                         </TableCell>
                         <TableCell component="th" scope="row">
-                          {variable.direction}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                          {this.state.types[variable.name]}
+                          {variable.type}
                         </TableCell>
                       </TableRow>
-                    )
-                  )}
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <p className={'lw-panel-preview'}>Outputs</p>
+            <TableContainer component={Paper} className={'lw-panel-table'}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  {this.state.cell.outputs.map(variable => {
+                    return (
+                      <TableRow key={variable.name}>
+                        <TableCell component="th" scope="row">
+                          <p
+                            style={{
+                              color: this.colorHash.hex(variable.name),
+                              fontSize: '1em'
+                            }}
+                          >
+                            {variable.name}
+                          </p>
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {variable.type}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -58,13 +84,13 @@ export class CellInfo extends React.Component {
             <TableContainer component={Paper} className={'lw-panel-table'}>
               <Table aria-label="simple table">
                 <TableBody>
-                  {this.state.cell['properties']['params'].map((param: any) => (
-                    <TableRow key={param}>
+                  {this.state.cell.params.map(param => (
+                    <TableRow key={param.name}>
                       <TableCell component="th" scope="row">
-                        {param}
+                        {param.name}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        {this.state.types[param]}
+                        {param.type}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -72,8 +98,6 @@ export class CellInfo extends React.Component {
               </Table>
             </TableContainer>
           </div>
-        ) : (
-          <TableContainer></TableContainer>
         )}
       </div>
     );

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Button, styled, TextField, ThemeProvider } from '@material-ui/core';
 import { Autocomplete } from '@mui/material';
 
-import { CellPreview } from '../naavre-common/CellPreview';
+import { CellPreview, cellsToChartNode } from '../naavre-common/CellPreview';
 import { NaaVRECatalogue } from '../naavre-common/types';
 import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
 
@@ -15,7 +15,7 @@ import { IWorkflowWidgetSettings } from '../widget';
 const catalogs = [{ label: 'Local' }];
 
 interface IState {
-  catalog_elements: [];
+  catalog_elements: Array<NaaVRECatalogue.WorkflowCells.ICell>;
   current_cell?: NaaVRECatalogue.WorkflowCells.ICell;
   current_cell_in_workspace: boolean;
 }
@@ -62,10 +62,9 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
 
   onCellSelection = (cell_index: number) => {
     const cell = this.state.catalog_elements[cell_index];
-    const chart = cell['chart_obj'];
-    const node = chart['nodes'][Object.keys(chart['nodes'])[0]];
+    const chart = cellsToChartNode([cell]);
     this.cellPreviewRef.current?.updateChart(chart);
-    this.cellInfoRef.current?.updateCell(node, cell['types']);
+    this.cellInfoRef.current?.updateCell(cell);
 
     this.setState({
       current_cell: cell,
@@ -106,7 +105,7 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
               renderInput={params => <TextField {...params} label="Catalog" />}
             />
             <VirtualizedList
-              items={this.state.catalog_elements}
+              items={this.state.catalog_elements.map(c => c.title)}
               clickAction={this.onCellSelection}
             />
           </div>
@@ -114,7 +113,7 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
             <div>
               <CellPreview ref={this.cellPreviewRef} />
               <CellInfo ref={this.cellInfoRef} />
-              {this.state.current_cell !== null ? (
+              {this.state.current_cell && (
                 <Button
                   color="primary"
                   disabled={this.state.current_cell_in_workspace}
@@ -124,8 +123,6 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
                 >
                   Add to Workspace
                 </Button>
-              ) : (
-                <div></div>
               )}
             </div>
           </PreviewWindow>

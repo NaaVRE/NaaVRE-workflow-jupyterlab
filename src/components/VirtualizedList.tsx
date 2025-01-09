@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 interface IVirtualizedListProps {
   clickAction: (index: number) => void;
-  items: [];
+  items: Array<string>;
 }
 
 export function VirtualizedList({ items, clickAction }: IVirtualizedListProps) {
@@ -28,7 +28,7 @@ export function VirtualizedList({ items, clickAction }: IVirtualizedListProps) {
               }}
             >
               <ListItemText
-                primary={item['title']}
+                primary={item}
                 primaryTypographyProps={{
                   style: {
                     whiteSpace: 'nowrap',
