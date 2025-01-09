@@ -16,7 +16,7 @@ import { NaaVRECatalogue } from '../naavre-common/types';
 import { NodeCustom } from '../naavre-common/NodeCustom';
 import { NodeInnerCustom } from '../naavre-common/NodeInnerCustom';
 import { PortCustom } from '../naavre-common/PortCustom';
-import { requestAPI } from '../naavre-common/handler';
+import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
 import { CatalogDialog } from './CatalogDialog';
 import { CellEditor } from './CellEditor';
 import { ChartElementEditor } from './ChartElementEditor';
@@ -107,21 +107,24 @@ export class Composer extends React.Component<IProps, IState> {
   };
 
   exportWorkflow = async () => {
-    try {
-      const resp = await requestAPI<any>('expmanager/export', {
-        body: JSON.stringify({
-          ...this.state.chart
-        }),
-        method: 'POST'
+    MockNaaVREExternalService(
+      'POST',
+      `${this.props.settings.workflowServiceUrl}/convert`,
+      {},
+      {
+        virtual_lab: this.props.settings.virtualLab,
+        naavrewf2: this.state.chart
+      }
+    )
+      .then(resp => {
+        console.log(resp);
+        // TODO: save resp.content to yaml document
+      })
+      .catch(error => {
+        const msg = `Error exporting the workflow: ${String(error)}`;
+        console.log(msg);
+        alert(msg);
       });
-      console.log(resp);
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Error exporting the workflow: ' +
-          String(error).replace('{"message": "Unknown HTTP Error"}', '')
-      );
-    }
   };
 
   getNodeEditor = () => {

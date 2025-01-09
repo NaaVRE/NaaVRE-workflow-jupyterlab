@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 import { theme } from '../Theme';
 import { NaaVRECatalogue } from '../naavre-common/types';
 import { IWorkflowWidgetSettings } from '../widget';
+import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
 
 interface IState {
   params: { [name: string]: any };
@@ -73,49 +74,60 @@ export class ExecuteWorkflowDialog extends React.Component<IExecuteWorkflowDialo
   }
 
   getValuesFromCatalog = async () => {
-    const catalog = await requestAPI<any>('catalog/cells/all', {
-      method: 'GET'
-    });
-    const params = this.state.params;
-    // Extract param values for cells that are in the current workflow
-    catalog.forEach((cell: NaaVRECatalogue.WorkflowCells.ICell) => {
-      if (this.chart_node_ids.includes(cell.id)) {
-        cell.params.forEach(param => {
-          params[param.name] = param.default_value;
+    MockNaaVREExternalService(
+      'GET',
+      `${this.props.settings.catalogueServiceUrl}/workflow-cells/`
+    )
+      .then(resp => {
+        if (resp.status_code !== 200) {
+          throw `${resp.status_code} ${resp.reason}`;
+        }
+        const data = JSON.parse(resp.content);
+        const params = this.state.params;
+        // Extract param values for cells that are in the current workflow
+        data.forEach((cell: NaaVRECatalogue.WorkflowCells.ICell) => {
+          if (this.chart_node_ids.includes(cell.id)) {
+            cell.params.forEach(param => {
+              params[param.name] = param.default_value;
+            });
+          }
         });
-      }
-    });
-    this.setState({
-      params: params
-    });
+        this.setState({ params: params });
+      })
+      .catch(error => {
+        const msg = `Error getting values from the catalogue: ${String(error)}`;
+        console.log(msg);
+        alert(msg);
+      });
   };
 
   executeWorkflow = async (
     params: { [name: string]: any },
     secrets: { [name: string]: any }
   ) => {
-    const body = JSON.stringify({
-      chart: this.props.chart,
-      params: params,
-      secrets: secrets
-    });
-
-    try {
-      const resp = await requestAPI<any>('expmanager/execute', {
-        body: body,
-        method: 'POST'
+    MockNaaVREExternalService(
+      'POST',
+      `${this.props.settings.workflowServiceUrl}/submit`,
+      {},
+      {
+        virtual_lab: this.props.settings.virtualLab,
+        naavrewf2: this.props.chart,
+        params: params,
+        secrets: secrets
+      }
+    )
+      .then(resp => {
+        if (resp.status_code !== 200) {
+          throw `${resp.status_code} ${resp.reason}`;
+        }
+        const data = JSON.parse(resp.content);
+        this.setState({ submitted_workflow: data });
+      })
+      .catch(error => {
+        const msg = `Error exporting the workflow: ${error}`;
+        console.log(msg);
+        alert(msg);
       });
-      this.setState({
-        submitted_workflow: resp
-      });
-      console.log(this.state);
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Error exporting the workflow: ' +
-          String(error).replace('{"message": "Unknown HTTP Error"}', '')
-      );
-    }
   };
 
   handleSubmit = () => {

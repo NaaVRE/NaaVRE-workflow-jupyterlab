@@ -5,7 +5,7 @@ import { Autocomplete } from '@mui/material';
 
 import { CellPreview } from '../naavre-common/CellPreview';
 import { NaaVRECatalogue } from '../naavre-common/types';
-import { requestAPI } from '../naavre-common/handler';
+import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
 
 import { CellInfo } from './CellInfo';
 import { VirtualizedList } from './VirtualizedList';
@@ -81,11 +81,16 @@ export class CatalogDialog extends React.Component<ICatalogDialogProps> {
   };
 
   getCatalog = async () => {
-    const resp = await requestAPI<any>('catalog/cells/all', {
-      method: 'GET'
+    MockNaaVREExternalService(
+      'GET',
+      `${this.props.settings.catalogueServiceUrl}/workflow-cells/`
+    ).then(resp => {
+      if (resp.status_code !== 200) {
+        throw `${resp.status_code} ${resp.reason}`;
+      }
+      const data = JSON.parse(resp.content);
+      this.setState({ catalog_elements: data });
     });
-
-    this.setState({ catalog_elements: resp });
   };
 
   render(): React.ReactElement {
