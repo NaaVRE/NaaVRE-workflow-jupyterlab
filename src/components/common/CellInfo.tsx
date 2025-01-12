@@ -1,105 +1,143 @@
+import React, { ReactNode } from 'react';
 import {
+  Box,
+  Link,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableRow
-} from '@material-ui/core';
-import * as React from 'react';
-import ColorHash from 'color-hash';
-import { NaaVRECatalogue } from '../../naavre-common/types';
+  TableRow,
+  Typography
+} from '@mui/material';
 
-interface IState {
-  cell?: NaaVRECatalogue.WorkflowCells.ICell;
+import { NaaVRECatalogue } from '../../naavre-common/types';
+import ICell = NaaVRECatalogue.WorkflowCells.ICell;
+import { getVariableColor } from '../../utils/chart';
+
+function PropsTable({
+  title,
+  children
+}: {
+  title?: string;
+  children: ReactNode;
+}) {
+  return (
+    <>
+      {title && (
+        <Typography
+          component="h4"
+          sx={{ marginTop: '16px', marginBottom: '16px' }}
+        >
+          {title}
+        </Typography>
+      )}
+      <Paper elevation={1}>
+        <TableContainer>
+          <Table>
+            <TableBody>{children}</TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </>
+  );
 }
 
-export class CellInfo extends React.Component {
-  state: IState = {};
+function PropsTableRow({ cells }: { cells: Array<ReactNode> }) {
+  return (
+    <TableRow>
+      {cells.map(cell => (
+        <TableCell>{cell}</TableCell>
+      ))}
+    </TableRow>
+  );
+}
 
-  updateCell = (cell: NaaVRECatalogue.WorkflowCells.ICell) => {
-    this.setState({ cell: cell });
-  };
+function IOVarDot({ name }: { name: string }) {
+  return (
+    <div
+      style={{
+        width: '20px',
+        height: '20px',
+        background: getVariableColor(name),
+        borderRadius: '50%'
+      }}
+    />
+  );
+}
 
-  colorHash = new ColorHash();
-
-  render() {
-    return (
-      <div>
-        {this.state.cell && (
-          <div>
-            <p className={'lw-panel-preview'}>Inputs</p>
-            <TableContainer component={Paper} className={'lw-panel-table'}>
-              <Table aria-label="simple table">
-                <TableBody>
-                  {this.state.cell.inputs.map(variable => {
-                    return (
-                      <TableRow key={variable.name}>
-                        <TableCell component="th" scope="row">
-                          <p
-                            style={{
-                              color: this.colorHash.hex(variable.name),
-                              fontSize: '1em'
-                            }}
-                          >
-                            {variable.name}
-                          </p>
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                          {variable.type}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <p className={'lw-panel-preview'}>Outputs</p>
-            <TableContainer component={Paper} className={'lw-panel-table'}>
-              <Table aria-label="simple table">
-                <TableBody>
-                  {this.state.cell.outputs.map(variable => {
-                    return (
-                      <TableRow key={variable.name}>
-                        <TableCell component="th" scope="row">
-                          <p
-                            style={{
-                              color: this.colorHash.hex(variable.name),
-                              fontSize: '1em'
-                            }}
-                          >
-                            {variable.name}
-                          </p>
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                          {variable.type}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <p className={'lw-panel-preview'}>Parameters</p>
-            <TableContainer component={Paper} className={'lw-panel-table'}>
-              <Table aria-label="simple table">
-                <TableBody>
-                  {this.state.cell.params.map(param => (
-                    <TableRow key={param.name}>
-                      <TableCell component="th" scope="row">
-                        {param.name}
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        {param.type}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
+export function CellInfo({ cell }: { cell: ICell }) {
+  return (
+    <Box sx={{ margin: '15px' }}>
+      <PropsTable>
+        <PropsTableRow cells={['Image name', cell.container_image]} />
+        {cell.base_container_image && (
+          <>
+            <PropsTableRow
+              cells={['Base image (build)', cell.base_container_image.build]}
+            />
+            <PropsTableRow
+              cells={[
+                'Base image (runtime)',
+                cell.base_container_image.runtime
+              ]}
+            />
+          </>
         )}
-      </div>
-    );
-  }
+        {cell.kernel && <PropsTableRow cells={['Kernel', cell.kernel]} />}
+        {cell.source_url && (
+          <PropsTableRow
+            cells={[
+              'Source',
+              <Link href={cell.source_url}>{cell.source_url}</Link>
+            ]}
+          />
+        )}
+      </PropsTable>
+
+      {cell.inputs.length > 0 && (
+        <>
+          <PropsTable title="Inputs">
+            {cell.inputs.map(v => (
+              <PropsTableRow
+                cells={[<IOVarDot name={v.name} />, v.name, v.type]}
+              />
+            ))}
+          </PropsTable>
+        </>
+      )}
+
+      {cell.outputs.length > 0 && (
+        <>
+          <PropsTable title="Outputs">
+            {cell.outputs.map(v => (
+              <PropsTableRow
+                cells={[<IOVarDot name={v.name} />, v.name, v.type]}
+              />
+            ))}
+          </PropsTable>
+        </>
+      )}
+
+      {cell.params.length > 0 && (
+        <>
+          <PropsTable title="Parameters">
+            {cell.params.map(v => (
+              <PropsTableRow cells={[v.name, v.type, v.default_value]} />
+            ))}
+          </PropsTable>
+        </>
+      )}
+
+      {cell.secrets.length > 0 && (
+        <>
+          <PropsTable title="Secrets">
+            {cell.secrets.map(v => (
+              <PropsTableRow cells={[v.name]} />
+            ))}
+          </PropsTable>
+        </>
+      )}
+    </Box>
+  );
 }

@@ -1,28 +1,11 @@
 import { CommandRegistry } from '@lumino/commands';
 import { Widget } from '@lumino/widgets';
 import { ToolbarButton, showDialog } from '@jupyterlab/apputils';
-import {
-  addIcon,
-  codeIcon,
-  runIcon,
-  saveIcon
-} from '@jupyterlab/ui-components';
+import { codeIcon, runIcon, saveIcon } from '@jupyterlab/ui-components';
 
 import { WorkflowWidget } from './widget';
 
 export namespace ToolbarItems {
-  export function createCellsCatalogButton(widget: WorkflowWidget): Widget {
-    return new ToolbarButton({
-      label: 'Cells catalog',
-      tooltip: 'Open the cells catalog',
-      icon: addIcon,
-      onClick: () =>
-        showDialog(
-          widget.content.composerRef.current?.getCatalogDialogOptions()
-        )
-    });
-  }
-
   export function createSaveButton(
     widget: WorkflowWidget,
     commands: CommandRegistry
@@ -55,7 +38,7 @@ export namespace ToolbarItems {
       icon: runIcon,
       onClick: () =>
         showDialog(
-          widget.content.composerRef.current?.getExecuteWorkflowDialogOptions()
+          widget.content.composerRef.current?.getRunWorkflowDialogOptions()
         )
     });
   }

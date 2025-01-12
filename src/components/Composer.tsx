@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Dialog, ReactWidget } from '@jupyterlab/apputils';
-import styled from 'styled-components';
 import { mapValues } from 'lodash';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
 import {
@@ -13,27 +12,17 @@ import { ThemeProvider } from '@material-ui/core';
 
 import { defaultChart } from '../utils/chart';
 import { NaaVRECatalogue } from '../naavre-common/types';
-import { NodeCustom } from './workflowEditor/NodeCustom';
-import { NodeInnerCustom } from './workflowEditor/NodeInnerCustom';
-import { PortCustom } from './workflowEditor/PortCustom';
+import { NodeCustom } from './chart/NodeCustom';
+import { NodeInnerCustom } from './chart/NodeInnerCustom';
+import { PortCustom } from './chart/PortCustom';
 import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
-import { CatalogDialog } from './cellsCatalog/CatalogDialog';
-import { CellEditor } from './workflowEditor/CellEditor';
-import { ChartElementEditor } from './workflowEditor/ChartElementEditor';
-import { ExecuteWorkflowDialog } from './workflowSubmitDialog/ExecuteWorkflowDialog';
-import { Page } from './Page';
-import { Parallelization } from './cellsWorkspace/Parallelization';
+import { ChartElementEditor } from './chart/ChartElementEditor';
+import { RunWorkflowDialog } from './workflowRunDialog/RunWorkflowDialog';
 import { theme } from '../Theme';
-import { Visualization } from './cellsWorkspace/Visualization';
-import { Workspace } from './cellsWorkspace/Workspace';
 import { IWorkflowWidgetSettings } from '../widget';
-
-export const CenterContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-`;
+import { CellsSideBar } from './cells/CellsSideBar';
+import ICell = NaaVRECatalogue.WorkflowCells.ICell;
+import { CellPopup } from './cells/CellPopup';
 
 export interface IProps {
   settings: IWorkflowWidgetSettings;
@@ -41,56 +30,20 @@ export interface IProps {
 
 export interface IState {
   chart: IChart;
+  selectedCellInList: ICell | null;
 }
 
 export const DefaultState: IState = {
-  chart: defaultChart
+  chart: defaultChart,
+  selectedCellInList: null
 };
 
 export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
 
-  workspaceRef: React.RefObject<Workspace>;
-
   constructor(props: IProps) {
     super(props);
-    this.workspaceRef = React.createRef();
   }
-
-  handleAddCellToWorkspace = (cell: NaaVRECatalogue.WorkflowCells.ICell) => {
-    this.workspaceRef.current?.addElement(cell);
-  };
-
-  handleIsCellInWorkspace = (cell: NaaVRECatalogue.WorkflowCells.ICell) => {
-    return this.workspaceRef.current?.hasElement(cell) || false;
-  };
-
-  getCatalogDialogOptions = (): Partial<Dialog.IOptions<any>> => {
-    return {
-      title: <p className="section-header">Explore Cell Catalogs</p>,
-      body: ReactWidget.create(
-        <CatalogDialog
-          addCellAction={this.handleAddCellToWorkspace}
-          isCellInWorkspace={this.handleIsCellInWorkspace}
-          settings={this.props.settings}
-        />
-      ) as Dialog.IBodyWidget<any>,
-      buttons: [Dialog.okButton({ label: 'Close' })]
-    };
-  };
-
-  getExecuteWorkflowDialogOptions = (): Partial<Dialog.IOptions<any>> => {
-    return {
-      title: <p className="section-header">Execute Workflow</p>,
-      body: ReactWidget.create(
-        <ExecuteWorkflowDialog
-          chart={this.state.chart}
-          settings={this.props.settings}
-        />
-      ) as Dialog.IBodyWidget<any>,
-      buttons: [Dialog.okButton({ label: 'Close' })]
-    };
-  };
 
   chartStateActions = mapValues(actions, (func: any) => (...args: any) => {
     const newChartTransformer = func(...args);
@@ -104,6 +57,23 @@ export class Composer extends React.Component<IProps, IState> {
     // This is needed because onDeleteKey assumes config.readonly is defined...
     // https://github.com/MrBlenny/react-flow-chart/blob/0.0.14/src/container/actions.ts#L182
     readonly: false
+  };
+
+  setSelectedCellInList = (cell: ICell | null) => {
+    this.setState({ selectedCellInList: cell });
+  };
+
+  getRunWorkflowDialogOptions = (): Partial<Dialog.IOptions<any>> => {
+    return {
+      title: 'Run Workflow',
+      body: ReactWidget.create(
+        <RunWorkflowDialog
+          chart={this.state.chart}
+          settings={this.props.settings}
+        />
+      ) as Dialog.IBodyWidget<any>,
+      buttons: [Dialog.okButton({ label: 'Close' })]
+    };
   };
 
   exportWorkflow = async () => {
@@ -127,63 +97,6 @@ export class Composer extends React.Component<IProps, IState> {
       });
   };
 
-  getNodeEditor = () => {
-    if (this.state.chart.selected.id === undefined) {
-      throw 'Chart element has no id';
-    }
-    const node = this.state.chart.nodes[this.state.chart.selected.id];
-    switch (node.type) {
-      case 'splitter':
-        return (
-          <ChartElementEditor
-            title={'Splitter'}
-            callbacks={this.chartStateActions}
-            config={this.chartConfig}
-          ></ChartElementEditor>
-        );
-      case 'merger':
-        return (
-          <ChartElementEditor
-            title={'Merger'}
-            callbacks={this.chartStateActions}
-            config={this.chartConfig}
-          ></ChartElementEditor>
-        );
-      case 'visualizer':
-        return (
-          <ChartElementEditor
-            title={'Visualizer'}
-            callbacks={this.chartStateActions}
-            config={this.chartConfig}
-          ></ChartElementEditor>
-        );
-    }
-    return (
-      <CellEditor
-        callbacks={this.chartStateActions}
-        config={this.chartConfig}
-        node={node}
-      />
-    );
-  };
-
-  getChartElementEditor = () => {
-    switch (this.state.chart.selected.type) {
-      case 'node':
-        return this.getNodeEditor();
-      case 'link':
-        return (
-          <ChartElementEditor
-            title={'Link'}
-            callbacks={this.chartStateActions}
-            config={this.chartConfig}
-          ></ChartElementEditor>
-        );
-      default:
-        return <></>;
-    }
-  };
-
   componentDidUpdate() {
     // TODO: Implement chart sanity checks
   }
@@ -191,8 +104,23 @@ export class Composer extends React.Component<IProps, IState> {
   render(): React.ReactElement {
     return (
       <ThemeProvider theme={theme}>
-        <Page>
-          <CenterContent>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flex: 1,
+            maxWidth: '100vw',
+            maxHeight: '100vh'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: '1',
+              overflow: 'hidden'
+            }}
+          >
             <FlowChart
               chart={this.state.chart}
               callbacks={this.chartStateActions}
@@ -203,27 +131,22 @@ export class Composer extends React.Component<IProps, IState> {
                 Port: PortCustom
               }}
             />
-            {this.state.chart.selected.id && this.getChartElementEditor()}
-            <div
-              style={{
-                boxShadow: '1px 1px lightgrey',
-                background: 'white',
-                height: '100%',
-                width: 250,
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'scroll',
-                position: 'absolute',
-                top: 0,
-                left: 0
-              }}
-            >
-              <Workspace ref={this.workspaceRef} />
-              <Parallelization />
-              <Visualization />
-            </div>
-          </CenterContent>
-        </Page>
+            {this.state.chart.selected.id && (
+              <ChartElementEditor
+                chart={this.state.chart}
+                callbacks={this.chartStateActions}
+                config={this.chartConfig}
+              />
+            )}
+            {this.state.selectedCellInList && (
+              <CellPopup cell={this.state.selectedCellInList} />
+            )}
+            <CellsSideBar
+              catalogueServiceUrl={this.props.settings.catalogueServiceUrl}
+              setSelectedCellInList={this.setSelectedCellInList}
+            />
+          </div>
+        </div>
       </ThemeProvider>
     );
   }

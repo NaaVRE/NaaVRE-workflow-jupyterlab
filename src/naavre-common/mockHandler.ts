@@ -42,7 +42,7 @@ const catalogueCellsGetResponse = JSON.stringify([
       {
         name: 'test_param_2',
         type: 'str',
-        default_value: '"test"'
+        default_value: 'test'
       }
     ],
     secrets: [
@@ -54,6 +54,61 @@ const catalogueCellsGetResponse = JSON.stringify([
     title: 'test-cell-2',
     description: '',
     container_image: 'test-image-2',
+    kernel: '',
+    source_url: ''
+  },
+  {
+    owner: 'test-user-2',
+    virtual_lab: 'test-virtual-lab-1',
+    base_container_image: {
+      build:
+        'test-build-2-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      runtime:
+        'test-runtime-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa2'
+    },
+    dependencies: [
+      {
+        name: 'test-dependency-2',
+        module: '',
+        asname: ''
+      }
+    ],
+    inputs: [
+      {
+        name: 'test-input-2-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        type: 'float'
+      }
+    ],
+    outputs: [
+      {
+        name: 'test-output-2-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        type: 'int'
+      }
+    ],
+    confs: [
+      {
+        name: 'test_conf_2',
+        assignation: "test_conf_2 = 'abc'"
+      }
+    ],
+    params: [
+      {
+        name: 'test_param_2-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        type: 'str',
+        default_value: 'test'
+      }
+    ],
+    secrets: [
+      {
+        name: 'test-secret-2',
+        type: 'str'
+      }
+    ],
+    title:
+      'test-cell-2-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    description: '',
+    container_image:
+      'test-image-2-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     kernel: '',
     source_url: ''
   }

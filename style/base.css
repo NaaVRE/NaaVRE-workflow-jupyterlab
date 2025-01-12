@@ -26,19 +26,14 @@
 
 /* Section and popup titles */
 .section-header {
-  width: 100%;
   padding: 10px;
   margin-top: 0;
   text-align: center;
   background: #3c8f49;
   color: white;
   font-size: medium;
-}
-
-/* Popup displayed when clicking on cell in workflow */
-.section-header.cell-editor {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Cells list when empty */

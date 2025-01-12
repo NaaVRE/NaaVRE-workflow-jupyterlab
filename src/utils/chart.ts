@@ -1,9 +1,11 @@
 import ColorHash from 'color-hash';
-import sortKeysRecursive from 'sort-keys-recursive';
+// import sortKeysRecursive from 'sort-keys-recursive';
 import { IChart, INode } from '@mrblenny/react-flow-chart';
-import { sha1 } from 'js-sha1';
+// import { sha1 } from 'js-sha1';
 
 import { NaaVRECatalogue } from '../naavre-common/types';
+import ICell = NaaVRECatalogue.WorkflowCells.ICell;
+import { ISpecialCell } from './specialCells';
 
 export const defaultChart: IChart = {
   offset: {
@@ -17,50 +19,20 @@ export const defaultChart: IChart = {
   hovered: {}
 };
 
-function cellIdentityHash(cell: NaaVRECatalogue.WorkflowCells.ICell): string {
-  const cell_identity_dict = {
-    title: cell.title,
-    params: cell.params.map(v => v.name),
-    secrets: cell.secrets.map(v => v.name),
-    inputs: cell.inputs.map(v => v.name),
-    outputs: cell.outputs.map(v => v.name)
-  };
-  return sha1(JSON.stringify(sortKeysRecursive(cell_identity_dict)));
+export function getVariableColor(name: string) {
+  const colorHash = new ColorHash();
+  return colorHash.hex(name);
 }
 
-export function cellToChartNode(
-  cell: NaaVRECatalogue.WorkflowCells.ICell
-): INode {
-  const colorHash = new ColorHash();
+export function cellToChartNode(cell: ICell | ISpecialCell): INode {
+  const type = 'type' in cell ? cell.type : 'workflow-cell';
+
   return {
-    id: cellIdentityHash(cell).substring(0, 7),
-    type: 'input-output',
+    id: cell.id,
+    type: type,
     position: { x: 35, y: 15 },
     properties: {
-      cell: cell,
-      title: cell.title,
-      params: cell.params.map(v => v.name),
-      secrets: cell.secrets.map(v => v.name),
-      inputs: cell.inputs.map(v => v.name),
-      outputs: cell.outputs.map(v => v.name),
-      vars: [
-        ...cell.inputs.map(v => {
-          return {
-            name: v.name,
-            direction: 'input',
-            type: 'datatype',
-            color: colorHash.hex(v.name)
-          };
-        }),
-        ...cell.outputs.map(v => {
-          return {
-            name: v.name,
-            direction: 'output',
-            type: 'datatype',
-            color: colorHash.hex(v.name)
-          };
-        })
-      ]
+      cell: cell
     },
     ports: Object.fromEntries([
       ...cell.inputs.map(v => {
@@ -70,7 +42,8 @@ export function cellToChartNode(
             id: v.name,
             type: 'left',
             properties: {
-              color: colorHash.hex(v.name)
+              color: getVariableColor(v.name),
+              parentNodeType: type
             }
           }
         ];
@@ -82,32 +55,12 @@ export function cellToChartNode(
             id: v.name,
             type: 'right',
             properties: {
-              color: colorHash.hex(v.name)
+              color: getVariableColor(v.name),
+              parentNodeType: type
             }
           }
         ];
       })
     ])
-  };
-}
-
-export function cellsToChartNode(
-  cells: Array<NaaVRECatalogue.WorkflowCells.ICell>
-): IChart {
-  return {
-    offset: {
-      x: 0,
-      y: 0
-    },
-    scale: 1,
-    nodes: Object.fromEntries(
-      cells.map(cell => {
-        const node = cellToChartNode(cell);
-        return [node.id, node];
-      })
-    ),
-    links: {},
-    selected: {},
-    hovered: {}
   };
 }

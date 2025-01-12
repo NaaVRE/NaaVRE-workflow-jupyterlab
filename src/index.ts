@@ -82,11 +82,6 @@ const extension: JupyterFrontEndPlugin<void> = {
     if (toolbarRegistry) {
       toolbarRegistry.registerFactory<WorkflowWidget>(
         FACTORY,
-        'cellsCatalog',
-        widget => ToolbarItems.createCellsCatalogButton(widget)
-      );
-      toolbarRegistry.registerFactory<WorkflowWidget>(
-        FACTORY,
         'saveWorkflow',
         widget => ToolbarItems.createSaveButton(widget, app.commands)
       );
