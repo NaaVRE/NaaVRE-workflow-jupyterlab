@@ -168,7 +168,7 @@ export function RunWorkflowDialog({
                 endIcon={<AutoModeIcon fontSize="inherit" />}
                 style={{ color: grey[900], textTransform: 'none' }}
               >
-                Use notebook parameter values
+                Use default parameter values
               </Button>
             </div>
             <TableContainer>

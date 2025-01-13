@@ -73,7 +73,8 @@ export class Composer extends React.Component<IProps, IState> {
           settings={this.props.settings}
         />
       ) as Dialog.IBodyWidget<any>,
-      buttons: [Dialog.okButton({ label: 'Close' })]
+      buttons: [],
+      hasClose: true
     };
   };
 
