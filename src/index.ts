@@ -88,7 +88,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       toolbarRegistry.registerFactory<WorkflowWidget>(
         FACTORY,
         'exportWorkflow',
-        widget => ToolbarItems.createExportButton(widget)
+        widget => ToolbarItems.createExportButton(widget, browserFactory)
       );
       toolbarRegistry.registerFactory<WorkflowWidget>(
         FACTORY,

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Dialog, ReactWidget } from '@jupyterlab/apputils';
+import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { mapValues } from 'lodash';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
 import {
@@ -76,7 +77,7 @@ export class Composer extends React.Component<IProps, IState> {
     };
   };
 
-  exportWorkflow = async () => {
+  exportWorkflow = async (browserFactory: IFileBrowserFactory) => {
     MockNaaVREExternalService(
       'POST',
       `${this.props.settings.workflowServiceUrl}/convert`,
@@ -87,8 +88,9 @@ export class Composer extends React.Component<IProps, IState> {
       }
     )
       .then(resp => {
-        console.log(resp);
-        // TODO: save resp.content to yaml document
+        browserFactory.tracker.currentWidget?.model.upload(
+          new File([resp.content], 'workflow.yaml')
+        );
       })
       .catch(error => {
         const msg = `Error exporting the workflow: ${String(error)}`;

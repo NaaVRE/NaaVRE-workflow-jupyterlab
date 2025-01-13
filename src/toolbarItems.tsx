@@ -2,6 +2,7 @@ import { CommandRegistry } from '@lumino/commands';
 import { Widget } from '@lumino/widgets';
 import { ToolbarButton, showDialog } from '@jupyterlab/apputils';
 import { codeIcon, runIcon, saveIcon } from '@jupyterlab/ui-components';
+import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 
 import { WorkflowWidget } from './widget';
 
@@ -20,13 +21,16 @@ export namespace ToolbarItems {
     });
   }
 
-  export function createExportButton(widget: WorkflowWidget): Widget {
+  export function createExportButton(
+    widget: WorkflowWidget,
+    browserFactory: IFileBrowserFactory
+  ): Widget {
     return new ToolbarButton({
       label: 'Export',
       tooltip: 'Export the workflow',
       icon: codeIcon,
       onClick: () => {
-        widget.content.composerRef.current?.exportWorkflow();
+        widget.content.composerRef.current?.exportWorkflow(browserFactory);
       }
     });
   }
