@@ -154,23 +154,25 @@ export function RunWorkflowDialog({
           </div>
         ) : (
           <div>
-            <div
-              style={{
-                textAlign: 'right',
-                padding: '10px 15px 0 0'
-              }}
-            >
-              <Button
-                disabled={false}
-                onClick={getValuesFromCatalog}
-                size="small"
-                variant="text"
-                endIcon={<AutoModeIcon fontSize="inherit" />}
-                style={{ color: grey[900], textTransform: 'none' }}
+            {Object.keys(params).length !== 0 && (
+              <div
+                style={{
+                  textAlign: 'right',
+                  padding: '10px 15px 0 0'
+                }}
               >
-                Use default parameter values
-              </Button>
-            </div>
+                <Button
+                  disabled={false}
+                  onClick={getValuesFromCatalog}
+                  size="small"
+                  variant="text"
+                  endIcon={<AutoModeIcon fontSize="inherit" />}
+                  style={{ color: grey[900], textTransform: 'none' }}
+                >
+                  Use default parameter values
+                </Button>
+              </div>
+            )}
             <TableContainer>
               <Table stickyHeader aria-label="sticky table">
                 <TableBody>
