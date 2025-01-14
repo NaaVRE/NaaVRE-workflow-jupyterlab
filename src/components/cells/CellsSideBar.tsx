@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Paper } from '@mui/material';
+import { IconButton, Paper, Tooltip } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 import { CellsList } from './CellsList';
 import { NaaVRECatalogue } from '../../naavre-common/types';
@@ -16,13 +17,15 @@ export function CellsSideBar({
 }) {
   const [catalogItems, setCatalogItems] = useState<Array<ICell>>([]);
 
-  useEffect(() => {
+  const getCatalogItems = () => {
     if (catalogueServiceUrl) {
       getCellsFromCatalogue(catalogueServiceUrl).then(cells => {
         setCatalogItems(cells);
       });
     }
-  }, [catalogueServiceUrl]);
+  };
+
+  useEffect(() => getCatalogItems(), [catalogueServiceUrl]);
 
   return (
     <Paper
@@ -45,6 +48,17 @@ export function CellsSideBar({
         cells={catalogItems}
         style={{ flexGrow: 1 }}
         setSelectedCellInList={setSelectedCellInList}
+        button={
+          <Tooltip title="Refresh" arrow>
+            <IconButton
+              aria-label="Reload"
+              style={{ color: 'white' }}
+              onClick={getCatalogItems}
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
+        }
       />
       <CellsList
         title="Special cells"
