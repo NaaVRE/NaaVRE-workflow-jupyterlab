@@ -19,7 +19,7 @@ export function CellPopup({ cell }: { cell: ICell }) {
         overflowY: 'scroll'
       }}
     >
-      <p className="section-header">{cell.title}</p>
+      <p className="naavre-workflow-section-header">{cell.title}</p>
       <CellInfo cell={cell} />
     </Paper>
   );

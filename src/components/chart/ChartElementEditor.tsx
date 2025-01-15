@@ -12,7 +12,7 @@ import { CellInfo } from '../common/CellInfo';
 function LinkEditor({ link }: { link: ILink }) {
   return (
     <>
-      <p className="section-header">Link</p>
+      <p className="naavre-workflow-section-header">Link</p>
     </>
   );
 }
@@ -36,7 +36,7 @@ function NodeEditor({ node }: { node: INode }) {
 
   return (
     <>
-      <p className="section-header">{title}</p>
+      <p className="naavre-workflow-section-header">{title}</p>
       {node.type === 'workflow-cell' && (
         <CellInfo cell={node.properties.cell} />
       )}

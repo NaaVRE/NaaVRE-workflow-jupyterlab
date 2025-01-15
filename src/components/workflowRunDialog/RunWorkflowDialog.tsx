@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { IChart } from '@mrblenny/react-flow-chart';
 import { Button, ThemeProvider } from '@material-ui/core';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
-import { grey, green } from '@mui/material/colors';
+import { green, grey } from '@mui/material/colors';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,7 +17,6 @@ import { IWorkflowWidgetSettings } from '../../widget';
 import { MockNaaVREExternalService } from '../../naavre-common/mockHandler';
 import IParam = NaaVRECatalogue.WorkflowCells.IParam;
 import ISecret = NaaVRECatalogue.WorkflowCells.ISecret;
-import { useState } from 'react';
 
 interface IParamValue {
   value: string | null;
@@ -136,18 +135,21 @@ export function RunWorkflowDialog({
         }}
       >
         {submittedWorkflow ? (
-          <div className="wf-submit-box">
+          <div
+            style={{
+              padding: '10px',
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
             <CheckCircleOutlineIcon
               fontSize="large"
               sx={{ color: green[500] }}
             />
-            <p className="wf-submit-text">
+            <p style={{ fontSize: 'large' }}>
               Workflow submitted! You can track it{' '}
-              <a
-                className="wf-submit-link"
-                target={'_blank'}
-                href={submittedWorkflow.run_url}
-              >
+              <a target={'_blank'} href={submittedWorkflow.run_url}>
                 here
               </a>
             </p>

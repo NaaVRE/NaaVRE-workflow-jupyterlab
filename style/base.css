@@ -4,28 +4,7 @@
   https://jupyterlab.readthedocs.io/en/stable/developer/css.html
 */
 
-/* Entire widget */
-.vre-composer {
-  display: flex;
-}
-
-/* Cells list when populated */
-.workspace-items-container {
-  overflow-y: scroll;
-  max-height: 460px;
-}
-
-/* Cell preview in catalogue */
-.lw-panel-editor {
-  margin: 15px;
-  width: 350px;
-  height: 200px;
-  overflow: hidden;
-  border-radius: 5px;
-}
-
-/* Section and popup titles */
-.section-header {
+.naavre-workflow-section-header {
   padding: 10px;
   margin-top: 0;
   text-align: center;
@@ -34,32 +13,4 @@
   font-size: medium;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* Cells list when empty */
-.empty-workspace {
-  padding: 15px;
-  text-align: center;
-  color: darkgray;
-  line-height: 23px;
-}
-
-/* "Workflow submitted! You can track it <a class=".wf-submit-link">here</a> */
-.wf-submit-link {
-  color: #106ba3;
-  text-decoration: underline;
-}
-
-/* <p className="wf-submit-text">Workflow submitted! You can track it here</p> */
-.wf-submit-text {
-  font-size: medium;
-  margin: 10px;
-}
-
-/* Popup confirming wf submission */
-.wf-submit-box {
-  padding: 10px;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
 }
