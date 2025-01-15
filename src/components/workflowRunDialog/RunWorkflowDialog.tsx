@@ -13,12 +13,13 @@ import grey from '@mui/material/colors/grey';
 import { ThemeProvider } from '@mui/material/styles';
 import { IChart } from '@mrblenny/react-flow-chart';
 
-import { theme } from '../../Theme';
-import { NaaVRECatalogue } from '../../naavre-common/types';
-import { IWorkflowWidgetSettings } from '../../widget';
-import { MockNaaVREExternalService } from '../../naavre-common/mockHandler';
-import IParam = NaaVRECatalogue.WorkflowCells.IParam;
-import ISecret = NaaVRECatalogue.WorkflowCells.ISecret;
+import {
+  IParam,
+  ISecret
+} from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { MockNaaVREExternalService } from '@/naavre-common/mockHandler';
+import { theme } from '@/Theme';
+import { IWorkflowWidgetSettings } from '@/widget';
 
 interface IParamValue {
   value: string | null;

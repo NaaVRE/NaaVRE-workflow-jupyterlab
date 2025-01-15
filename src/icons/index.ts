@@ -1,7 +1,7 @@
 import { LabIcon } from '@jupyterlab/ui-components';
 
-import launcherIconSvgStr from '../style/icons/launcher-icon.svg';
-import panelIconSvgStr from '../style/icons/panel-icon.svg';
+import launcherIconSvgStr from '@/icons/launcher-icon.svg';
+import panelIconSvgStr from '@/icons/panel-icon.svg';
 
 export const launcherIcon = new LabIcon({
   name: 'launcher-icon',

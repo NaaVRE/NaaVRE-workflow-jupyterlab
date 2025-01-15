@@ -11,18 +11,17 @@ import {
   INodeDefaultProps
 } from '@mrblenny/react-flow-chart';
 
-import { defaultChart } from '../utils/chart';
-import { NaaVRECatalogue } from '../naavre-common/types';
+import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { MockNaaVREExternalService } from '@/naavre-common/mockHandler';
+import { defaultChart } from '@/utils/chart';
+import { theme } from '@/Theme';
+import { IWorkflowWidgetSettings } from '@/widget';
 import { NodeCustom } from './chart/NodeCustom';
 import { NodeInnerCustom } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
-import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
 import { ChartElementEditor } from './chart/ChartElementEditor';
 import { RunWorkflowDialog } from './workflowRunDialog/RunWorkflowDialog';
-import { theme } from '../Theme';
-import { IWorkflowWidgetSettings } from '../widget';
 import { CellsSideBar } from './cells/CellsSideBar';
-import ICell = NaaVRECatalogue.WorkflowCells.ICell;
 import { CellPopup } from './cells/CellPopup';
 
 export interface IProps {

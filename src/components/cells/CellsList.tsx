@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import { NaaVRECatalogue } from '../../naavre-common/types';
+import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { CellNode } from './CellNode';
-import ICell = NaaVRECatalogue.WorkflowCells.ICell;
 
 export function CellsList({
   title,
