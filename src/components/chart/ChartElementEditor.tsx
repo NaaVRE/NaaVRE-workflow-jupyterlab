@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, Paper } from '@mui/material';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
 import {
   IChart,
   IConfig,
@@ -7,6 +8,7 @@ import {
   ILink,
   INode
 } from '@mrblenny/react-flow-chart';
+
 import { CellInfo } from '../common/CellInfo';
 
 function LinkEditor({ link }: { link: ILink }) {

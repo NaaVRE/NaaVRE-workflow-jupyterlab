@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper } from '@mui/material';
+import Paper from '@mui/material/Paper';
 
 import { NaaVRECatalogue } from '../../naavre-common/types';
 import ICell = NaaVRECatalogue.WorkflowCells.ICell;

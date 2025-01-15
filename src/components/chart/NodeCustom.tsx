@@ -1,7 +1,7 @@
 import React, { CSSProperties, ForwardedRef } from 'react';
-import { Tooltip } from '@mui/material';
-import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
 import styled from 'styled-components';
+import Tooltip from '@mui/material/Tooltip';
+import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
 
 const NodeContainer = styled.div<{ width?: string; height?: string }>`
   position: absolute;

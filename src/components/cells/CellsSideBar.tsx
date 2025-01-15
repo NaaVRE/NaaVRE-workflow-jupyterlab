@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Paper, Tooltip } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 import { CellsList } from './CellsList';

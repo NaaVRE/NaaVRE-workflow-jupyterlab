@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { SxProps } from '@mui/material';
-import CallSplitIcon from '@mui/icons-material/CallSplit';
 import CallMergeIcon from '@mui/icons-material/CallMerge';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
 import ImageIcon from '@mui/icons-material/Image';
+import { SxProps } from '@mui/material/styles';
 import { INodeInnerDefaultProps } from '@mrblenny/react-flow-chart';
 
 function SpecialCellIcon({ nodeType, sx }: { nodeType: string; sx: SxProps }) {

@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import { Tooltip } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
 import { IPortDefaultProps } from '@mrblenny/react-flow-chart';
 
 function PortDot({ color }: { color: CSSProperties['color'] }) {

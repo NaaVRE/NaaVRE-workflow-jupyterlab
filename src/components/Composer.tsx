@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { mapValues } from 'lodash';
 import { Dialog, ReactWidget } from '@jupyterlab/apputils';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-import { mapValues } from 'lodash';
+import { ThemeProvider } from '@mui/material/styles';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
 import {
   FlowChart,
@@ -9,7 +10,6 @@ import {
   IConfig,
   INodeDefaultProps
 } from '@mrblenny/react-flow-chart';
-import { ThemeProvider } from '@mui/material/styles';
 
 import { defaultChart } from '../utils/chart';
 import { NaaVRECatalogue } from '../naavre-common/types';

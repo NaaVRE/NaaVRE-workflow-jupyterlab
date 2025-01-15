@@ -1,15 +1,17 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { IChart } from '@mrblenny/react-flow-chart';
-import { Button, ThemeProvider } from '@mui/material';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
-import { green, grey } from '@mui/material/colors';
-import TableContainer from '@mui/material/TableContainer';
+import Button from '@mui/material/Button';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
+import green from '@mui/material/colors/green';
+import grey from '@mui/material/colors/grey';
+import { ThemeProvider } from '@mui/material/styles';
+import { IChart } from '@mrblenny/react-flow-chart';
 
 import { theme } from '../../Theme';
 import { NaaVRECatalogue } from '../../naavre-common/types';

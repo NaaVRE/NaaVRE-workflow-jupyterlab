@@ -1,7 +1,5 @@
 import ColorHash from 'color-hash';
-// import sortKeysRecursive from 'sort-keys-recursive';
 import { IChart, INode } from '@mrblenny/react-flow-chart';
-// import { sha1 } from 'js-sha1';
 
 import { NaaVRECatalogue } from '../naavre-common/types';
 import ICell = NaaVRECatalogue.WorkflowCells.ICell;
