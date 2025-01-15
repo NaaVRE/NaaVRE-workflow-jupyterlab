@@ -9,7 +9,7 @@ import {
   IConfig,
   INodeDefaultProps
 } from '@mrblenny/react-flow-chart';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material/styles';
 
 import { defaultChart } from '../utils/chart';
 import { NaaVRECatalogue } from '../naavre-common/types';

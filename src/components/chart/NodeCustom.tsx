@@ -1,5 +1,5 @@
 import React, { CSSProperties, ForwardedRef } from 'react';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
 import styled from 'styled-components';
 

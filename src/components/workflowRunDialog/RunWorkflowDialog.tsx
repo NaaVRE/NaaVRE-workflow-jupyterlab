@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { IChart } from '@mrblenny/react-flow-chart';
-import { Button, ThemeProvider } from '@material-ui/core';
+import { Button, ThemeProvider } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import { green, grey } from '@mui/material/colors';
