@@ -9,7 +9,7 @@ import {
   INode
 } from '@mrblenny/react-flow-chart';
 
-import { CellInfo } from '@/components/common/CellInfo';
+import { CellInfo } from '../common/CellInfo';
 
 function LinkEditor({ link }: { link: ILink }) {
   return (

@@ -1,5 +1,5 @@
-import { MockNaaVREExternalService } from '@/naavre-common/mockHandler';
-import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
+import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 
 export async function getCellsFromCatalogue(
   catalogueServiceUrl: string

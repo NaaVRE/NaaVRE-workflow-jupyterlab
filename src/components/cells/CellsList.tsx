@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { CellNode } from './CellNode';
 
 export function CellsList({

@@ -4,9 +4,9 @@ import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { specialCells } from '@/utils/specialCells';
-import { getCellsFromCatalogue } from '@/utils/catalog';
+import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { specialCells } from '../../utils/specialCells';
+import { getCellsFromCatalogue } from '../../utils/catalog';
 import { CellsList } from './CellsList';
 
 export function CellsSideBar({

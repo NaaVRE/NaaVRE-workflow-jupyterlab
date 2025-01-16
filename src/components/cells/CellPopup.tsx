@@ -1,8 +1,8 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
 
-import { CellInfo } from '@/components/common/CellInfo';
-import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { CellInfo } from '../common/CellInfo';
+import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 
 export function CellPopup({ cell }: { cell: ICell }) {
   return (

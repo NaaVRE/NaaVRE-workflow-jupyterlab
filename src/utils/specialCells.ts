@@ -1,4 +1,4 @@
-import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 
 export interface ISpecialCell extends ICell {
   type: string;

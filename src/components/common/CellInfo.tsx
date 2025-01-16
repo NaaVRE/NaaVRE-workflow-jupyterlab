@@ -9,8 +9,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
-import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { getVariableColor } from '@/utils/chart';
+import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { getVariableColor } from '../../utils/chart';
 
 function PropsTable({
   title,

@@ -1,7 +1,7 @@
 import ColorHash from 'color-hash';
 import { IChart, INode } from '@mrblenny/react-flow-chart';
 
-import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { ISpecialCell } from './specialCells';
 
 export const defaultChart: IChart = {

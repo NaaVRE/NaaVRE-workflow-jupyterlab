@@ -16,10 +16,10 @@ import { IChart } from '@mrblenny/react-flow-chart';
 import {
   IParam,
   ISecret
-} from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { MockNaaVREExternalService } from '@/naavre-common/mockHandler';
-import { theme } from '@/Theme';
-import { IWorkflowWidgetSettings } from '@/widget';
+} from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { MockNaaVREExternalService } from '../../naavre-common/mockHandler';
+import { theme } from '../../Theme';
+import { IWorkflowWidgetSettings } from '../../widget';
 
 interface IParamValue {
   value: string | null;

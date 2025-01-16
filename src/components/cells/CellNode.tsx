@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
 
-import { ICell } from '@/naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { ISpecialCell } from '@/utils/specialCells';
-import { cellToChartNode } from '@/utils/chart';
+import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { ISpecialCell } from '../../utils/specialCells';
+import { cellToChartNode } from '../../utils/chart';
 
 export function CellNode({
   cell,
