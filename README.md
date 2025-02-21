@@ -53,12 +53,19 @@ jlpm build
 
 This extension communicates with external NaaVRE services. During development, you can run a local version of those services with Docker compose. Initial setup:
 
-1. Copy the Jupyter Lab configuration
+0. Build the NaaVRE-workflow-service service (TODO: this should be removed once NaaVRE-workflow-service is released):
+   ```shell
+   git@github.com:NaaVRE/NaaVRE-workflow-service.git
+   cd NaaVRE-workflow-service
+   docker build . -f docker/Dockerfile -t ghcr.io/naavre/naavre-workflow-service:dev
+   ```
+1. Create a file `./dev/workflow-config.json` by copying `./dev/workflow-config-example.json` and fill-in values for `api_endpoint` and `access_token`. To obtain these values, either use an existing argo instance, or run [NaaVRE/NaaVRE-dev-integration](https://github.com/NaaVRE/NaaVRE-dev-integration), and run `echo "Bearer $(kubectl get secret vre-api.service-account-token -o=jsonpath='{.data.token}' | base64 --decode)"` to get the access token. (TODO: this should be simplified in the future, after addressing NaaVRE/NaaVRE-workflow-service#1.)
+2. Copy the Jupyter Lab configuration
    ```bash
    mkdir venv/share/jupyter/lab/settings/
    cp dev/overrides.json venv/share/jupyter/lab/settings/
    ```
-2. Start docker compose
+3. Start docker compose
    ```bash
    docker compose -f dev/docker-compose.yaml up
    ```

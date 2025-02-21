@@ -1,10 +1,17 @@
 name: naavre-workflow-jl-dev
 
 services:
-  # workflow-service:
-  #   image: ghcr.io/naavre/naavre-workflow-service:v0.0.0
-  #   ports:
-  #     - "127.0.0.1:62438:8000"
+  workflow-service:
+    image: ghcr.io/naavre/naavre-workflow-service:dev
+    ports:
+      - "127.0.0.1:62438:8000"
+    environment:
+      DEBUG: true
+      VERIFY_SSL: false
+      DISABLE_AUTH: true
+      CONFIG_FILE_URL: /configuration.json
+    volumes:
+      - ./workflow-config.json:/configuration.json
 
   catalogue-service:
     image: ghcr.io/naavre/naavre-catalogue-service:v0.1.1

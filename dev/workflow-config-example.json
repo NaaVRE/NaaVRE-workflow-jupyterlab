@@ -1,0 +1,14 @@
+{
+  "vl_configurations": [
+    {
+      "name": "test-virtual-lab-1",
+      "wf_engine_config": {
+        "name": "argo",
+        "api_endpoint": "https://naavre-dev.minikube.test/argowf/api/v1",
+        "access_token": "Bearer eyJh",
+        "service_account": "executor",
+        "workdir_storage_size": "1Gi"
+      }
+    }
+  ]
+}
