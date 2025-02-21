@@ -10,6 +10,10 @@ services:
       VERIFY_SSL: false
       DISABLE_AUTH: true
       CONFIG_FILE_URL: /configuration.json
+      # FIXME: this is a quick and dirty fix using the minikube instance from https://github.com/NaaVRE/NaaVRE-dev-integration.
+      # It will be moved to configuration.json after addressing https://github.com/NaaVRE/NaaVRE-workflow-service/issues/3
+      SECRETS_CREATOR_API_ENDPOINT: https://naavre-dev.minikube.test/k8s-secret-creator/1.0.0/
+      SECRETS_CREATOR_API_TOKEN: token_ksc
     volumes:
       - ./workflow-config.json:/configuration.json
 
