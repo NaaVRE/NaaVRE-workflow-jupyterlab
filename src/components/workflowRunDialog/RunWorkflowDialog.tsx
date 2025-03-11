@@ -17,7 +17,7 @@ import {
   IParam,
   ISecret
 } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { MockNaaVREExternalService } from '../../naavre-common/mockHandler';
+import { NaaVREExternalService } from '../../naavre-common/handler';
 import { theme } from '../../Theme';
 import { IWorkflowWidgetSettings } from '../../widget';
 
@@ -103,7 +103,7 @@ export function RunWorkflowDialog({
     params: { [name: string]: any },
     secrets: { [name: string]: any }
   ) => {
-    MockNaaVREExternalService(
+    NaaVREExternalService(
       'POST',
       `${settings.workflowServiceUrl}/submit`,
       {},

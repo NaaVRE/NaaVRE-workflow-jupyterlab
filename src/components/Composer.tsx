@@ -12,7 +12,7 @@ import {
 } from '@mrblenny/react-flow-chart';
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { MockNaaVREExternalService } from '../naavre-common/mockHandler';
+import { NaaVREExternalService } from '../naavre-common/handler';
 import { defaultChart } from '../utils/chart';
 import { theme } from '../Theme';
 import { IWorkflowWidgetSettings } from '../widget';
@@ -78,7 +78,7 @@ export class Composer extends React.Component<IProps, IState> {
   };
 
   exportWorkflow = async (browserFactory: IFileBrowserFactory) => {
-    MockNaaVREExternalService(
+    NaaVREExternalService(
       'POST',
       `${this.props.settings.workflowServiceUrl}/convert`,
       {},
