@@ -122,20 +122,17 @@ const extension: JupyterFrontEndPlugin<void> = {
     }
 
     // Load settings
+    function loadSettings(settings: ISettingRegistry.ISettings): void {
+      tracker.currentWidget?.updateSettings(
+        settings.composite as Partial<IWorkflowWidgetSettings>
+      );
+    }
     if (settingRegistry) {
-      const loadSettings = settingRegistry.load(extension.id);
-
-      Promise.all([loadSettings, app.restored])
-        .then(([settings]) => {
-          function onSettingsChanged(
-            settings: ISettingRegistry.ISettings
-          ): void {
-            tracker.currentWidget?.updateSettings(
-              settings.composite as Partial<IWorkflowWidgetSettings>
-            );
-          }
-          settings.changed.connect(onSettingsChanged);
-          onSettingsChanged(settings);
+      Promise.all([app.restored, settingRegistry.load(extension.id)])
+        .then(([, settings]) => {
+          loadSettings(settings);
+          settings.changed.connect(loadSettings);
+          tracker.currentChanged.connect(() => loadSettings(settings));
         })
         .catch(reason => {
           console.error(
