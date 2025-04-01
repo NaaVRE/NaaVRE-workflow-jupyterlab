@@ -7,12 +7,14 @@ export function CellsList({
   title,
   cells,
   style,
+  selectedCellInList,
   setSelectedCellInList,
   button
 }: {
   title: string;
   cells: Array<ICell>;
   style?: React.CSSProperties;
+  selectedCellInList: ICell | null;
   setSelectedCellInList: (c: ICell | null) => void;
   button?: ReactNode;
 }) {
@@ -42,7 +44,11 @@ export function CellsList({
         {button && button}
       </div>
       {cells.map(cell => (
-        <CellNode cell={cell} setSelectedCellInList={setSelectedCellInList} />
+        <CellNode
+          cell={cell}
+          selectedCellInList={selectedCellInList}
+          setSelectedCellInList={setSelectedCellInList}
+        />
       ))}
     </div>
   );

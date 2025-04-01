@@ -145,6 +145,7 @@ export class Composer extends React.Component<IProps, IState> {
             )}
             <CellsSideBar
               catalogueServiceUrl={this.props.settings.catalogueServiceUrl}
+              selectedCellInList={this.state.selectedCellInList}
               setSelectedCellInList={this.setSelectedCellInList}
             />
           </div>

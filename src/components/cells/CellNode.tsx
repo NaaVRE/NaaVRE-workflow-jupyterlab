@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import IconButton from '@mui/material/IconButton';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
@@ -7,24 +9,25 @@ import { cellToChartNode } from '../../utils/chart';
 
 export function CellNode({
   cell,
+  selectedCellInList,
   setSelectedCellInList
 }: {
   cell: ICell | ISpecialCell;
+  selectedCellInList: ICell | null;
   setSelectedCellInList: (c: ICell | null) => void;
 }) {
-  const [selected, setSelected] = useState(false);
-
-  useEffect(() => {
-    setSelectedCellInList(selected ? cell : null);
-  }, [selected]);
-
   const node = cellToChartNode(cell);
   const is_special_node = node.type !== 'workflow-cell';
 
+  function onClick() {
+    selectedCellInList === cell
+      ? setSelectedCellInList(null)
+      : setSelectedCellInList(cell);
+  }
+
   return (
     <div
-      onMouseEnter={() => setSelected(true)}
-      onMouseLeave={() => setSelected(false)}
+      onClick={onClick}
       draggable={true}
       onDragStart={(event: any) => {
         event.dataTransfer.setData(
@@ -40,27 +43,29 @@ export function CellNode({
         margin: '10px',
         fontSize: '14px',
         display: 'flex',
-        height: '35px',
+        height: '25px',
         border: '1px solid lightgray',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         background: 'rgb(195, 235, 202)',
         backgroundColor: is_special_node
           ? 'rgb(195, 235, 202)'
           : 'rgb(229,252,233)',
         borderRadius: '5px',
-        padding: '5px'
+        padding: '10px'
       }}
     >
       <span
         style={{
-          textAlign: 'center',
           overflow: 'hidden',
           textOverflow: 'ellipsis'
         }}
       >
         {cell.title}
       </span>
+      <IconButton aria-label="Info" style={{ borderRadius: '100%' }}>
+        <InfoOutlinedIcon />
+      </IconButton>
     </div>
   );
 }
