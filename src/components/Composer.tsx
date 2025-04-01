@@ -63,6 +63,10 @@ export class Composer extends React.Component<IProps, IState> {
     this.setState({ selectedCellInList: cell });
   };
 
+  setChart = (chart: IChart) => {
+    this.setState({ chart: chart });
+  };
+
   getRunWorkflowDialogOptions = (): Partial<Dialog.IOptions<any>> => {
     return {
       title: 'Run Workflow',
@@ -136,12 +140,16 @@ export class Composer extends React.Component<IProps, IState> {
             {this.state.chart.selected.id && (
               <ChartElementEditor
                 chart={this.state.chart}
+                setChart={this.setChart}
                 callbacks={this.chartStateActions}
                 config={this.chartConfig}
               />
             )}
             {this.state.selectedCellInList && (
-              <CellPopup cell={this.state.selectedCellInList} />
+              <CellPopup
+                cell={this.state.selectedCellInList}
+                onClose={() => this.setSelectedCellInList(null)}
+              />
             )}
             <CellsSideBar
               catalogueServiceUrl={this.props.settings.catalogueServiceUrl}
