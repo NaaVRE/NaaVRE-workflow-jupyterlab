@@ -43,9 +43,7 @@ function EditorHeader({
 }
 
 function LinkEditor({ link, onClose }: { link: ILink; onClose: () => void }) {
-  return (
-    <EditorHeader onClose={onClose}>Link</EditorHeader>
-  );
+  return <EditorHeader onClose={onClose}>Link</EditorHeader>;
 }
 
 function NodeEditor({ node, onClose }: { node: INode; onClose: () => void }) {
