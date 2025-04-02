@@ -31,11 +31,13 @@ export interface IProps {
 export interface IState {
   chart: IChart;
   selectedCellInList: ICell | null;
+  selectedCellNode: HTMLDivElement | null;
 }
 
 export const DefaultState: IState = {
   chart: defaultChart,
-  selectedCellInList: null
+  selectedCellInList: null,
+  selectedCellNode: null
 };
 
 export class Composer extends React.Component<IProps, IState> {
@@ -59,8 +61,15 @@ export class Composer extends React.Component<IProps, IState> {
     readonly: false
   };
 
-  setSelectedCellInList = (cell: ICell | null) => {
-    this.setState({ selectedCellInList: cell });
+  setSelectedCell = (cell: ICell | null, cellNode: HTMLDivElement | null) => {
+    this.setState({
+      selectedCellInList: cell,
+      selectedCellNode: cellNode
+    });
+  };
+
+  setChart = (chart: IChart) => {
+    this.setState({ chart: chart });
   };
 
   getRunWorkflowDialogOptions = (): Partial<Dialog.IOptions<any>> => {
@@ -136,16 +145,22 @@ export class Composer extends React.Component<IProps, IState> {
             {this.state.chart.selected.id && (
               <ChartElementEditor
                 chart={this.state.chart}
+                setChart={this.setChart}
                 callbacks={this.chartStateActions}
                 config={this.chartConfig}
               />
             )}
             {this.state.selectedCellInList && (
-              <CellPopup cell={this.state.selectedCellInList} />
+              <CellPopup
+                cell={this.state.selectedCellInList}
+                cellNode={this.state.selectedCellNode}
+                onClose={() => this.setSelectedCell(null, null)}
+              />
             )}
             <CellsSideBar
               catalogueServiceUrl={this.props.settings.catalogueServiceUrl}
-              setSelectedCellInList={this.setSelectedCellInList}
+              selectedCellInList={this.state.selectedCellInList}
+              setSelectedCell={this.setSelectedCell}
             />
           </div>
         </div>

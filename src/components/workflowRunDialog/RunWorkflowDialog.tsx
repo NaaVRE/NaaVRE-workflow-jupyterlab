@@ -8,8 +8,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
-import green from '@mui/material/colors/green';
-import grey from '@mui/material/colors/grey';
+import { green } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import { ThemeProvider } from '@mui/material/styles';
 import { IChart } from '@mrblenny/react-flow-chart';
 

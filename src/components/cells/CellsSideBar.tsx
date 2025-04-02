@@ -11,10 +11,12 @@ import { CellsList } from './CellsList';
 
 export function CellsSideBar({
   catalogueServiceUrl,
-  setSelectedCellInList
+  selectedCellInList,
+  setSelectedCell
 }: {
   catalogueServiceUrl: string | undefined;
-  setSelectedCellInList: (c: ICell | null) => void;
+  selectedCellInList: ICell | null;
+  setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
 }) {
   const [catalogItems, setCatalogItems] = useState<Array<ICell>>([]);
 
@@ -48,12 +50,13 @@ export function CellsSideBar({
         title="Cells Catalog"
         cells={catalogItems}
         style={{ flexGrow: 1 }}
-        setSelectedCellInList={setSelectedCellInList}
+        selectedCellInList={selectedCellInList}
+        setSelectedCell={setSelectedCell}
         button={
           <Tooltip title="Refresh" arrow>
             <IconButton
               aria-label="Reload"
-              style={{ color: 'white' }}
+              style={{ color: 'white', borderRadius: '100%' }}
               onClick={getCatalogItems}
             >
               <RefreshIcon />
@@ -64,7 +67,8 @@ export function CellsSideBar({
       <CellsList
         title="Special cells"
         cells={specialCells}
-        setSelectedCellInList={setSelectedCellInList}
+        selectedCellInList={selectedCellInList}
+        setSelectedCell={setSelectedCell}
       />
     </Paper>
   );

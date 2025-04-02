@@ -10,16 +10,43 @@ import {
 } from '@mrblenny/react-flow-chart';
 
 import { CellInfo } from '../common/CellInfo';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { ReactNode } from 'react';
 
-function LinkEditor({ link }: { link: ILink }) {
+function EditorHeader({
+  children,
+  onClose
+}: {
+  children: ReactNode;
+  onClose: () => void;
+}) {
   return (
-    <>
-      <p className="naavre-workflow-section-header">Link</p>
-    </>
+    <div
+      className="naavre-workflow-section-header"
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}
+    >
+      <p style={{ margin: '0' }}>{children}</p>
+      <IconButton
+        aria-label="Close"
+        style={{ color: 'white', borderRadius: '100%' }}
+        onClick={onClose}
+      >
+        <CloseIcon />
+      </IconButton>
+    </div>
   );
 }
 
-function NodeEditor({ node }: { node: INode }) {
+function LinkEditor({ link, onClose }: { link: ILink; onClose: () => void }) {
+  return <EditorHeader onClose={onClose}>Link</EditorHeader>;
+}
+
+function NodeEditor({ node, onClose }: { node: INode; onClose: () => void }) {
   let title: string = '';
   switch (node.type) {
     case 'splitter':
@@ -38,7 +65,7 @@ function NodeEditor({ node }: { node: INode }) {
 
   return (
     <>
-      <p className="naavre-workflow-section-header">{title}</p>
+      <EditorHeader onClose={onClose}>{title}</EditorHeader>
       {node.type === 'workflow-cell' && (
         <CellInfo cell={node.properties.cell} />
       )}
@@ -48,16 +75,25 @@ function NodeEditor({ node }: { node: INode }) {
 
 export function ChartElementEditor({
   chart,
+  setChart,
   callbacks,
   config
 }: {
   chart: IChart;
+  setChart: (chart: IChart) => void;
   callbacks: IFlowChartCallbacks;
   config: IConfig;
 }) {
   // when no chart element is selected, chart.selected === {}
   if (!chart.selected.id) {
     return <></>;
+  }
+
+  function onClose() {
+    setChart({
+      ...chart,
+      selected: {}
+    });
   }
 
   return (
@@ -74,10 +110,16 @@ export function ChartElementEditor({
       }}
     >
       {chart.selected.type === 'link' && (
-        <LinkEditor link={chart.links[chart.selected.id as string]} />
+        <LinkEditor
+          link={chart.links[chart.selected.id as string]}
+          onClose={onClose}
+        />
       )}
       {chart.selected.type === 'node' && (
-        <NodeEditor node={chart.nodes[chart.selected.id as string]} />
+        <NodeEditor
+          node={chart.nodes[chart.selected.id as string]}
+          onClose={onClose}
+        />
       )}
       <div style={{ margin: '15px' }}>
         <Button
