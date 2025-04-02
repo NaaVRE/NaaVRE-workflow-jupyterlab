@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
@@ -10,23 +10,25 @@ import { cellToChartNode } from '../../utils/chart';
 export function CellNode({
   cell,
   selectedCellInList,
-  setSelectedCellInList
+  setSelectedCell
 }: {
   cell: ICell | ISpecialCell;
   selectedCellInList: ICell | null;
-  setSelectedCellInList: (c: ICell | null) => void;
+  setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
   const node = cellToChartNode(cell);
   const is_special_node = node.type !== 'workflow-cell';
 
   function onClick() {
     selectedCellInList === cell
-      ? setSelectedCellInList(null)
-      : setSelectedCellInList(cell);
+      ? setSelectedCell(null, null)
+      : setSelectedCell(cell, ref.current || null);
   }
 
   return (
     <div
+      ref={ref}
       onClick={onClick}
       draggable={true}
       onDragStart={(event: any) => {

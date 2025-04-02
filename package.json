@@ -64,6 +64,7 @@
         "@jupyterlab/launcher": "^4.3.4",
         "@jupyterlab/settingregistry": "^4.0.0",
         "@jupyterlab/shared-models": "^3.6.8",
+        "@mantine/hooks": "^7.17.3",
         "@mrblenny/react-flow-chart": "0.0.14",
         "@mui/icons-material": "^7.0.1",
         "@mui/material": "^7.0.1",

@@ -31,11 +31,13 @@ export interface IProps {
 export interface IState {
   chart: IChart;
   selectedCellInList: ICell | null;
+  selectedCellNode: HTMLDivElement | null;
 }
 
 export const DefaultState: IState = {
   chart: defaultChart,
-  selectedCellInList: null
+  selectedCellInList: null,
+  selectedCellNode: null
 };
 
 export class Composer extends React.Component<IProps, IState> {
@@ -59,8 +61,11 @@ export class Composer extends React.Component<IProps, IState> {
     readonly: false
   };
 
-  setSelectedCellInList = (cell: ICell | null) => {
-    this.setState({ selectedCellInList: cell });
+  setSelectedCell = (cell: ICell | null, cellNode: HTMLDivElement | null) => {
+    this.setState({
+      selectedCellInList: cell,
+      selectedCellNode: cellNode
+    });
   };
 
   setChart = (chart: IChart) => {
@@ -148,13 +153,14 @@ export class Composer extends React.Component<IProps, IState> {
             {this.state.selectedCellInList && (
               <CellPopup
                 cell={this.state.selectedCellInList}
-                onClose={() => this.setSelectedCellInList(null)}
+                cellNode={this.state.selectedCellNode}
+                onClose={() => this.setSelectedCell(null, null)}
               />
             )}
             <CellsSideBar
               catalogueServiceUrl={this.props.settings.catalogueServiceUrl}
               selectedCellInList={this.state.selectedCellInList}
-              setSelectedCellInList={this.setSelectedCellInList}
+              setSelectedCell={this.setSelectedCell}
             />
           </div>
         </div>

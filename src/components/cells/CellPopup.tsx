@@ -1,5 +1,6 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
+import { useClickOutside } from '@mantine/hooks';
 
 import { CellInfo } from '../common/CellInfo';
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
@@ -8,13 +9,18 @@ import CloseIcon from '@mui/icons-material/Close';
 
 export function CellPopup({
   cell,
+  cellNode,
   onClose
 }: {
   cell: ICell;
+  cellNode: HTMLDivElement | null;
   onClose: () => void;
 }) {
+  const ref = useClickOutside(onClose, null, [cellNode]);
+
   return (
     <Paper
+      ref={ref}
       elevation={12}
       sx={{
         position: 'absolute',
