@@ -67,7 +67,9 @@ export function CellInfo({ cell }: { cell: ICell }) {
   return (
     <Box sx={{ margin: '15px' }}>
       <PropsTable>
-        <PropsTableRow cells={['Image name', cell.container_image]} />
+        {cell.container_image && (
+          <PropsTableRow cells={['Image name', cell.container_image]} />
+        )}
         {cell.base_container_image && (
           <>
             <PropsTableRow
