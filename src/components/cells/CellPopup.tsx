@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import { useClickOutside } from '@mantine/hooks';
 
@@ -16,11 +16,12 @@ export function CellPopup({
   cellNode: HTMLDivElement | null;
   onClose: () => void;
 }) {
-  const ref = useClickOutside(onClose, null, [cellNode]);
+  const [ref, setRef] = useState<HTMLElement | null>(null);
+  useClickOutside(onClose, null, [ref, cellNode]);
 
   return (
     <Paper
-      ref={ref}
+      ref={setRef}
       elevation={12}
       sx={{
         position: 'absolute',
