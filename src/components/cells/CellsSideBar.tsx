@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
@@ -6,8 +6,12 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { specialCells } from '../../utils/specialCells';
-import { getCellsFromCatalogue } from '../../utils/catalog';
+import {
+  getCellsFromCatalogue,
+  ICellsCatalogueResponse
+} from '../../utils/catalog';
 import { CellsList } from './CellsList';
+import { PageNav } from './PageNav';
 
 export function CellsSideBar({
   catalogueServiceUrl,
@@ -18,17 +22,30 @@ export function CellsSideBar({
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
 }) {
-  const [catalogItems, setCatalogItems] = useState<Array<ICell>>([]);
+  const [cellsListUrl, setCellsListUrl] = useState<string | null>(
+    catalogueServiceUrl ? `${catalogueServiceUrl}/workflow-cells/` : null
+  );
 
-  const getCatalogItems = () => {
-    if (catalogueServiceUrl) {
-      getCellsFromCatalogue(catalogueServiceUrl).then(cells => {
-        setCatalogItems(cells);
-      });
+  const [cellsListResponse, setcellsListResponse] =
+    useState<ICellsCatalogueResponse>({
+      count: 0,
+      next: null,
+      previous: null,
+      results: []
+    });
+
+  const getCatalogItems = useCallback((cellsListUrl: string | null) => {
+    if (cellsListUrl) {
+      getCellsFromCatalogue(cellsListUrl).then(resp =>
+        setcellsListResponse(resp)
+      );
     }
-  };
+  }, []);
 
-  useEffect(() => getCatalogItems(), [catalogueServiceUrl]);
+  useEffect(
+    () => getCatalogItems(cellsListUrl),
+    [getCatalogItems, cellsListUrl]
+  );
 
   return (
     <Paper
@@ -48,7 +65,7 @@ export function CellsSideBar({
     >
       <CellsList
         title="Cells Catalog"
-        cells={catalogItems}
+        cells={cellsListResponse.results}
         style={{ flexGrow: 1 }}
         selectedCellInList={selectedCellInList}
         setSelectedCell={setSelectedCell}
@@ -57,12 +74,16 @@ export function CellsSideBar({
             <IconButton
               aria-label="Reload"
               style={{ color: 'white', borderRadius: '100%' }}
-              onClick={getCatalogItems}
+              onClick={() => getCatalogItems(cellsListUrl)}
             >
               <RefreshIcon />
             </IconButton>
           </Tooltip>
         }
+      />
+      <PageNav
+        cellsListResponse={cellsListResponse}
+        setCellsListUrl={setCellsListUrl}
       />
       <CellsList
         title="Special cells"
