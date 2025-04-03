@@ -1,11 +1,11 @@
 import { ceil } from 'lodash';
-import { urlToPageNumber, getPageNumberAndCount } from './catalog';
+import { getPageNumberAndCount, urlToPageNumber } from './catalog';
 
 test.each([
-  { url: 'https://example.com/path/to/', pageNumber: 1},
-  { url: 'https://example.com/path/to/?page=7', pageNumber: 7},
-  { url: 'https://example.com/path/to/?page=43', pageNumber: 43},
-  { url: 'https://example.com/path/to/?page=355', pageNumber: 355}
+  { url: 'https://example.com/path/to/', pageNumber: 1 },
+  { url: 'https://example.com/path/to/?page=7', pageNumber: 7 },
+  { url: 'https://example.com/path/to/?page=43', pageNumber: 43 },
+  { url: 'https://example.com/path/to/?page=355', pageNumber: 355 }
 ])('get page number from URL', ({ url, pageNumber }) => {
   expect(urlToPageNumber(url)).toBe(pageNumber);
 });
