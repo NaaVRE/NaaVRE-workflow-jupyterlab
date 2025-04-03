@@ -86,7 +86,9 @@ export function CellInfo({ cell }: { cell: ICell }) {
           <PropsTableRow
             cells={[
               'Source',
-              <Link href={cell.source_url}>{cell.source_url}</Link>
+              <Link href={cell.source_url} target="_blank" rel="noreferrer">
+                {cell.source_url}
+              </Link>
             ]}
           />
         )}
