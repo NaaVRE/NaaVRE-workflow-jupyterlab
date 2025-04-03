@@ -2,16 +2,19 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
+    label: "maintenance"
     schedule:
       interval: "monthly"
 
   - package-ecosystem: "pip"
     directory: "/"
+    label: "maintenance"
     schedule:
       interval: "monthly"
 
   - package-ecosystem: "npm"
     directory: "/"
+    label: "maintenance"
     schedule:
       interval: "monthly"
     groups:
