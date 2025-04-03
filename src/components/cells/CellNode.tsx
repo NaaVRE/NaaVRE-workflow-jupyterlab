@@ -54,7 +54,8 @@ export function CellNode({
           ? 'rgb(195, 235, 202)'
           : 'rgb(229,252,233)',
         borderRadius: '5px',
-        padding: '10px'
+        padding: '10px',
+        cursor: 'move'
       }}
     >
       <span
