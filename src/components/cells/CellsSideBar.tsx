@@ -26,6 +26,10 @@ export function CellsSideBar({
     catalogueServiceUrl ? `${catalogueServiceUrl}/workflow-cells/` : null
   );
 
+  useEffect(() => {
+    setCellsListUrl(`${catalogueServiceUrl}/workflow-cells/`);
+  }, [catalogueServiceUrl]);
+
   const [cellsListResponse, setcellsListResponse] =
     useState<ICellsCatalogueResponse>({
       count: 0,
