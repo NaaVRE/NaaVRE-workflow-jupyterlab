@@ -6,20 +6,27 @@ import { CellNode } from './CellNode';
 export function CellsList({
   title,
   cells,
-  style,
+  minHeightInCells,
   selectedCellInList,
   setSelectedCell,
-  button
+  button,
+  filter,
+  pageNav
 }: {
   title: string;
   cells: Array<ICell>;
-  style?: React.CSSProperties;
+  minHeightInCells?: number;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
   button?: ReactNode;
+  filter?: ReactNode;
+  pageNav?: ReactNode;
 }) {
+  // CellNode height (height + padding + border) and margin, as defined in ./CellNode
+  const cellNodeHeight = 25 + 20 + 2;
+  const cellNodeMargin = 10;
   return (
-    <div style={style}>
+    <div>
       <div
         style={{
           display: 'flex',
@@ -43,13 +50,23 @@ export function CellsList({
         </span>
         {button && button}
       </div>
-      {cells.map(cell => (
-        <CellNode
-          cell={cell}
-          selectedCellInList={selectedCellInList}
-          setSelectedCell={setSelectedCell}
-        />
-      ))}
+      {filter && filter}
+      <div
+        style={{
+          minHeight: minHeightInCells
+            ? minHeightInCells * (cellNodeHeight + cellNodeMargin)
+            : undefined
+        }}
+      >
+        {cells.map(cell => (
+          <CellNode
+            cell={cell}
+            selectedCellInList={selectedCellInList}
+            setSelectedCell={setSelectedCell}
+          />
+        ))}
+      </div>
+      {pageNav && pageNav}
     </div>
   );
 }

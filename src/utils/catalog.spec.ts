@@ -37,8 +37,8 @@ describe('get current page number and page count', () => {
             currentPage === 1
               ? null
               : currentPage === 2
-                ? '.../'
-                : `.../?page=${currentPage - 1}`,
+                ? 'https://example.com/path/to/'
+                : `https://example.com/path/to/?page=${currentPage - 1}`,
           next: currentPage === pageCount ? null : `?page=${currentPage + 1}`,
           results: Array(currentPageSize)
         };

@@ -12,6 +12,7 @@ import {
 } from '../../utils/catalog';
 import { CellsList } from './CellsList';
 import { PageNav } from './PageNav';
+import { ListFilter } from './ListFilter';
 
 export function CellsSideBar({
   catalogueServiceUrl,
@@ -23,11 +24,15 @@ export function CellsSideBar({
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
 }) {
   const [cellsListUrl, setCellsListUrl] = useState<string | null>(
-    catalogueServiceUrl ? `${catalogueServiceUrl}/workflow-cells/` : null
+    catalogueServiceUrl
+      ? `${catalogueServiceUrl}/workflow-cells/?ordering=-modified`
+      : null
   );
 
   useEffect(() => {
-    setCellsListUrl(`${catalogueServiceUrl}/workflow-cells/`);
+    setCellsListUrl(
+      `${catalogueServiceUrl}/workflow-cells/?ordering=-modified`
+    );
   }, [catalogueServiceUrl]);
 
   const [cellsListResponse, setcellsListResponse] =
@@ -70,7 +75,7 @@ export function CellsSideBar({
       <CellsList
         title="Cells Catalog"
         cells={cellsListResponse.results}
-        style={{ flexGrow: 1 }}
+        minHeightInCells={10}
         selectedCellInList={selectedCellInList}
         setSelectedCell={setSelectedCell}
         button={
@@ -84,10 +89,13 @@ export function CellsSideBar({
             </IconButton>
           </Tooltip>
         }
-      />
-      <PageNav
-        cellsListResponse={cellsListResponse}
-        setCellsListUrl={setCellsListUrl}
+        filter={<ListFilter url={cellsListUrl} setUrl={setCellsListUrl} />}
+        pageNav={
+          <PageNav
+            cellsListResponse={cellsListResponse}
+            setCellsListUrl={setCellsListUrl}
+          />
+        }
       />
       <CellsList
         title="Special cells"
