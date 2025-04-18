@@ -75,7 +75,7 @@ export function CellsSideBar({
       <CellsList
         title="Cells Catalog"
         cells={cellsListResponse.results}
-        style={{ flexGrow: 1 }}
+        minHeightInCells={10}
         selectedCellInList={selectedCellInList}
         setSelectedCell={setSelectedCell}
         button={
@@ -90,10 +90,12 @@ export function CellsSideBar({
           </Tooltip>
         }
         filter={<ListFilter url={cellsListUrl} setUrl={setCellsListUrl} />}
-      />
-      <PageNav
-        cellsListResponse={cellsListResponse}
-        setCellsListUrl={setCellsListUrl}
+        pageNav={
+          <PageNav
+            cellsListResponse={cellsListResponse}
+            setCellsListUrl={setCellsListUrl}
+          />
+        }
       />
       <CellsList
         title="Special cells"
