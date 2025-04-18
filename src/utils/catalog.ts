@@ -10,13 +10,15 @@ export interface ICellsCatalogueResponse {
 }
 
 export function urlToPageNumber(url: string) {
-  const re = /.*\/\?page=(\d+)$/;
-  if (re.test(url)) {
-    return Number(url.replace(re, '$1'));
-  } else if (/.*\/$/.test(url)) {
-    return 1;
+  const u = new URL(url);
+  if (u.searchParams.has('page')) {
+    const p = Number(u.searchParams.get('page'));
+    if (isNaN(p)) {
+      throw Error(`Unexpected url: ${url}`);
+    }
+    return p;
   } else {
-    throw Error(`Unexpected url: ${url}`);
+    return 1;
   }
 }
 

@@ -9,7 +9,8 @@ export function CellsList({
   style,
   selectedCellInList,
   setSelectedCell,
-  button
+  button,
+  filter
 }: {
   title: string;
   cells: Array<ICell>;
@@ -17,6 +18,7 @@ export function CellsList({
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
   button?: ReactNode;
+  filter?: ReactNode;
 }) {
   return (
     <div style={style}>
@@ -43,6 +45,7 @@ export function CellsList({
         </span>
         {button && button}
       </div>
+      {filter && filter}
       {cells.map(cell => (
         <CellNode
           cell={cell}

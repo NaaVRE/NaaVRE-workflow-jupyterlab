@@ -12,6 +12,7 @@ import {
 } from '../../utils/catalog';
 import { CellsList } from './CellsList';
 import { PageNav } from './PageNav';
+import { ListFilter } from './ListFilter';
 
 export function CellsSideBar({
   catalogueServiceUrl,
@@ -23,11 +24,15 @@ export function CellsSideBar({
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
 }) {
   const [cellsListUrl, setCellsListUrl] = useState<string | null>(
-    catalogueServiceUrl ? `${catalogueServiceUrl}/workflow-cells/` : null
+    catalogueServiceUrl
+      ? `${catalogueServiceUrl}/workflow-cells/?ordering=-modified`
+      : null
   );
 
   useEffect(() => {
-    setCellsListUrl(`${catalogueServiceUrl}/workflow-cells/`);
+    setCellsListUrl(
+      `${catalogueServiceUrl}/workflow-cells/?ordering=-modified`
+    );
   }, [catalogueServiceUrl]);
 
   const [cellsListResponse, setcellsListResponse] =
@@ -84,6 +89,7 @@ export function CellsSideBar({
             </IconButton>
           </Tooltip>
         }
+        filter={<ListFilter url={cellsListUrl} setUrl={setCellsListUrl} />}
       />
       <PageNav
         cellsListResponse={cellsListResponse}
