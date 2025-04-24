@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
@@ -6,6 +6,48 @@ import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { ISpecialCell } from '../../utils/specialCells';
 import { cellToChartNode } from '../../utils/chart';
+import Tooltip from '@mui/material/Tooltip';
+
+function CellTitle({ cell }: { cell: ICell | ISpecialCell }) {
+  const [isOverflowed, setIsOverflow] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    ref.current &&
+      setIsOverflow(ref.current.scrollWidth > ref.current.clientWidth);
+  }, []);
+
+  let title: ReactNode;
+  const regex = new RegExp(`-${cell.owner}$`);
+  if (cell.owner && cell.title.match(regex)) {
+    title = (
+      <>
+        {cell.title.replace(regex, '')}
+        <span style={{ color: '#6c6c6c' }}>-{cell.owner}</span>
+      </>
+    );
+  } else {
+    title = cell.title;
+  }
+  return (
+    <Tooltip
+      title={cell.title}
+      disableHoverListener={!isOverflowed}
+      placement="bottom"
+      arrow
+    >
+      <span
+        ref={ref}
+        style={{
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis'
+        }}
+      >
+        {title}
+      </span>
+    </Tooltip>
+  );
+}
 
 export function CellNode({
   cell,
@@ -58,14 +100,7 @@ export function CellNode({
         cursor: 'move'
       }}
     >
-      <span
-        style={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis'
-        }}
-      >
-        {cell.title}
-      </span>
+      <CellTitle cell={cell} />
       <IconButton aria-label="Info" style={{ borderRadius: '100%' }}>
         <InfoOutlinedIcon />
       </IconButton>
