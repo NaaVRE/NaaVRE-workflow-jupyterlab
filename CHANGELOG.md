@@ -2,6 +2,26 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.2.2
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.2.1...b428b2e700911f17e1071b32b9f7a893f1a9fb23))
+
+### Bugs fixed
+
+- Fix long cell name overflow in catalogue list [#21](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/21) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump @babel/runtime from 7.26.0 to 7.27.0 [#22](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/22) ([@dependabot](https://github.com/dependabot))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-04-18&to=2025-04-25&type=c))
+
+[@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-04-18..2025-04-25&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-04-18..2025-04-25&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.2.1
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.2.0...a33e857e9cc5fcdbb0de8ab0aed5fac3758e7dab))
@@ -19,8 +39,6 @@
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-04-03&to=2025-04-18&type=c))
 
 [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-04-03..2025-04-18&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.2.0
 
