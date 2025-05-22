@@ -225,9 +225,7 @@ export function RunWorkflowDialog({
                 alignItems: 'center'
               }}
             >
-              <WorkflowRepeatPicker
-                setCron={setCron}
-              />
+              <WorkflowRepeatPicker setCron={setCron} />
               <Button
                 variant="contained"
                 className={'lw-panel-button'}
@@ -235,7 +233,7 @@ export function RunWorkflowDialog({
                 color="primary"
                 disabled={!allValuesFilled()}
                 style={{
-                  float: 'right',
+                  float: 'right'
                 }}
               >
                 Run
