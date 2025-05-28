@@ -2,7 +2,7 @@ name: naavre-workflow-jl-dev
 
 services:
   workflow-service:
-    image: ghcr.io/naavre/naavre-workflow-service:v0.1.1
+    image: ghcr.io/naavre/naavre-workflow-service:v0.1.3
     ports:
       - "127.0.0.1:62438:8000"
     environment:
