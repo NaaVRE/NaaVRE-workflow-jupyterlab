@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import Button from '@mui/material/Button';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -20,6 +21,7 @@ import {
 import { NaaVREExternalService } from '../../naavre-common/handler';
 import { theme } from '../../Theme';
 import { IWorkflowWidgetSettings } from '../../widget';
+import WorkflowRepeatPicker from '../WorkflowRepeatPicker';
 
 interface IParamValue {
   value: string | null;
@@ -39,6 +41,7 @@ export function RunWorkflowDialog({
 }) {
   const [params, setParams] = useState<{ [name: string]: IParamValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretValue }>({});
+  const [cron, setCron] = useState<string | null>(null);
   const [submittedWorkflow, setSubmittedWorkflow] = useState<any>(null);
 
   const setParam = (name: string, value: IParamValue) => {
@@ -111,7 +114,8 @@ export function RunWorkflowDialog({
         virtual_lab: settings.virtualLab,
         naavrewf2: chart,
         params: params,
-        secrets: secrets
+        secrets: secrets,
+        cron_schedule: cron
       }
     )
       .then(resp => {
@@ -212,19 +216,29 @@ export function RunWorkflowDialog({
                 </TableBody>
               </Table>
             </TableContainer>
-            <Button
-              variant="contained"
-              className={'lw-panel-button'}
-              onClick={() => runWorkflow(params, secrets)}
-              color="primary"
-              disabled={!allValuesFilled()}
+            <Stack
+              direction="row"
+              spacing={2}
               style={{
                 float: 'right',
-                marginTop: '20px'
+                marginTop: '2rem',
+                alignItems: 'center'
               }}
             >
-              Run
-            </Button>
+              <WorkflowRepeatPicker setCron={setCron} />
+              <Button
+                variant="contained"
+                className={'lw-panel-button'}
+                onClick={() => runWorkflow(params, secrets)}
+                color="primary"
+                disabled={!allValuesFilled()}
+                style={{
+                  float: 'right'
+                }}
+              >
+                Run
+              </Button>
+            </Stack>
           </div>
         )}
       </div>
