@@ -115,7 +115,7 @@ export function RunWorkflowDialog({
         naavrewf2: chart,
         params: params,
         secrets: secrets,
-        cron: cron
+        cron_schedule: cron
       }
     )
       .then(resp => {
