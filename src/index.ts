@@ -56,7 +56,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     translator: ITranslator,
     toolbarRegistry: IToolbarWidgetRegistry | null,
     settingRegistry: ISettingRegistry | null,
-    browserFactory: IFileBrowserFactory,
+    browserFactory: IFileBrowserFactory
   ) => {
     console.log(
       'JupyterLab extension @naavre/workflow-jupyterlab is activated!'
