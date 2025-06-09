@@ -2,6 +2,29 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.3.0
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.2.2...39345424f7132579ec9c59f79e752e9491405acc))
+
+### Enhancements made
+
+- Add UI for periodic workflows [#29](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/29) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump the mui group with 3 updates [#30](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/30) ([@dependabot](https://github.com/dependabot))
+- Bump actions/create-github-app-token from 1 to 2 [#28](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/28) ([@dependabot](https://github.com/dependabot))
+- Bump the mui group with 2 updates [#24](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/24) ([@dependabot](https://github.com/dependabot))
+- Bump the jupyterlab group with 5 updates [#23](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/23) ([@dependabot](https://github.com/dependabot))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-04-25&to=2025-06-09&type=c))
+
+[@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-04-25..2025-06-09&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-04-25..2025-06-09&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.2.2
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.2.1...b428b2e700911f17e1071b32b9f7a893f1a9fb23))
@@ -19,8 +42,6 @@
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-04-18&to=2025-04-25&type=c))
 
 [@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-04-18..2025-04-25&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-04-18..2025-04-25&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.2.1
 
