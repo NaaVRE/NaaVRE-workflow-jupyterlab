@@ -1247,6 +1247,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.28.2":
+  version: 7.28.2
+  resolution: "@babel/runtime@npm:7.28.2"
+  checksum: 8673eb2311752929f5b0167f42cff4cc1d5fadddd0394baca27d06c1618680ffcf95e9f01061f5c4dc3f6a32b6bbf500e7762c02dc22bcd273c2947b9774ddad
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.25.9, @babel/template@npm:^7.3.3":
   version: 7.25.9
   resolution: "@babel/template@npm:7.25.9"
@@ -3537,7 +3544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/utils@npm:^7.1.1, @mui/utils@npm:^7.2.0":
+"@mui/utils@npm:^7.2.0":
   version: 7.2.0
   resolution: "@mui/utils@npm:7.2.0"
   dependencies:
@@ -3558,12 +3565,12 @@ __metadata:
   linkType: hard
 
 "@mui/x-date-pickers@npm:^8.3.1":
-  version: 8.6.0
-  resolution: "@mui/x-date-pickers@npm:8.6.0"
+  version: 8.9.2
+  resolution: "@mui/x-date-pickers@npm:8.9.2"
   dependencies:
-    "@babel/runtime": ^7.27.6
-    "@mui/utils": ^7.1.1
-    "@mui/x-internals": 8.6.0
+    "@babel/runtime": ^7.28.2
+    "@mui/utils": ^7.2.0
+    "@mui/x-internals": 8.9.2
     "@types/react-transition-group": ^4.4.12
     clsx: ^2.1.1
     prop-types: ^15.8.1
@@ -3601,21 +3608,22 @@ __metadata:
       optional: true
     moment-jalaali:
       optional: true
-  checksum: c4f29e45edcb091be58427be0eb8f4d60dbf8843d6258a0cb0f00c85625e6d8f5eb009d3518cbedf5c9b5a4e872cb1f7c62d71511cb7a3d445e8020da190424f
+  checksum: 210088b51187f56965c6934cdd345fac5d0684d9792668de0152a7a2aee20c8c4f8647306132baab23af79345a37014614c3bc05c30efbb1c4463fbcbd57b5a4
   languageName: node
   linkType: hard
 
-"@mui/x-internals@npm:8.6.0":
-  version: 8.6.0
-  resolution: "@mui/x-internals@npm:8.6.0"
+"@mui/x-internals@npm:8.9.2":
+  version: 8.9.2
+  resolution: "@mui/x-internals@npm:8.9.2"
   dependencies:
-    "@babel/runtime": ^7.27.6
-    "@mui/utils": ^7.1.1
+    "@babel/runtime": ^7.28.2
+    "@mui/utils": ^7.2.0
     reselect: ^5.1.1
+    use-sync-external-store: ^1.5.0
   peerDependencies:
     "@mui/system": ^5.15.14 || ^6.0.0 || ^7.0.0
     react: ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: e4fb49e8c951b58eb8a8fb77e9a33e666b7aedd98cfa534cc823c4de5de4c8ca7c105dc89284c2d652ca52a27d6845868ed980c2c51f4e96732b27bbacd4870d
+  checksum: e2fad58085d33f038db5f783869f515d338c7b64d25004387c2b2b8f5ed57d8607f08aff2af4ae807392906c6bfe30b91e4d2f090cb2678fe1e2dc69109c55fe
   languageName: node
   linkType: hard
 
@@ -10254,6 +10262,15 @@ __metadata:
     querystringify: ^2.1.1
     requires-port: ^1.0.0
   checksum: fbdba6b1d83336aca2216bbdc38ba658d9cfb8fc7f665eb8b17852de638ff7d1a162c198a8e4ed66001ddbf6c9888d41e4798912c62b4fd777a31657989f7bdf
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "use-sync-external-store@npm:1.5.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 5e639c9273200adb6985b512c96a3a02c458bc8ca1a72e91da9cdc6426144fc6538dca434b0f99b28fb1baabc82e1c383ba7900b25ccdcb43758fb058dc66c34
   languageName: node
   linkType: hard
 
