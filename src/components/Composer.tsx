@@ -158,7 +158,7 @@ export class Composer extends React.Component<IProps, IState> {
               />
             )}
             <CellsSideBar
-              catalogueServiceUrl={this.props.settings.catalogueServiceUrl}
+              settings={this.props.settings}
               selectedCellInList={this.state.selectedCellInList}
               setSelectedCell={this.setSelectedCell}
             />

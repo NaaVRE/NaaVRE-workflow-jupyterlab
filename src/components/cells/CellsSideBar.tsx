@@ -13,27 +13,30 @@ import {
 import { CellsList } from './CellsList';
 import { PageNav } from './PageNav';
 import { ListFilter } from './ListFilter';
+import { IWorkflowWidgetSettings } from '../../widget';
 
 export function CellsSideBar({
-  catalogueServiceUrl,
+  settings,
   selectedCellInList,
   setSelectedCell
 }: {
-  catalogueServiceUrl: string | undefined;
+  settings: IWorkflowWidgetSettings;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
 }) {
+  const defaultQuery = `?ordering=-modified&virtual_lab=${settings.virtualLab}`;
+
   const [cellsListUrl, setCellsListUrl] = useState<string | null>(
-    catalogueServiceUrl
-      ? `${catalogueServiceUrl}/workflow-cells/?ordering=-modified`
+    settings.catalogueServiceUrl
+      ? `${settings.catalogueServiceUrl}/workflow-cells/${defaultQuery}`
       : null
   );
 
   useEffect(() => {
     setCellsListUrl(
-      `${catalogueServiceUrl}/workflow-cells/?ordering=-modified`
+      `${settings.catalogueServiceUrl}/workflow-cells/${defaultQuery}`
     );
-  }, [catalogueServiceUrl]);
+  }, [settings.catalogueServiceUrl]);
 
   const [cellsListResponse, setcellsListResponse] =
     useState<ICellsCatalogueResponse>({

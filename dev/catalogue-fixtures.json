@@ -37,6 +37,18 @@
     }
   },
   {
+    "model": "virtual_labs.virtuallab",
+    "pk": "test-virtual-lab-2",
+    "fields": {
+      "title": "test-virtual-lab-2",
+      "description": "",
+      "created": "2024-10-16T13:05:39.474Z",
+      "modified": "2024-10-16T13:05:39.474Z",
+      "deployment_url": "",
+      "container_image": ""
+    }
+  },
+  {
     "model": "base_assets.baseasset",
     "pk": "b6923c9e-eeb6-49fe-81f2-3df7003f8332",
     "fields": {
@@ -58,6 +70,18 @@
       "modified": "2025-01-19T21:37:23.503Z",
       "owner": 3,
       "virtual_lab": "test-virtual-lab-1"
+    }
+  },
+  {
+    "model": "base_assets.baseasset",
+    "pk": "3995b067-95fd-4706-9325-2b89339afb2c",
+    "fields": {
+      "title": "other-vl-cell-1-test-user-2",
+      "description": "",
+      "created": "2025-01-19T21:37:23.503Z",
+      "modified": "2025-01-19T21:37:23.503Z",
+      "owner": 3,
+      "virtual_lab": "test-virtual-lab-2"
     }
   },
   {
@@ -153,6 +177,22 @@
     "pk": "d1d41322-1101-489c-82a1-8038ea999416",
     "fields": {
       "container_image": "example.com/naavre-cells/test-cell-1:49c621b",
+      "base_container_image": 2,
+      "kernel": "ipython",
+      "source_url": "",
+      "dependencies": [5, 6],
+      "inputs": [],
+      "outputs": [8],
+      "confs": [2],
+      "params": [6],
+      "secrets": [7]
+    }
+  },
+  {
+    "model": "workflow_cells.cell",
+    "pk": "3995b067-95fd-4706-9325-2b89339afb2c",
+    "fields": {
+      "container_image": "example.com/naavre-cells/other-vl-cell-1:b078cae4",
       "base_container_image": 2,
       "kernel": "ipython",
       "source_url": "",
