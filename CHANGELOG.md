@@ -2,6 +2,30 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.3.1
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.3.0...4b9423bfafea94a248dd3ea75ab3d7ae52116601))
+
+### Bugs fixed
+
+- Fix #43 Cells are not filtered by virtual lab [#44](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/44) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump rimraf from 5.0.10 to 6.0.1 [#37](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/37) ([@dependabot](https://github.com/dependabot))
+- Bump source-map-loader from 1.1.3 to 5.0.0 [#36](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/36) ([@dependabot](https://github.com/dependabot))
+- Bump the mui group with 3 updates [#35](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/35) ([@dependabot](https://github.com/dependabot))
+- Bump the jupyterlab group with 5 updates [#34](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/34) ([@dependabot](https://github.com/dependabot))
+- Bump @emotion/styled from 11.14.0 to 11.14.1 in the emotion group [#33](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/33) ([@dependabot](https://github.com/dependabot))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-06-09&to=2025-08-08&type=c))
+
+[@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-06-09..2025-08-08&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-06-09..2025-08-08&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.3.0
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.2.2...39345424f7132579ec9c59f79e752e9491405acc))
@@ -22,8 +46,6 @@
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-04-25&to=2025-06-09&type=c))
 
 [@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-04-25..2025-06-09&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-04-25..2025-06-09&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.2.2
 
