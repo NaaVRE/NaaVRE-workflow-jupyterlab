@@ -50,9 +50,33 @@
   },
   {
     "model": "base_assets.baseasset",
+    "pk": "d1d41322-1101-489c-82a1-8038ea999416",
+    "fields": {
+      "title": "test-cell-1",
+      "description": "",
+      "created": "2025-01-19T21:37:23.503Z",
+      "modified": "2025-01-19T21:37:23.503Z",
+      "owner": 3,
+      "virtual_lab": "test-virtual-lab-1"
+    }
+  },
+  {
+    "model": "base_assets.baseasset",
+    "pk": "b58c627a-1843-421c-a897-89461ddc581a",
+    "fields": {
+      "title": "test-cell-1",
+      "description": "",
+      "created": "2025-01-19T21:38:23.503Z",
+      "modified": "2025-01-19T21:37:23.503Z",
+      "owner": 3,
+      "virtual_lab": "test-virtual-lab-1"
+    }
+  },
+  {
+    "model": "base_assets.baseasset",
     "pk": "b6923c9e-eeb6-49fe-81f2-3df7003f8332",
     "fields": {
-      "title": "test-cell-2-with-a-long-name-test-user-2",
+      "title": "test-cell-2-with-a-long-name",
       "description": "",
       "created": "2025-01-19T21:39:53.924Z",
       "modified": "2025-01-19T21:39:53.924Z",
@@ -62,24 +86,12 @@
   },
   {
     "model": "base_assets.baseasset",
-    "pk": "d1d41322-1101-489c-82a1-8038ea999416",
-    "fields": {
-      "title": "test-cell-1-test-user-2",
-      "description": "",
-      "created": "2025-01-19T21:37:23.503Z",
-      "modified": "2025-01-19T21:37:23.503Z",
-      "owner": 3,
-      "virtual_lab": "test-virtual-lab-1"
-    }
-  },
-  {
-    "model": "base_assets.baseasset",
     "pk": "3995b067-95fd-4706-9325-2b89339afb2c",
     "fields": {
-      "title": "other-vl-cell-1-test-user-2",
+      "title": "other-vl-cell-1",
       "description": "",
-      "created": "2025-01-19T21:37:23.503Z",
-      "modified": "2025-01-19T21:37:23.503Z",
+      "created": "2025-01-19T21:40:23.503Z",
+      "modified": "2025-01-19T21:40:23.503Z",
       "owner": 3,
       "virtual_lab": "test-virtual-lab-2"
     }
@@ -176,6 +188,8 @@
     "model": "workflow_cells.cell",
     "pk": "d1d41322-1101-489c-82a1-8038ea999416",
     "fields": {
+      "version": 1,
+      "next_version": "b58c627a-1843-421c-a897-89461ddc581a",
       "container_image": "example.com/naavre-cells/test-cell-1:49c621b",
       "base_container_image": 2,
       "kernel": "ipython",
@@ -190,9 +204,11 @@
   },
   {
     "model": "workflow_cells.cell",
-    "pk": "3995b067-95fd-4706-9325-2b89339afb2c",
+    "pk": "b58c627a-1843-421c-a897-89461ddc581a",
     "fields": {
-      "container_image": "example.com/naavre-cells/other-vl-cell-1:b078cae4",
+      "version": 2,
+      "next_version": null,
+      "container_image": "example.com/naavre-cells/test-cell-1:7abc41dd",
       "base_container_image": 2,
       "kernel": "ipython",
       "source_url": "",
@@ -208,6 +224,8 @@
     "model": "workflow_cells.cell",
     "pk": "b6923c9e-eeb6-49fe-81f2-3df7003f8332",
     "fields": {
+      "version": 1,
+      "next_version": null,
       "container_image": "example.com/naavre-cells/test-cell-2:f7b1772",
       "base_container_image": 2,
       "kernel": "",
@@ -218,6 +236,24 @@
       "confs": [],
       "params": [],
       "secrets": []
+    }
+  },
+  {
+    "model": "workflow_cells.cell",
+    "pk": "3995b067-95fd-4706-9325-2b89339afb2c",
+    "fields": {
+      "version": 1,
+      "next_version": null,
+      "container_image": "example.com/naavre-cells/other-vl-cell-1:b078cae4",
+      "base_container_image": 2,
+      "kernel": "ipython",
+      "source_url": "",
+      "dependencies": [5, 6],
+      "inputs": [],
+      "outputs": [8],
+      "confs": [2],
+      "params": [6],
+      "secrets": [7]
     }
   }
 ]
