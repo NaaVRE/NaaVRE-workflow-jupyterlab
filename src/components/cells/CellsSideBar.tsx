@@ -31,6 +31,7 @@ export function CellsSideBar({
       ? `${settings.catalogueServiceUrl}/workflow-cells/${defaultQuery}`
       : null
   );
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setCellsListUrl(
@@ -47,10 +48,12 @@ export function CellsSideBar({
     });
 
   const getCatalogItems = useCallback((cellsListUrl: string | null) => {
+    setLoading(true);
     if (cellsListUrl) {
-      getCellsFromCatalogue(cellsListUrl).then(resp =>
-        setcellsListResponse(resp)
-      );
+      getCellsFromCatalogue(cellsListUrl).then(resp => {
+        setcellsListResponse(resp);
+        setLoading(false);
+      });
     }
   }, []);
 
@@ -78,6 +81,7 @@ export function CellsSideBar({
       <CellsList
         title="Cells Catalog"
         cells={cellsListResponse.results}
+        loading={loading}
         minHeightInCells={10}
         selectedCellInList={selectedCellInList}
         setSelectedCell={setSelectedCell}
@@ -103,6 +107,7 @@ export function CellsSideBar({
       <CellsList
         title="Special cells"
         cells={specialCells}
+        loading={false}
         selectedCellInList={selectedCellInList}
         setSelectedCell={setSelectedCell}
       />

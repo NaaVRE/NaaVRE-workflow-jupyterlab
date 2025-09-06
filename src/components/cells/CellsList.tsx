@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { CellNode } from './CellNode';
+import { CellNode, LoadingCellNode } from './CellNode';
 
 export function CellsList({
   title,
   cells,
+  loading,
   minHeightInCells,
   selectedCellInList,
   setSelectedCell,
@@ -15,6 +16,7 @@ export function CellsList({
 }: {
   title: string;
   cells: Array<ICell>;
+  loading: boolean;
   minHeightInCells?: number;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
@@ -58,13 +60,22 @@ export function CellsList({
             : undefined
         }}
       >
-        {cells.map(cell => (
-          <CellNode
-            cell={cell}
-            selectedCellInList={selectedCellInList}
-            setSelectedCell={setSelectedCell}
-          />
-        ))}
+        {loading ? (
+          <>
+            <LoadingCellNode />
+            <LoadingCellNode />
+          </>
+        ) : (
+          <>
+            {cells.map(cell => (
+              <CellNode
+                cell={cell}
+                selectedCellInList={selectedCellInList}
+                setSelectedCell={setSelectedCell}
+              />
+            ))}
+          </>
+        )}
       </div>
       {pageNav && pageNav}
     </div>

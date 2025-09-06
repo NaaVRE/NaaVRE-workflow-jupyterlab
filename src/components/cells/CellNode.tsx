@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
+import { Skeleton } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
 
@@ -105,5 +106,22 @@ export function CellNode({
         <InfoOutlinedIcon />
       </IconButton>
     </div>
+  );
+}
+
+export function LoadingCellNode() {
+  return (
+    <Skeleton
+      variant="rounded"
+      style={{
+        margin: '10px',
+        fontSize: '14px',
+        display: 'flex',
+        height: '25px',
+        border: '1px solid transparent',
+        padding: '10px',
+        borderRadius: '5px'
+      }}
+    />
   );
 }
