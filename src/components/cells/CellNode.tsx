@@ -13,7 +13,7 @@ import { cellToChartNode } from '../../utils/chart';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 
-function TooltipOverflowLabel({ label }: { label: string}) {
+function TooltipOverflowLabel({ label }: { label: string }) {
   const [isOverflowed, setIsOverflow] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
