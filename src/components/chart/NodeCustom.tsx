@@ -58,9 +58,6 @@ function NodeCustomElement(
   if (node.type === 'splitter' || node.type === 'merger') {
     width = '200px';
     height = '100px';
-  } else if (node.type === 'visualizer') {
-    width = '200px';
-    height = '250px';
   }
 
   return (

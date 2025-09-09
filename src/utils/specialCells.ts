@@ -32,27 +32,5 @@ export const specialCells: Array<ISpecialCell> = [
     confs: [],
     params: [],
     secrets: []
-  },
-  {
-    id: 'visualizer',
-    title: 'Visualizer',
-    type: 'visualizer',
-    version: 1,
-    next_version: null,
-    container_image: '',
-    dependencies: [],
-    inputs: [
-      { name: 'hostname', type: 'string' },
-      { name: 'username', type: 'string' },
-      { name: 'password', type: 'string' },
-      { name: 'remote', type: 'string' },
-      { name: 'num', type: 'string' },
-      { name: 'mode', type: 'string' },
-      { name: 'output', type: 'string' }
-    ],
-    outputs: [],
-    confs: [],
-    params: [],
-    secrets: []
   }
 ];
