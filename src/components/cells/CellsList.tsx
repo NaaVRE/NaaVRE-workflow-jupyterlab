@@ -7,6 +7,7 @@ export function CellsList({
   title,
   cells,
   loading,
+  message,
   selectedCellInList,
   setSelectedCell,
   button,
@@ -16,6 +17,7 @@ export function CellsList({
   title: string;
   cells: Array<ICell>;
   loading: boolean;
+  message: string | null;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
   button?: ReactNode;
@@ -56,6 +58,9 @@ export function CellsList({
           </>
         ) : (
           <>
+            {message !== null && (
+              <p style={{ margin: '10px', textAlign: 'center' }}>{message}</p>
+            )}
             {cells.map(cell => (
               <CellNode
                 cell={cell}
