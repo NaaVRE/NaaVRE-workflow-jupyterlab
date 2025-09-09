@@ -71,7 +71,12 @@ function SearchField({
       sx={{
         '& .MuiInputBase-root': {
           borderRadius: '100px'
-        }
+        },
+        maxWidth: '100%',
+        '&:focus-within': {
+          flexShrink: 0
+        },
+        transition: 'all 0.5s ease'
       }}
     />
   );
@@ -251,7 +256,7 @@ export function ListFilter({
       direction="row"
       spacing={1}
       sx={{
-        justifyContent: 'center',
+        justifyContent: 'start',
         alignItems: 'center',
         padding: '10px'
       }}
