@@ -32,6 +32,8 @@ export interface IParam extends IBaseVariable {
 export interface ISecret extends IBaseVariable {}
 
 export interface ICell extends IBaseAsset {
+  version: number;
+  next_version: string | null;
   container_image: string;
   base_container_image?: IBaseImage;
   dependencies: Array<IDependency>;
