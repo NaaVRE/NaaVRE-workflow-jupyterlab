@@ -7,7 +7,6 @@ export function CellsList({
   title,
   cells,
   loading,
-  minHeightInCells,
   selectedCellInList,
   setSelectedCell,
   button,
@@ -17,16 +16,12 @@ export function CellsList({
   title: string;
   cells: Array<ICell>;
   loading: boolean;
-  minHeightInCells?: number;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
   button?: ReactNode;
   filter?: ReactNode;
   pageNav?: ReactNode;
 }) {
-  // CellNode height (height + padding + border) and margin, as defined in ./CellNode
-  const cellNodeHeight = 25 + 20 + 2;
-  const cellNodeMargin = 10;
   return (
     <div>
       <div
@@ -53,13 +48,7 @@ export function CellsList({
         {button && button}
       </div>
       {filter && filter}
-      <div
-        style={{
-          minHeight: minHeightInCells
-            ? minHeightInCells * (cellNodeHeight + cellNodeMargin)
-            : undefined
-        }}
-      >
+      <div>
         {loading ? (
           <>
             <LoadingCellNode />
