@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import InputAdornment from '@mui/material/InputAdornment';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Popover from '@mui/material/Popover';
 import TextField from '@mui/material/TextField';
-import { InputAdornment, Menu, MenuItem } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import IconButton from '@mui/material/IconButton';
 import { useDebouncedValue } from '@mantine/hooks';
 
@@ -64,9 +71,98 @@ function SearchField({
       sx={{
         '& .MuiInputBase-root': {
           borderRadius: '100px'
-        }
+        },
+        maxWidth: '100%',
+        '&:focus-within': {
+          flexShrink: 0
+        },
+        transition: 'all 0.5s ease'
       }}
     />
+  );
+}
+
+interface ICheckboxFilter {
+  label: string;
+  checked: boolean;
+}
+
+interface ICheckboxFilters {
+  [key: string]: ICheckboxFilter;
+}
+
+const defaultCheckboxFilters: ICheckboxFilters = {
+  all_versions: {
+    label: 'Show all versions',
+    checked: false
+  }
+};
+
+function checkboxFiltersToSearchParams(checkboxFilters: ICheckboxFilters): {
+  [key: string]: string;
+} {
+  return {
+    all_versions: checkboxFilters.all_versions.checked ? 'true' : 'false'
+  };
+}
+
+function CheckboxFiltersMenu({
+  checkboxFilters,
+  setCheckboxFilters
+}: {
+  checkboxFilters: ICheckboxFilters;
+  setCheckboxFilters: (v: ICheckboxFilters) => void;
+}) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const id = open ? 'checkboxfilter-popover' : undefined;
+
+  return (
+    <>
+      <IconButton
+        aria-describedby={id}
+        aria-label="checkbox-filters"
+        style={{
+          borderRadius: '100%'
+        }}
+        onClick={e => setAnchorEl(e.currentTarget)}
+      >
+        <FilterListIcon />
+      </IconButton>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+      >
+        <FormGroup sx={{ px: 2, py: 1 }}>
+          {Object.entries(checkboxFilters).map(([key, filter]) => (
+            <FormControlLabel
+              key={key}
+              label={filter.label}
+              control={
+                <Checkbox
+                  checked={filter.checked}
+                  onClick={() => {
+                    setCheckboxFilters({
+                      ...checkboxFilters,
+                      [key]: {
+                        ...filter,
+                        checked: !filter.checked
+                      }
+                    });
+                  }}
+                />
+              }
+            />
+          ))}
+        </FormGroup>
+      </Popover>
+    </>
   );
 }
 
@@ -138,6 +234,9 @@ export function ListFilter({
   setUrl: (u: string | null) => void;
 }) {
   const [search, setSearch] = useState<string | null>(null);
+  const [checkboxFilters, setCheckboxFilters] = useState<ICheckboxFilters>(
+    defaultCheckboxFilters
+  );
   const [ordering, setOrdering] = useState<string | null>('-modified');
 
   const [debouncedSearch] = useDebouncedValue(search, 200);
@@ -146,22 +245,27 @@ export function ListFilter({
     const newUrl = updateSearchParams(url, {
       search: debouncedSearch,
       ordering: ordering,
-      page: null
+      page: null,
+      ...checkboxFiltersToSearchParams(checkboxFilters)
     });
     setUrl(newUrl);
-  }, [debouncedSearch, ordering]);
+  }, [debouncedSearch, ordering, checkboxFilters]);
 
   return (
     <Stack
       direction="row"
       spacing={1}
       sx={{
-        justifyContent: 'center',
+        justifyContent: 'start',
         alignItems: 'center',
         padding: '10px'
       }}
     >
       <SearchField search={search} setSearch={setSearch} />
+      <CheckboxFiltersMenu
+        checkboxFilters={checkboxFilters}
+        setCheckboxFilters={setCheckboxFilters}
+      />
       <OrderingMenu ordering={ordering} setOrdering={setOrdering} />
     </Stack>
   );

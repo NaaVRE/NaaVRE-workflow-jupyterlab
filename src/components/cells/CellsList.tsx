@@ -1,12 +1,13 @@
 import React, { ReactNode } from 'react';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { CellNode } from './CellNode';
+import { CellNode, LoadingCellNode } from './CellNode';
 
 export function CellsList({
   title,
   cells,
-  minHeightInCells,
+  loading,
+  message,
   selectedCellInList,
   setSelectedCell,
   button,
@@ -15,16 +16,14 @@ export function CellsList({
 }: {
   title: string;
   cells: Array<ICell>;
-  minHeightInCells?: number;
+  loading: boolean;
+  message: string | null;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
   button?: ReactNode;
   filter?: ReactNode;
   pageNav?: ReactNode;
 }) {
-  // CellNode height (height + padding + border) and margin, as defined in ./CellNode
-  const cellNodeHeight = 25 + 20 + 2;
-  const cellNodeMargin = 10;
   return (
     <div>
       <div
@@ -51,20 +50,26 @@ export function CellsList({
         {button && button}
       </div>
       {filter && filter}
-      <div
-        style={{
-          minHeight: minHeightInCells
-            ? minHeightInCells * (cellNodeHeight + cellNodeMargin)
-            : undefined
-        }}
-      >
-        {cells.map(cell => (
-          <CellNode
-            cell={cell}
-            selectedCellInList={selectedCellInList}
-            setSelectedCell={setSelectedCell}
-          />
-        ))}
+      <div>
+        {loading ? (
+          <>
+            <LoadingCellNode />
+            <LoadingCellNode />
+          </>
+        ) : (
+          <>
+            {message !== null && (
+              <p style={{ margin: '10px', textAlign: 'center' }}>{message}</p>
+            )}
+            {cells.map(cell => (
+              <CellNode
+                cell={cell}
+                selectedCellInList={selectedCellInList}
+                setSelectedCell={setSelectedCell}
+              />
+            ))}
+          </>
+        )}
       </div>
       {pageNav && pageNav}
     </div>

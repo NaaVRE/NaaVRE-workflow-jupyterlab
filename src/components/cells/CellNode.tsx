@@ -1,14 +1,19 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
+import { Skeleton, Stack } from '@mui/material';
+import { SxProps } from '@mui/material/styles';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import PersonIcon from '@mui/icons-material/Person';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { ISpecialCell } from '../../utils/specialCells';
 import { cellToChartNode } from '../../utils/chart';
 import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
 
-function CellTitle({ cell }: { cell: ICell | ISpecialCell }) {
+function TooltipOverflowLabel({ label }: { label: string }) {
   const [isOverflowed, setIsOverflow] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -16,21 +21,9 @@ function CellTitle({ cell }: { cell: ICell | ISpecialCell }) {
       setIsOverflow(ref.current.scrollWidth > ref.current.clientWidth);
   }, []);
 
-  let title: ReactNode;
-  const regex = new RegExp(`-${cell.owner}$`);
-  if (cell.owner && cell.title.match(regex)) {
-    title = (
-      <>
-        {cell.title.replace(regex, '')}
-        <span style={{ color: '#6c6c6c' }}>-{cell.owner}</span>
-      </>
-    );
-  } else {
-    title = cell.title;
-  }
   return (
     <Tooltip
-      title={cell.title}
+      title={label}
       disableHoverListener={!isOverflowed}
       placement="bottom"
       arrow
@@ -43,9 +36,46 @@ function CellTitle({ cell }: { cell: ICell | ISpecialCell }) {
           textOverflow: 'ellipsis'
         }}
       >
-        {title}
+        {label}
       </span>
     </Tooltip>
+  );
+}
+
+function CellTitle({
+  cell,
+  isSpecialNode,
+  sx
+}: {
+  cell: ICell | ISpecialCell;
+  isSpecialNode: boolean;
+  sx?: SxProps;
+}) {
+  const regex = new RegExp(`-${cell.owner}$`);
+  const title = cell.title.replace(regex, '');
+
+  return (
+    <Stack sx={sx}>
+      <TooltipOverflowLabel label={title} />
+      {isSpecialNode || (
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'flex-end'
+          }}
+        >
+          <LocalOfferIcon color="action" fontSize="inherit" />
+          <span>v{cell.version}</span>
+          {cell.owner && (
+            <>
+              <PersonIcon color="action" fontSize="inherit" />
+              <TooltipOverflowLabel label={cell.owner} />
+            </>
+          )}
+        </Stack>
+      )}
+    </Stack>
   );
 }
 
@@ -60,7 +90,7 @@ export function CellNode({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const node = cellToChartNode(cell);
-  const is_special_node = node.type !== 'workflow-cell';
+  const isSpecialNode = node.type !== 'workflow-cell';
 
   function onClick() {
     selectedCellInList === cell
@@ -69,7 +99,7 @@ export function CellNode({
   }
 
   return (
-    <div
+    <Box
       ref={ref}
       onClick={onClick}
       draggable={true}
@@ -83,7 +113,7 @@ export function CellNode({
           })
         );
       }}
-      style={{
+      sx={{
         margin: '10px',
         fontSize: '14px',
         display: 'flex',
@@ -92,18 +122,44 @@ export function CellNode({
         justifyContent: 'space-between',
         alignItems: 'center',
         background: 'rgb(195, 235, 202)',
-        backgroundColor: is_special_node
+        backgroundColor: isSpecialNode
           ? 'rgb(195, 235, 202)'
           : 'rgb(229,252,233)',
         borderRadius: '5px',
         padding: '10px',
+        paddingRight: '1px',
         cursor: 'move'
       }}
     >
-      <CellTitle cell={cell} />
-      <IconButton aria-label="Info" style={{ borderRadius: '100%' }}>
+      <CellTitle
+        cell={cell}
+        isSpecialNode={isSpecialNode}
+        sx={{ width: 'calc(100% - 40px)' }}
+      />
+      <IconButton
+        aria-label="Info"
+        style={{ borderRadius: '100%' }}
+        sx={{ width: '40px' }}
+      >
         <InfoOutlinedIcon />
       </IconButton>
-    </div>
+    </Box>
+  );
+}
+
+export function LoadingCellNode() {
+  return (
+    <Skeleton
+      variant="rounded"
+      style={{
+        margin: '10px',
+        fontSize: '14px',
+        display: 'flex',
+        height: '25px',
+        border: '1px solid transparent',
+        padding: '10px',
+        borderRadius: '5px'
+      }}
+    />
   );
 }

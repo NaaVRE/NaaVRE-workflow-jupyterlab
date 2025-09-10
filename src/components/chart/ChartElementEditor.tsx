@@ -55,9 +55,6 @@ function NodeEditor({ node, onClose }: { node: INode; onClose: () => void }) {
     case 'merger':
       title = 'Merger';
       break;
-    case 'visualizer':
-      title = 'Visualizer';
-      break;
     case 'workflow-cell':
       title = node.properties.cell.title;
       break;

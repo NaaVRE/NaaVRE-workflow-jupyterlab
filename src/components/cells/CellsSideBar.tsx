@@ -31,6 +31,8 @@ export function CellsSideBar({
       ? `${settings.catalogueServiceUrl}/workflow-cells/${defaultQuery}`
       : null
   );
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setCellsListUrl(
@@ -47,10 +49,21 @@ export function CellsSideBar({
     });
 
   const getCatalogItems = useCallback((cellsListUrl: string | null) => {
+    setErrorMessage(null);
+    setLoading(true);
     if (cellsListUrl) {
-      getCellsFromCatalogue(cellsListUrl).then(resp =>
-        setcellsListResponse(resp)
-      );
+      getCellsFromCatalogue(cellsListUrl)
+        .then(resp => {
+          setcellsListResponse(resp);
+        })
+        .catch(error => {
+          const msg = `Error loading cells: ${String(error)}`;
+          console.error(msg);
+          setErrorMessage(msg);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   }, []);
 
@@ -78,7 +91,14 @@ export function CellsSideBar({
       <CellsList
         title="Cells Catalog"
         cells={cellsListResponse.results}
-        minHeightInCells={10}
+        loading={loading}
+        message={
+          errorMessage
+            ? errorMessage
+            : cellsListResponse.count === 0
+              ? 'There are no cells in your catalogue. Get started by creating a notebook and containerizing a cell.'
+              : null
+        }
         selectedCellInList={selectedCellInList}
         setSelectedCell={setSelectedCell}
         button={
@@ -103,6 +123,8 @@ export function CellsSideBar({
       <CellsList
         title="Special cells"
         cells={specialCells}
+        loading={false}
+        message={null}
         selectedCellInList={selectedCellInList}
         setSelectedCell={setSelectedCell}
       />
