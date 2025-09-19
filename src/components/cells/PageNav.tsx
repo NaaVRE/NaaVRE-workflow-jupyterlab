@@ -6,17 +6,17 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import {
   getPageNumberAndCount,
-  ICellsCatalogueResponse
+  ICatalogueListResponse
 } from '../../utils/catalog';
 
 export function PageNav({
-  cellsListResponse,
-  setCellsListUrl
+  listResponse,
+  setUrl
 }: {
-  cellsListResponse: ICellsCatalogueResponse;
-  setCellsListUrl: (u: string | null) => void;
+  listResponse: ICatalogueListResponse<any>;
+  setUrl: (u: string | null) => void;
 }) {
-  const [currentPage, pageCount] = getPageNumberAndCount(cellsListResponse);
+  const [currentPage, pageCount] = getPageNumberAndCount(listResponse);
   return (
     <Stack
       direction="row"
@@ -29,9 +29,9 @@ export function PageNav({
       <IconButton
         aria-label="Previous"
         style={{ borderRadius: '100%' }}
-        onClick={() => setCellsListUrl(cellsListResponse.previous)}
+        onClick={() => setUrl(listResponse.previous)}
         sx={{
-          visibility: cellsListResponse.previous === null ? 'hidden' : 'visible'
+          visibility: listResponse.previous === null ? 'hidden' : 'visible'
         }}
       >
         <NavigateBeforeIcon />
@@ -42,9 +42,9 @@ export function PageNav({
       <IconButton
         aria-label="Next"
         style={{ borderRadius: '100%' }}
-        onClick={() => setCellsListUrl(cellsListResponse.next)}
+        onClick={() => setUrl(listResponse.next)}
         sx={{
-          visibility: cellsListResponse.next === null ? 'hidden' : 'visible'
+          visibility: listResponse.next === null ? 'hidden' : 'visible'
         }}
       >
         <NavigateNextIcon />

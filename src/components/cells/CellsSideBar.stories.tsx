@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
-import { getCellsFromCatalogueMock } from '../../utils/catalog';
+import { getCellsListFromCatalogueMock } from '../../utils/catalog';
 import { CellsSideBar } from './CellsSideBar';
 
 const meta = {
@@ -20,6 +20,6 @@ export const Default: Story = {
     },
     selectedCellInList: null,
     setSelectedCell: (c, n) => {},
-    getCells: getCellsFromCatalogueMock
+    getCells: getCellsListFromCatalogueMock
   }
 };
