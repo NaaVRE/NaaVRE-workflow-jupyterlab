@@ -18,11 +18,13 @@ import { IWorkflowWidgetSettings } from '../../widget';
 export function CellsSideBar({
   settings,
   selectedCellInList,
-  setSelectedCell
+  setSelectedCell,
+  getCells = getCellsFromCatalogue
 }: {
   settings: IWorkflowWidgetSettings;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
+  getCells?: (url: string) => Promise<ICellsCatalogueResponse>;
 }) {
   const defaultQuery = `?ordering=-modified&virtual_lab=${settings.virtualLab}`;
 
@@ -52,7 +54,7 @@ export function CellsSideBar({
     setErrorMessage(null);
     setLoading(true);
     if (cellsListUrl) {
-      getCellsFromCatalogue(cellsListUrl)
+      getCells(cellsListUrl)
         .then(resp => {
           setcellsListResponse(resp);
         })

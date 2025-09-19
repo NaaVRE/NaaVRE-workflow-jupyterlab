@@ -6,7 +6,7 @@ export interface ISpecialCell extends ICell {
 
 export const specialCells: Array<ISpecialCell> = [
   {
-    id: 'splitter',
+    url: 'splitter',
     title: 'Splitter',
     type: 'splitter',
     version: 1,
@@ -20,7 +20,7 @@ export const specialCells: Array<ISpecialCell> = [
     secrets: []
   },
   {
-    id: 'merger',
+    url: 'merger',
     title: 'Merger',
     type: 'merger',
     version: 1,
