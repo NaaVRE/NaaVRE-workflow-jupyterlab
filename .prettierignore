@@ -5,3 +5,4 @@ node_modules
 !/package.json
 **/venv
 NaaVRE_workflow_jupyterlab
+public/mockServiceWorker.js

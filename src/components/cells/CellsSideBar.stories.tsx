@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
-import { getCellsListFromCatalogueMock } from '../../utils/catalog';
 import { CellsSideBar } from './CellsSideBar';
 
 const meta = {
@@ -19,7 +18,6 @@ export const Default: Story = {
       catalogueServiceUrl: 'http://localhost:56848'
     },
     selectedCellInList: null,
-    setSelectedCell: (c, n) => {},
-    getCells: getCellsListFromCatalogueMock
+    setSelectedCell: (c, n) => {}
   }
 };

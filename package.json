@@ -98,6 +98,8 @@
         "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-storybook": "^9.1.7",
         "jest": "^29.2.0",
+        "msw": "^2.11.2",
+        "msw-storybook-addon": "^2.0.5",
         "npm-run-all2": "^7.0.1",
         "prettier": "^3.0.0",
         "rimraf": "^6.0.1",
@@ -222,5 +224,10 @@
     },
     "resolutions": {
         "@mrblenny/react-flow-chart@0.0.14": "patch:@mrblenny/react-flow-chart@npm%3A0.0.14#./.yarn/patches/@mrblenny-react-flow-chart-npm-0.0.14-8f356f8349.patch"
+    },
+    "msw": {
+        "workerDirectory": [
+            "public"
+        ]
     }
 }

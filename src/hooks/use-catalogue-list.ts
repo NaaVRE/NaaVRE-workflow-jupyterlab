@@ -1,14 +1,13 @@
+import { useCallback, useEffect, useState } from 'react';
 import { IWorkflowWidgetSettings } from '../widget';
 import { ICatalogueListResponse } from '../utils/catalog';
-import { useCallback, useEffect, useState } from 'react';
+import { fetchListFromCatalogue } from '../utils/catalog';
 
 export function useCatalogueList<T>({
   settings,
-  getFromCatalogue,
   initialPath
 }: {
   settings: IWorkflowWidgetSettings;
-  getFromCatalogue: (url: string) => Promise<ICatalogueListResponse<T>>;
   initialPath: string;
 }) {
   const [loading, setLoading] = useState(true);
@@ -32,11 +31,11 @@ export function useCatalogueList<T>({
     results: []
   });
 
-  const getCatalogItems = useCallback(() => {
+  const fetchResponse = useCallback(() => {
     setErrorMessage && setErrorMessage(null);
     setLoading && setLoading(true);
     if (url) {
-      getFromCatalogue(url)
+      fetchListFromCatalogue<T>(url)
         .then(resp => {
           setResponse(resp);
         })
@@ -51,7 +50,7 @@ export function useCatalogueList<T>({
     }
   }, [url]);
 
-  useEffect(() => getCatalogItems(), [getCatalogItems]);
+  useEffect(() => fetchResponse(), [fetchResponse]);
 
   return {
     url,
@@ -60,7 +59,7 @@ export function useCatalogueList<T>({
     setLoading,
     errorMessage,
     setErrorMessage,
-    getCatalogItems,
+    fetchResponse,
     response
   };
 }
