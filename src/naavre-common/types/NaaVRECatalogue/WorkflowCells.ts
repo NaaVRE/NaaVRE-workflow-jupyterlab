@@ -7,8 +7,8 @@ export interface IBaseImage {
 
 export interface IDependency {
   name: string;
-  module?: string;
-  asname?: string;
+  module?: string | null;
+  asname?: string | null;
 }
 
 export interface IBaseVariable {

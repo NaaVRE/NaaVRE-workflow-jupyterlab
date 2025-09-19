@@ -1,5 +1,5 @@
 export interface IBaseAsset {
-  id: string;
+  url: string;
   title: string;
   description?: string;
   created?: string;
