@@ -17,7 +17,9 @@ export const specialCells: Array<ISpecialCell> = [
     outputs: [{ name: 'splitter_target', type: 'list' }],
     confs: [],
     params: [],
-    secrets: []
+    secrets: [],
+    shared_with_scopes: [],
+    shared_with_users: []
   },
   {
     url: 'merger',
@@ -31,6 +33,8 @@ export const specialCells: Array<ISpecialCell> = [
     outputs: [{ name: 'merger_target', type: 'list' }],
     confs: [],
     params: [],
-    secrets: []
+    secrets: [],
+    shared_with_scopes: [],
+    shared_with_users: []
   }
 ];

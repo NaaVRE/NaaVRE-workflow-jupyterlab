@@ -29,7 +29,9 @@ const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/test-cell-2:f7b1772',
     kernel: '',
     source_url: '',
-    next_version: null
+    next_version: null,
+    shared_with_scopes: [],
+    shared_with_users: []
   },
   {
     url: 'http://localhost:56848/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/',
@@ -85,7 +87,9 @@ const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/test-cell-1:7abc41dd',
     kernel: 'ipython',
     source_url: '',
-    next_version: null
+    next_version: null,
+    shared_with_scopes: [],
+    shared_with_users: []
   }
 ];
 

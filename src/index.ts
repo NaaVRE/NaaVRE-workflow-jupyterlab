@@ -19,7 +19,8 @@ import { IObservableList } from '@jupyterlab/observables';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 
 import { WorkflowModelFactory, WorkflowWidgetFactory } from './factory';
-import { IWorkflowWidgetSettings, WorkflowWidget } from './widget';
+import { WorkflowWidget } from './widget';
+import { ISettings } from './settings';
 import { ToolbarItems } from './toolbarItems';
 import { Commands, CommandIDs } from './commands';
 
@@ -121,7 +122,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     // Load settings
     function loadSettings(settings: ISettingRegistry.ISettings): void {
       tracker.currentWidget?.updateSettings(
-        settings.composite as Partial<IWorkflowWidgetSettings>
+        settings.composite as Partial<ISettings>
       );
     }
     if (settingRegistry) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
@@ -9,20 +9,18 @@ import { specialCells } from '../../utils/specialCells';
 import { CellsList } from './CellsList';
 import { PageNav } from './PageNav';
 import { ListFilter } from './ListFilter';
-import { IWorkflowWidgetSettings } from '../../widget';
+import { SettingsContext } from '../../settings';
 import { useCatalogueList } from '../../hooks/use-catalogue-list';
 
 export function CellsSideBar({
-  settings,
   selectedCellInList,
   setSelectedCell
 }: {
-  settings: IWorkflowWidgetSettings;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
 }) {
+  const settings = useContext(SettingsContext);
   const {
-    url: cellsListUrl,
     setUrl: setCellsListUrl,
     loading,
     errorMessage,
@@ -30,7 +28,7 @@ export function CellsSideBar({
     response: cellsListResponse
   } = useCatalogueList<ICell>({
     settings,
-    initialPath: `workflow-cells/?ordering=-modified&virtual_lab=${settings.virtualLab}`
+    initialPath: 'workflow-cells/?ordering=-modified'
   });
 
   return (
@@ -73,7 +71,7 @@ export function CellsSideBar({
             </IconButton>
           </Tooltip>
         }
-        filter={<ListFilter url={cellsListUrl} setUrl={setCellsListUrl} />}
+        filter={<ListFilter setUrl={setCellsListUrl} />}
         pageNav={
           <PageNav listResponse={cellsListResponse} setUrl={setCellsListUrl} />
         }

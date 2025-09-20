@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import Button from '@mui/material/Button';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -20,7 +20,7 @@ import {
 } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '../../naavre-common/handler';
 import { theme } from '../../Theme';
-import { IWorkflowWidgetSettings } from '../../widget';
+import { SettingsContext } from '../../settings';
 import WorkflowRepeatPicker from '../WorkflowRepeatPicker';
 
 interface IParamValue {
@@ -32,13 +32,8 @@ interface ISecretValue {
   value: string | null;
 }
 
-export function RunWorkflowDialog({
-  chart,
-  settings
-}: {
-  chart: IChart;
-  settings: IWorkflowWidgetSettings;
-}) {
+export function RunWorkflowDialog({ chart }: { chart: IChart }) {
+  const settings = useContext(SettingsContext);
   const [params, setParams] = useState<{ [name: string]: IParamValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretValue }>({});
   const [cron, setCron] = useState<string | null>(null);

@@ -15,7 +15,7 @@ import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '../naavre-common/handler';
 import { defaultChart } from '../utils/chart';
 import { theme } from '../Theme';
-import { IWorkflowWidgetSettings } from '../widget';
+import { ISettings, SettingsContext } from '../settings';
 import { NodeCustom } from './chart/NodeCustom';
 import { NodeInnerCustom } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
@@ -24,9 +24,7 @@ import { RunWorkflowDialog } from './workflowRunDialog/RunWorkflowDialog';
 import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
 
-export interface IProps {
-  settings: IWorkflowWidgetSettings;
-}
+export interface IProps {}
 
 export interface IState {
   chart: IChart;
@@ -42,6 +40,8 @@ export const DefaultState: IState = {
 
 export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
+  static contextType = SettingsContext;
+  declare settings: ISettings;
 
   constructor(props: IProps) {
     super(props);
@@ -76,10 +76,7 @@ export class Composer extends React.Component<IProps, IState> {
     return {
       title: 'Run Workflow',
       body: ReactWidget.create(
-        <RunWorkflowDialog
-          chart={this.state.chart}
-          settings={this.props.settings}
-        />
+        <RunWorkflowDialog chart={this.state.chart} />
       ) as Dialog.IBodyWidget<any>,
       buttons: [],
       hasClose: true
@@ -89,10 +86,10 @@ export class Composer extends React.Component<IProps, IState> {
   exportWorkflow = async (browserFactory: IFileBrowserFactory) => {
     NaaVREExternalService(
       'POST',
-      `${this.props.settings.workflowServiceUrl}/convert`,
+      `${this.settings.workflowServiceUrl}/convert`,
       {},
       {
-        virtual_lab: this.props.settings.virtualLab,
+        virtual_lab: this.settings.virtualLab,
         naavrewf2: this.state.chart
       }
     )
@@ -158,7 +155,6 @@ export class Composer extends React.Component<IProps, IState> {
               />
             )}
             <CellsSideBar
-              settings={this.props.settings}
               selectedCellInList={this.state.selectedCellInList}
               setSelectedCell={this.setSelectedCell}
             />

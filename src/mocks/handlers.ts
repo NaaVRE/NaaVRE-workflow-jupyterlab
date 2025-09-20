@@ -1,6 +1,7 @@
 import { delay, http, HttpResponse, matchRequestUrl } from 'msw';
 import { INaaVREExternalServiceResponse } from '../naavre-common/handler';
 import { getCellsList } from './catalogue-service/workflow-cells';
+import { getSharingScopesList } from './catalogue-service/sharing-scopes';
 
 function getExternalServiceHandler(
   method: string,
@@ -18,6 +19,7 @@ function getExternalServiceHandler(
     }
     if (
       !matchRequestUrl(queryUrl, referenceUrl.pathname, referenceUrl.origin)
+        .matches
     ) {
       return;
     }
@@ -28,6 +30,14 @@ function getExternalServiceHandler(
 }
 
 export const externalServiceHandlers = [
+  http.post(
+    '/naavre-communicator/external-service',
+    getExternalServiceHandler(
+      'GET',
+      'http://localhost:56848/sharing-scopes/',
+      getSharingScopesList
+    )
+  ),
   http.post(
     '/naavre-communicator/external-service',
     getExternalServiceHandler(

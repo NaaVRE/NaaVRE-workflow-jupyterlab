@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { IWorkflowWidgetSettings } from '../widget';
+import { ISettings } from '../settings';
 import { ICatalogueListResponse } from '../utils/catalog';
 import { fetchListFromCatalogue } from '../utils/catalog';
 
@@ -7,7 +7,7 @@ export function useCatalogueList<T>({
   settings,
   initialPath
 }: {
-  settings: IWorkflowWidgetSettings;
+  settings: ISettings;
   initialPath: string;
 }) {
   const [loading, setLoading] = useState(true);
