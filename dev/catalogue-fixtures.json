@@ -25,6 +25,30 @@
     }
   },
   {
+    "model": "base_assets.sharingscope",
+    "pk": "test-community-1",
+    "fields": {
+      "title": "Test Community 1",
+      "label": "community"
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "test-virtual-lab-1",
+    "fields": {
+      "title": "Test Virtual Lab 1",
+      "label": "virtual_lab"
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "test-virtual-lab-2",
+    "fields": {
+      "title": "Test Virtual Lab 2",
+      "label": "virtual_lab"
+    }
+  },
+  {
     "model": "virtual_labs.virtuallab",
     "pk": "test-virtual-lab-1",
     "fields": {
