@@ -1,7 +1,7 @@
 import { ISharingScope } from '../../naavre-common/types/NaaVRECatalogue/BaseAssets';
 import { INaaVREExternalServiceResponse } from '../../naavre-common/handler';
 
-const sharingScopes: ISharingScope[] = [
+export const sharingScopes: ISharingScope[] = [
   {
     url: 'http://localhost:56848/sharing-scopes/test-community-1/',
     title: 'Test Community 1',
@@ -19,9 +19,9 @@ const sharingScopes: ISharingScope[] = [
   }
 ];
 
-export function getSharingScopesList(
+export async function getSharingScopesList(
   request: Request
-): INaaVREExternalServiceResponse {
+): Promise<INaaVREExternalServiceResponse> {
   return {
     status_code: 200,
     reason: 'OK',

@@ -1,40 +1,46 @@
 import { delay, http, HttpResponse, matchRequestUrl } from 'msw';
 import { INaaVREExternalServiceResponse } from '../naavre-common/handler';
-import { getCellsList } from './catalogue-service/workflow-cells';
+import { getCellsList, patchCell } from './catalogue-service/workflow-cells';
 import { getSharingScopesList } from './catalogue-service/sharing-scopes';
+import { getUsersList } from './catalogue-service/users';
 
 function getExternalServiceHandler(
   method: string,
-  url: string,
+  origin: string,
+  pathname: string,
   getExternalServiceResponse: (
     request: Request
-  ) => INaaVREExternalServiceResponse
+  ) => Promise<INaaVREExternalServiceResponse>
 ) {
   return async ({ request }: { request: Request }) => {
     const actualBody = await request.clone().json();
-    const referenceUrl = new URL(url);
     const queryUrl = new URL(actualBody.query.url);
     if (actualBody.query.method !== method) {
       return;
     }
-    if (
-      !matchRequestUrl(queryUrl, referenceUrl.pathname, referenceUrl.origin)
-        .matches
-    ) {
+    if (!matchRequestUrl(queryUrl, pathname, origin).matches) {
       return;
     }
 
     await delay(300);
-    return HttpResponse.json(getExternalServiceResponse(request));
+    return HttpResponse.json(await getExternalServiceResponse(request));
   };
 }
 
 export const externalServiceHandlers = [
+  http.get('/naavre-communicator/me', async () =>
+    HttpResponse.json({
+      sub: '00000000-0000-0000-0000-000000000000',
+      preferred_username: 'test-user-2',
+      name: null
+    })
+  ),
   http.post(
     '/naavre-communicator/external-service',
     getExternalServiceHandler(
       'GET',
-      'http://localhost:56848/sharing-scopes/',
+      'http://localhost:56848',
+      '/sharing-scopes/',
       getSharingScopesList
     )
   ),
@@ -42,8 +48,27 @@ export const externalServiceHandlers = [
     '/naavre-communicator/external-service',
     getExternalServiceHandler(
       'GET',
-      'http://localhost:56848/workflow-cells/',
+      'http://localhost:56848',
+      '/users/',
+      getUsersList
+    )
+  ),
+  http.post(
+    '/naavre-communicator/external-service',
+    getExternalServiceHandler(
+      'GET',
+      'http://localhost:56848',
+      '/workflow-cells/',
       getCellsList
+    )
+  ),
+  http.post(
+    '/naavre-communicator/external-service',
+    getExternalServiceHandler(
+      'PATCH',
+      'http://localhost:56848',
+      '/workflow-cells/*/',
+      patchCell
     )
   )
 ];

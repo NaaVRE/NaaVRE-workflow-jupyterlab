@@ -11,6 +11,10 @@ import { PageNav } from './PageNav';
 import { ListFilter } from './ListFilter';
 import { SettingsContext } from '../../settings';
 import { useCatalogueList } from '../../hooks/use-catalogue-list';
+import { ISharingScope } from '../../naavre-common/types/NaaVRECatalogue/BaseAssets';
+import { SharingScopesContext } from './SharingScopesContext';
+import { useUserInfo } from '../../hooks/use-user-info';
+import { UserInfoContext } from './UserInfoContext';
 
 export function CellsSideBar({
   selectedCellInList,
@@ -31,6 +35,13 @@ export function CellsSideBar({
     initialPath: 'workflow-cells/?ordering=-modified'
   });
 
+  const { response: sharingScopesResponse } = useCatalogueList<ISharingScope>({
+    settings,
+    initialPath: 'sharing-scopes/'
+  });
+
+  const userInfo = useUserInfo();
+
   return (
     <Paper
       elevation={12}
@@ -38,7 +49,7 @@ export function CellsSideBar({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: 250,
+        width: 300,
         height: '100%',
         overflowX: 'hidden',
         overflowY: 'scroll',
@@ -47,43 +58,52 @@ export function CellsSideBar({
         borderRadius: 0
       }}
     >
-      <CellsList
-        title="Cells Catalog"
-        cells={cellsListResponse.results}
-        loading={loading}
-        message={
-          errorMessage
-            ? errorMessage
-            : cellsListResponse.count === 0
-              ? 'There are no cells in your catalogue. Get started by creating a notebook and containerizing a cell.'
-              : null
-        }
-        selectedCellInList={selectedCellInList}
-        setSelectedCell={setSelectedCell}
-        button={
-          <Tooltip title="Refresh" arrow>
-            <IconButton
-              aria-label="Reload"
-              style={{ color: 'white', borderRadius: '100%' }}
-              onClick={() => fetchCellsListResponse()}
-            >
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
-        }
-        filter={<ListFilter setUrl={setCellsListUrl} />}
-        pageNav={
-          <PageNav listResponse={cellsListResponse} setUrl={setCellsListUrl} />
-        }
-      />
-      <CellsList
-        title="Special cells"
-        cells={specialCells}
-        loading={false}
-        message={null}
-        selectedCellInList={selectedCellInList}
-        setSelectedCell={setSelectedCell}
-      />
+      <SharingScopesContext.Provider value={sharingScopesResponse.results}>
+        <UserInfoContext.Provider value={userInfo}>
+          <CellsList
+            title="Cells Catalog"
+            cells={cellsListResponse.results}
+            loading={loading}
+            message={
+              errorMessage
+                ? errorMessage
+                : cellsListResponse.count === 0
+                  ? 'There are no cells in your catalogue. Get started by creating a notebook and containerizing a cell.'
+                  : null
+            }
+            selectedCellInList={selectedCellInList}
+            setSelectedCell={setSelectedCell}
+            fetchCellsListResponse={fetchCellsListResponse}
+            button={
+              <Tooltip title="Refresh" arrow>
+                <IconButton
+                  aria-label="Reload"
+                  style={{ color: 'white', borderRadius: '100%' }}
+                  onClick={() => fetchCellsListResponse()}
+                >
+                  <RefreshIcon />
+                </IconButton>
+              </Tooltip>
+            }
+            filter={<ListFilter setUrl={setCellsListUrl} />}
+            pageNav={
+              <PageNav
+                listResponse={cellsListResponse}
+                setUrl={setCellsListUrl}
+              />
+            }
+          />
+          <CellsList
+            title="Special cells"
+            cells={specialCells}
+            loading={false}
+            message={null}
+            selectedCellInList={selectedCellInList}
+            setSelectedCell={setSelectedCell}
+            fetchCellsListResponse={fetchCellsListResponse}
+          />
+        </UserInfoContext.Provider>
+      </SharingScopesContext.Provider>
     </Paper>
   );
 }

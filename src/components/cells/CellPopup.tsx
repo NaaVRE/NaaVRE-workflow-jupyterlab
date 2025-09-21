@@ -26,7 +26,7 @@ export function CellPopup({
       sx={{
         position: 'absolute',
         top: 20,
-        left: 'calc(20px + 250px)',
+        left: 'calc(20px + 300px)',
         width: 380,
         maxHeight: 'calc(100% - 40px)',
         overflowX: 'clip',
