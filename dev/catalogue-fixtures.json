@@ -1,6 +1,24 @@
 [
   {
     "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "fixture-user-1",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-10-16T13:05:25.378Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
     "pk": 3,
     "fields": {
       "password": "",
@@ -19,9 +37,40 @@
   },
   {
     "model": "oidc_jwt_auth.oidcuser",
+    "pk": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+    "fields": {
+      "user": 3
+    }
+  },
+  {
+    "model": "oidc_jwt_auth.oidcuser",
     "pk": "00000000-0000-0000-0000-000000000000",
     "fields": {
       "user": 3
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "test-community-1",
+    "fields": {
+      "title": "Test Community 1",
+      "label": "community"
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "test-virtual-lab-1",
+    "fields": {
+      "title": "Test Virtual Lab 1",
+      "label": "virtual_lab"
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "test-virtual-lab-2",
+    "fields": {
+      "title": "Test Virtual Lab 2",
+      "label": "virtual_lab"
     }
   },
   {
@@ -76,7 +125,7 @@
     "model": "base_assets.baseasset",
     "pk": "b6923c9e-eeb6-49fe-81f2-3df7003f8332",
     "fields": {
-      "title": "test-cell-2-with-a-long-name-test-user-2",
+      "title": "test-cell-2-with-a-looooooooooooooong-name-test-user-2",
       "description": "",
       "created": "2025-01-19T21:39:53.924Z",
       "modified": "2025-01-19T21:39:53.924Z",
@@ -94,6 +143,62 @@
       "modified": "2025-01-19T21:40:23.503Z",
       "owner": 3,
       "virtual_lab": "test-virtual-lab-2"
+    }
+  },
+  {
+    "model": "base_assets.baseasset",
+    "pk": "a9ad6181-e78c-45b0-83c1-69385b9f9404",
+    "fields": {
+      "title": "shared-with-user",
+      "description": "",
+      "created": "2025-09-19T18:48:23.397Z",
+      "modified": "2025-09-19T18:48:23.397Z",
+      "owner": 2,
+      "virtual_lab": "test-virtual-lab-1",
+      "shared_with_users": [3],
+      "shared_with_scopes": []
+    }
+  },
+  {
+    "model": "base_assets.baseasset",
+    "pk": "d7fa87ca-79a3-43eb-993a-83afec93f1e4",
+    "fields": {
+      "title": "shared-with-vl-1",
+      "description": "",
+      "created": "2025-09-19T18:48:23.397Z",
+      "modified": "2025-09-19T18:48:23.397Z",
+      "owner": 2,
+      "virtual_lab": "test-virtual-lab-1",
+      "shared_with_users": [],
+      "shared_with_scopes": ["test-virtual-lab-1"]
+    }
+  },
+  {
+    "model": "base_assets.baseasset",
+    "pk": "77e49ffb-7688-40c5-8287-6693ae3d096a",
+    "fields": {
+      "title": "shared-with-vl-2",
+      "description": "",
+      "created": "2025-09-19T18:48:23.397Z",
+      "modified": "2025-09-19T18:48:23.397Z",
+      "owner": 2,
+      "virtual_lab": "test-virtual-lab-2",
+      "shared_with_users": [],
+      "shared_with_scopes": ["test-virtual-lab-2"]
+    }
+  },
+  {
+    "model": "base_assets.baseasset",
+    "pk": "cbd0bc89-7418-4536-a8c4-6eb3bb6bf2e6",
+    "fields": {
+      "title": "shared-with-community",
+      "description": "",
+      "created": "2025-09-19T18:48:23.397Z",
+      "modified": "2025-09-19T18:48:23.397Z",
+      "owner": 2,
+      "virtual_lab": "test-virtual-lab-1",
+      "shared_with_users": [],
+      "shared_with_scopes": ["test-community-1"]
     }
   },
   {
@@ -254,6 +359,78 @@
       "confs": [2],
       "params": [6],
       "secrets": [7]
+    }
+  },
+  {
+    "model": "workflow_cells.cell",
+    "pk": "a9ad6181-e78c-45b0-83c1-69385b9f9404",
+    "fields": {
+      "version": 1,
+      "next_version": null,
+      "container_image": "example.com/naavre-cells/shared:93807f0f",
+      "base_container_image": 2,
+      "kernel": "ipython",
+      "source_url": "",
+      "dependencies": [],
+      "inputs": [],
+      "outputs": [],
+      "confs": [],
+      "params": [],
+      "secrets": []
+    }
+  },
+  {
+    "model": "workflow_cells.cell",
+    "pk": "d7fa87ca-79a3-43eb-993a-83afec93f1e4",
+    "fields": {
+      "version": 1,
+      "next_version": null,
+      "container_image": "example.com/naavre-cells/shared:93807f0f",
+      "base_container_image": 2,
+      "kernel": "ipython",
+      "source_url": "",
+      "dependencies": [],
+      "inputs": [],
+      "outputs": [],
+      "confs": [],
+      "params": [],
+      "secrets": []
+    }
+  },
+  {
+    "model": "workflow_cells.cell",
+    "pk": "77e49ffb-7688-40c5-8287-6693ae3d096a",
+    "fields": {
+      "version": 1,
+      "next_version": null,
+      "container_image": "example.com/naavre-cells/shared:93807f0f",
+      "base_container_image": 2,
+      "kernel": "ipython",
+      "source_url": "",
+      "dependencies": [],
+      "inputs": [],
+      "outputs": [],
+      "confs": [],
+      "params": [],
+      "secrets": []
+    }
+  },
+  {
+    "model": "workflow_cells.cell",
+    "pk": "cbd0bc89-7418-4536-a8c4-6eb3bb6bf2e6",
+    "fields": {
+      "version": 1,
+      "next_version": null,
+      "container_image": "example.com/naavre-cells/shared:93807f0f",
+      "base_container_image": 2,
+      "kernel": "ipython",
+      "source_url": "",
+      "dependencies": [],
+      "inputs": [],
+      "outputs": [],
+      "confs": [],
+      "params": [],
+      "secrets": []
     }
   }
 ]

@@ -1,8 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { Skeleton, Stack } from '@mui/material';
-import { SxProps } from '@mui/material/styles';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { SxProps, TypographyVariant } from '@mui/material/styles';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ShareIcon from '@mui/icons-material/Share';
+import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
@@ -12,8 +16,16 @@ import { ISpecialCell } from '../../utils/specialCells';
 import { cellToChartNode } from '../../utils/chart';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
+import { CellShareDialog } from './CellShareDialog';
+import { UserInfoContext } from './UserInfoContext';
 
-function TooltipOverflowLabel({ label }: { label: string }) {
+function TooltipOverflowLabel({
+  label,
+  variant
+}: {
+  label: string;
+  variant?: TypographyVariant;
+}) {
   const [isOverflowed, setIsOverflow] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -28,16 +40,17 @@ function TooltipOverflowLabel({ label }: { label: string }) {
       placement="bottom"
       arrow
     >
-      <span
+      <Typography
+        variant={variant}
         ref={ref}
-        style={{
+        sx={{
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis'
         }}
       >
         {label}
-      </span>
+      </Typography>
     </Tooltip>
   );
 }
@@ -45,10 +58,12 @@ function TooltipOverflowLabel({ label }: { label: string }) {
 function CellTitle({
   cell,
   isSpecialNode,
+  userIsOwner,
   sx
 }: {
   cell: ICell | ISpecialCell;
   isSpecialNode: boolean;
+  userIsOwner: boolean;
   sx?: SxProps;
 }) {
   const regex = new RegExp(`-${cell.owner}$`);
@@ -56,21 +71,24 @@ function CellTitle({
 
   return (
     <Stack sx={sx}>
-      <TooltipOverflowLabel label={title} />
+      <TooltipOverflowLabel variant="subtitle2" label={title} />
       {isSpecialNode || (
         <Stack
           direction="row"
           spacing={1}
           sx={{
-            alignItems: 'flex-end'
+            alignItems: 'center'
           }}
         >
           <LocalOfferIcon color="action" fontSize="inherit" />
-          <span>v{cell.version}</span>
+          <Typography variant="body2">v{cell.version}</Typography>
           {cell.owner && (
             <>
               <PersonIcon color="action" fontSize="inherit" />
-              <TooltipOverflowLabel label={cell.owner} />
+              <TooltipOverflowLabel
+                variant="body2"
+                label={userIsOwner ? 'me' : cell.owner}
+              />
             </>
           )}
         </Stack>
@@ -82,17 +100,24 @@ function CellTitle({
 export function CellNode({
   cell,
   selectedCellInList,
-  setSelectedCell
+  setSelectedCell,
+  fetchCellsListResponse
 }: {
   cell: ICell | ISpecialCell;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
+  fetchCellsListResponse: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const node = cellToChartNode(cell);
   const isSpecialNode = node.type !== 'workflow-cell';
 
-  function onClick() {
+  const userinfo = useContext(UserInfoContext);
+  const userIsOwner = cell.owner === userinfo.preferred_username;
+
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+
+  function onInfoButtonClick() {
     selectedCellInList === cell
       ? setSelectedCell(null, null)
       : setSelectedCell(cell, ref.current || null);
@@ -101,7 +126,6 @@ export function CellNode({
   return (
     <Box
       ref={ref}
-      onClick={onClick}
       draggable={true}
       onDragStart={(event: any) => {
         event.dataTransfer.setData(
@@ -128,18 +152,43 @@ export function CellNode({
         borderRadius: '5px',
         padding: '10px',
         paddingRight: '1px',
-        cursor: 'move'
+        cursor: 'grab',
+        '&:active': {
+          cursor: 'grabbing'
+        }
       }}
     >
       <CellTitle
         cell={cell}
         isSpecialNode={isSpecialNode}
-        sx={{ width: 'calc(100% - 40px)' }}
+        userIsOwner={userIsOwner}
+        sx={{ width: 'calc(100% - 80px + 8px)' }}
       />
       <IconButton
         aria-label="Info"
         style={{ borderRadius: '100%' }}
         sx={{ width: '40px' }}
+        onClick={() => setShareDialogOpen(true)}
+      >
+        {cell.shared_with_users.length > 0 ||
+        cell.shared_with_scopes.length > 0 ? (
+          <PeopleIcon />
+        ) : (
+          <ShareIcon />
+        )}
+      </IconButton>
+      <CellShareDialog
+        open={shareDialogOpen}
+        onClose={() => setShareDialogOpen(false)}
+        onUpdated={fetchCellsListResponse}
+        cell={cell}
+        readonly={!userIsOwner}
+      />
+      <IconButton
+        aria-label="Info"
+        style={{ borderRadius: '100%' }}
+        sx={{ width: '40px', marginLeft: '-8px' }}
+        onClick={onInfoButtonClick}
       >
         <InfoOutlinedIcon />
       </IconButton>

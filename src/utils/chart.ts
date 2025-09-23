@@ -25,7 +25,7 @@ export function cellToChartNode(cell: ICell | ISpecialCell): INode {
   const type = 'type' in cell ? cell.type : 'workflow-cell';
 
   return {
-    id: cell.id,
+    id: cell.url,
     type: type,
     position: { x: 35, y: 15 },
     properties: {

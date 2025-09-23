@@ -92,6 +92,18 @@ In development mode, you will also need to remove the symlink created by `jupyte
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
 folder is located. Then you can remove the symlink named `@naavre/workflow-jupyterlab` within that folder.
 
+### Isolated component development
+
+Rebuilding the extension and refreshing JupyterLab to see changes in the browser takes several seconds. This makes it hard to quickly iterate on presentation aspects such as layout.
+
+To get a quick preview of some components, we use [Storybook](https://storybook.js.org/):
+
+```shell
+jlpm run storybook
+```
+
+Note that in Storybook, components don’t get the full context from Jupyter Lab and rely on some mocking. To access all interaction features, you still need to run it in JupyterLab.
+
 ### Testing the extension
 
 #### Frontend tests

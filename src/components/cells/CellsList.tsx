@@ -10,6 +10,7 @@ export function CellsList({
   message,
   selectedCellInList,
   setSelectedCell,
+  fetchCellsListResponse,
   button,
   filter,
   pageNav
@@ -20,6 +21,7 @@ export function CellsList({
   message: string | null;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
+  fetchCellsListResponse: () => void;
   button?: ReactNode;
   filter?: ReactNode;
   pageNav?: ReactNode;
@@ -66,6 +68,7 @@ export function CellsList({
                 cell={cell}
                 selectedCellInList={selectedCellInList}
                 setSelectedCell={setSelectedCell}
+                fetchCellsListResponse={fetchCellsListResponse}
               />
             ))}
           </>

@@ -1,12 +1,11 @@
 import { NaaVREExternalService } from '../naavre-common/handler';
-import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { ceil } from 'lodash';
 
-export interface ICellsCatalogueResponse {
+export interface ICatalogueListResponse<T> {
   count: number;
   next: string | null;
   previous: string | null;
-  results: Array<ICell>;
+  results: Array<T>;
 }
 
 export function urlToPageNumber(url: string) {
@@ -22,7 +21,7 @@ export function urlToPageNumber(url: string) {
   }
 }
 
-export function getPageNumberAndCount(resp: ICellsCatalogueResponse) {
+export function getPageNumberAndCount(resp: ICatalogueListResponse<any>) {
   // The catalogue does not send back the page size and page count, so we get
   // to have fun with arithmetics
   let currentPage: number;
@@ -52,9 +51,9 @@ export function getPageNumberAndCount(resp: ICellsCatalogueResponse) {
   return [currentPage, pageCount];
 }
 
-export async function getCellsFromCatalogue(
+export async function fetchListFromCatalogue<T>(
   url: string
-): Promise<ICellsCatalogueResponse> {
+): Promise<ICatalogueListResponse<T>> {
   const resp = await NaaVREExternalService('GET', url, {
     accept: 'application/json'
   });

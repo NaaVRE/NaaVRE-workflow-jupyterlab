@@ -29,12 +29,7 @@ import lodash from 'lodash';
 import { Composer } from './components/Composer';
 import React from 'react';
 import { defaultChart } from './utils/chart';
-
-export interface IWorkflowWidgetSettings {
-  virtualLab?: string;
-  workflowServiceUrl?: string;
-  catalogueServiceUrl?: string;
-}
+import { ISettings, SettingsContext } from './settings';
 
 /**
  * DocumentWidget: widget that represents the view or editor for a file type.
@@ -49,7 +44,7 @@ export class WorkflowWidget extends DocumentWidget<
     super(options);
   }
 
-  updateSettings(settings: Partial<IWorkflowWidgetSettings>) {
+  updateSettings(settings: Partial<ISettings>) {
     this.content.updateSettings(settings);
   }
 
@@ -67,7 +62,7 @@ export class WorkflowWidget extends DocumentWidget<
  */
 export class ExperimentManagerWidget extends ReactWidget {
   composerRef: React.RefObject<Composer>;
-  settings: IWorkflowWidgetSettings = {};
+  settings: ISettings = {};
   private _model: WorkflowModel;
 
   /**
@@ -93,13 +88,17 @@ export class ExperimentManagerWidget extends ReactWidget {
     this._onContentChanged();
   }
 
-  updateSettings(settings: Partial<IWorkflowWidgetSettings>) {
+  updateSettings(settings: Partial<ISettings>) {
     this.settings = { ...this.settings, ...settings };
     this.update();
   }
 
   render() {
-    return <Composer ref={this.composerRef} settings={this.settings} />;
+    return (
+      <SettingsContext.Provider value={this.settings}>
+        <Composer ref={this.composerRef} />
+      </SettingsContext.Provider>
+    );
   }
 
   /**

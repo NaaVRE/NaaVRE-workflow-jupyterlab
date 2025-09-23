@@ -6,7 +6,7 @@ export interface ISpecialCell extends ICell {
 
 export const specialCells: Array<ISpecialCell> = [
   {
-    id: 'splitter',
+    url: 'splitter',
     title: 'Splitter',
     type: 'splitter',
     version: 1,
@@ -17,10 +17,12 @@ export const specialCells: Array<ISpecialCell> = [
     outputs: [{ name: 'splitter_target', type: 'list' }],
     confs: [],
     params: [],
-    secrets: []
+    secrets: [],
+    shared_with_scopes: [],
+    shared_with_users: []
   },
   {
-    id: 'merger',
+    url: 'merger',
     title: 'Merger',
     type: 'merger',
     version: 1,
@@ -31,6 +33,8 @@ export const specialCells: Array<ISpecialCell> = [
     outputs: [{ name: 'merger_target', type: 'list' }],
     confs: [],
     params: [],
-    secrets: []
+    secrets: [],
+    shared_with_scopes: [],
+    shared_with_users: []
   }
 ];
