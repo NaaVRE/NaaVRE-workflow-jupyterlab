@@ -2,6 +2,8 @@ export interface ISharingScope {
   url: string;
   title: string;
   label: 'virtual_lab' | 'community';
+  show_in_virtual_labs: string[];
+  check_in_virtual_labs: string[];
 }
 
 export interface IUser {

@@ -1,6 +1,7 @@
 import { ISharingScope } from '../naavre-common/types/NaaVRECatalogue/BaseAssets';
 import { useContext, useEffect, useState } from 'react';
 import { SharingScopesContext } from '../components/cells/SharingScopesContext';
+import { ISettings, SettingsContext } from '../settings';
 
 export interface ICheckboxFilter {
   key: string;
@@ -26,6 +27,7 @@ const sectionTitles: { [k: string]: string } = {
 };
 
 function getSharingScopesAsCheckboxFilters(
+  settings: ISettings,
   sharingScopes: ISharingScope[],
   activeSharingScopes: Set<string>,
   setActiveSharingScopes: any
@@ -36,7 +38,9 @@ function getSharingScopesAsCheckboxFilters(
       key: key,
       title: s.title,
       section: s.label,
-      checked: false,
+      checked: settings.virtualLab
+        ? s.check_in_virtual_labs.includes(settings.virtualLab)
+        : true,
       getSearchParams: (checked: boolean) => {
         const newActiveSharingScopes = activeSharingScopes;
         checked
@@ -78,6 +82,8 @@ function getCheckboxFiltersAsSections(
 export function useSharingScopeCheckboxes(
   defaultCheckboxFilters: ICheckboxFilter[]
 ) {
+  const settings = useContext(SettingsContext);
+
   // All checkbox filters
   const [checkboxFilters, setCheckboxFilters] = useState<ICheckboxFilter[]>(
     defaultCheckboxFilters
@@ -102,12 +108,17 @@ export function useSharingScopeCheckboxes(
     setCheckboxFilters(checkboxFilters => [
       ...checkboxFilters,
       ...getSharingScopesAsCheckboxFilters(
-        sharingScopes,
+        settings,
+        sharingScopes.filter(s =>
+          settings.virtualLab
+            ? s.show_in_virtual_labs.includes(settings.virtualLab)
+            : true
+        ),
         activeSharingScopes,
         setActiveSharingScopes
       ).filter(f => !checkboxFilters.some(d => d.key === f.key))
     ]);
-  }, [sharingScopes, activeSharingScopes, setActiveSharingScopes]);
+  }, [settings, sharingScopes, activeSharingScopes, setActiveSharingScopes]);
 
   // Update checkboxFiltersBySection when checkboxFilters change
   useEffect(() => {
