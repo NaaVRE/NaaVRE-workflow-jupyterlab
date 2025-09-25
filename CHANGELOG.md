@@ -2,6 +2,31 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.4.2
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.1...cb8981870d231ed8c7559a915100588a398642e3))
+
+### Enhancements made
+
+- Show and check sharing scopes based current virtual lab [#59](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/59) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump the mui group across 1 directory with 3 updates [#51](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/51) ([@dependabot](https://github.com/dependabot))
+- Bump actions/download-artifact from 4 to 5 [#48](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/48) ([@dependabot](https://github.com/dependabot))
+- Bump actions/checkout from 4 to 5 [#47](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/47) ([@dependabot](https://github.com/dependabot))
+- Bump stylelint-prettier from 4.1.0 to 5.0.3 [#41](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/41) ([@dependabot](https://github.com/dependabot))
+- Bump prettier from 3.4.2 to 3.6.2 [#40](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/40) ([@dependabot](https://github.com/dependabot))
+- Bump the jupyterlab group with 5 updates [#38](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/38) ([@dependabot](https://github.com/dependabot))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-09-23&to=2025-09-25&type=c))
+
+[@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-09-23..2025-09-25&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-09-23..2025-09-25&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.4.1
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.0...0e670f8afeb9fb2ae1efbb3d852b41e329c02ed3))
@@ -15,8 +40,6 @@
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-09-23&to=2025-09-23&type=c))
 
 [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-09-23..2025-09-23&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.4.0
 
