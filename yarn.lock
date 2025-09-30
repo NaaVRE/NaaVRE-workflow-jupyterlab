@@ -3804,12 +3804,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/hooks@npm:^7.17.3":
-  version: 7.17.3
-  resolution: "@mantine/hooks@npm:7.17.3"
+"@mantine/hooks@npm:^8.3.2":
+  version: 8.3.2
+  resolution: "@mantine/hooks@npm:8.3.2"
   peerDependencies:
     react: ^18.x || ^19.x
-  checksum: fd6ee6e6b744183e177b39b07b3af2c1e96d85c190851939244085e9f4235a61c8633bd3b66207a06243ad25223c9245c818bdf220c67c78698b90c7bf1cd9f5
+  checksum: dcfdbb6507ecb9e06563890cdaf2a083b4257e9e7c743a201582ab629a1504f82eb32ef8eb46ac447b0155781fee13192e463ac86323775b7caec109e6d55309
   languageName: node
   linkType: hard
 
@@ -4138,7 +4138,7 @@ __metadata:
     "@jupyterlab/settingregistry": ^4.0.0
     "@jupyterlab/shared-models": ^3.6.8
     "@jupyterlab/testutils": ^4.0.0
-    "@mantine/hooks": ^7.17.3
+    "@mantine/hooks": ^8.3.2
     "@mrblenny/react-flow-chart": 0.0.14
     "@mui/icons-material": ^7.0.1
     "@mui/material": ^7.0.1
