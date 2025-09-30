@@ -51,7 +51,7 @@ export function getPageNumberAndCount(resp: ICatalogueListResponse<any>) {
   return [currentPage, pageCount];
 }
 
-export async function fetchListFromCatalogue<T>(
+export async function fetchListPageFromCatalogue<T>(
   url: string
 ): Promise<ICatalogueListResponse<T>> {
   const resp = await NaaVREExternalService('GET', url, {
@@ -61,4 +61,26 @@ export async function fetchListFromCatalogue<T>(
     throw `${resp.status_code} ${resp.reason}`;
   }
   return JSON.parse(resp.content);
+}
+
+export async function fetchListFromCatalogue<T>(
+  url: string,
+  getAllPages?: boolean
+): Promise<ICatalogueListResponse<T>> {
+  let pageContent = await fetchListPageFromCatalogue<T>(url);
+  if (!getAllPages) {
+    return pageContent;
+  } else {
+    const content: ICatalogueListResponse<T> = {
+      count: pageContent.count,
+      next: null,
+      previous: null,
+      results: pageContent.results
+    };
+    while (pageContent.next !== null) {
+      pageContent = await fetchListPageFromCatalogue<T>(pageContent.next);
+      content.results = content.results.concat(pageContent.results);
+    }
+    return content;
+  }
 }
