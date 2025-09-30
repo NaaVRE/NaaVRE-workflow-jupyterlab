@@ -5,10 +5,12 @@ import { fetchListFromCatalogue } from '../utils/catalog';
 
 export function useCatalogueList<T>({
   settings,
-  initialPath
+  initialPath,
+  getAllPages
 }: {
   settings: ISettings;
   initialPath: string;
+  getAllPages?: boolean;
 }) {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -35,12 +37,12 @@ export function useCatalogueList<T>({
     setErrorMessage && setErrorMessage(null);
     setLoading && setLoading(true);
     if (url) {
-      fetchListFromCatalogue<T>(url)
+      fetchListFromCatalogue<T>(url, getAllPages)
         .then(resp => {
           setResponse(resp);
         })
         .catch(error => {
-          const msg = `Error loading cells: ${String(error)}`;
+          const msg = `Error listing items: ${String(error)}`;
           console.error(msg);
           setErrorMessage && setErrorMessage(msg);
         })

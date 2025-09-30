@@ -37,7 +37,8 @@ export function CellsSideBar({
 
   const { response: sharingScopesResponse } = useCatalogueList<ISharingScope>({
     settings,
-    initialPath: 'sharing-scopes/'
+    initialPath: 'sharing-scopes/?page_size=100',
+    getAllPages: true
   });
 
   const userInfo = useUserInfo();
