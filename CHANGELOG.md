@@ -2,6 +2,30 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.4.4
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.3...ba716ef1f1fce7a718d4dc47d0ff3d80e493711e))
+
+### Bugs fixed
+
+- Fix #63 Error running the workflow: Error: Domain is not allowed [#64](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/64) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump form-data from 4.0.1 to 4.0.4 [#70](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/70) ([@dependabot](https://github.com/dependabot))
+- Bump msw from 2.11.2 to 2.11.3 [#69](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/69) ([@dependabot](https://github.com/dependabot))
+- Bump @mui/x-date-pickers from 8.11.3 to 8.12.0 in the mui group [#67](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/67) ([@dependabot](https://github.com/dependabot))
+- Bump the jupyterlab group with 5 updates [#66](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/66) ([@dependabot](https://github.com/dependabot))
+- Bump actions/setup-python from 5 to 6 [#65](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/65) ([@dependabot](https://github.com/dependabot))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-09-30&to=2025-10-01&type=c))
+
+[@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-09-30..2025-10-01&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-09-30..2025-10-01&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.4.3
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.2...5b996657ccc4bc5545cdf18a8f466d1826bc542b))
@@ -15,8 +39,6 @@
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-09-25&to=2025-09-30&type=c))
 
 [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-09-25..2025-09-30&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.4.2
 
