@@ -4250,7 +4250,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@open-draft/until@npm:^2.0.0, @open-draft/until@npm:^2.1.0":
+"@open-draft/until@npm:^2.0.0":
   version: 2.1.0
   resolution: "@open-draft/until@npm:2.1.0"
   checksum: 140ea3b16f4a3a6a729c1256050e20a93d408d7aa1e125648ce2665b3c526ed452510c6e4a6f4b15d95fb5e41203fb51510eb8fbc8812d5e5a91880293d66471
@@ -9940,15 +9940,14 @@ __metadata:
   linkType: hard
 
 "msw@npm:^2.11.2":
-  version: 2.11.2
-  resolution: "msw@npm:2.11.2"
+  version: 2.11.3
+  resolution: "msw@npm:2.11.3"
   dependencies:
     "@bundled-es-modules/cookie": ^2.0.1
     "@bundled-es-modules/statuses": ^1.0.1
     "@inquirer/confirm": ^5.0.0
     "@mswjs/interceptors": ^0.39.1
     "@open-draft/deferred-promise": ^2.2.0
-    "@open-draft/until": ^2.1.0
     "@types/cookie": ^0.6.0
     "@types/statuses": ^2.0.4
     graphql: ^16.8.1
@@ -9961,6 +9960,7 @@ __metadata:
     strict-event-emitter: ^0.5.1
     tough-cookie: ^6.0.0
     type-fest: ^4.26.1
+    until-async: ^3.0.2
     yargs: ^17.7.2
   peerDependencies:
     typescript: ">= 4.8.x"
@@ -9969,7 +9969,7 @@ __metadata:
       optional: true
   bin:
     msw: cli/index.js
-  checksum: 599aa3ed6e5043479bef473fa427a7aaf343d32aedba301ec62cac1a30c50b2a2898c4b9fe11b939ab03768807860eff64ce2fbdd28f78d0c6be4f4318d8b276
+  checksum: bb664fa0a73579e20335afcaa8aa519511a8ad4179ca6bafbaf9b11d6ebde840df70a659b39648580fcfcadb917f946a846cc03409f2cd16c6828a7d457e12e3
   languageName: node
   linkType: hard
 
@@ -12442,6 +12442,13 @@ __metadata:
   version: 2.0.1
   resolution: "universalify@npm:2.0.1"
   checksum: ecd8469fe0db28e7de9e5289d32bd1b6ba8f7183db34f3bfc4ca53c49891c2d6aa05f3fb3936a81285a905cc509fb641a0c3fc131ec786167eff41236ae32e60
+  languageName: node
+  linkType: hard
+
+"until-async@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "until-async@npm:3.0.2"
+  checksum: 7134a00131457f03983a22deb11a726441169bfd38ac963cd9cd0b3057498c4bb94022cbb968f2d5cc60f1a75aa3c141ec403fc52ea5a4732e239aa7ce1f5e73
   languageName: node
   linkType: hard
 
