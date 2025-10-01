@@ -15,7 +15,7 @@ import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '../naavre-common/handler';
 import { defaultChart } from '../utils/chart';
 import { theme } from '../Theme';
-import { ISettings, SettingsContext } from '../settings';
+import { SettingsContext } from '../settings';
 import { NodeCustom } from './chart/NodeCustom';
 import { NodeInnerCustom } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
@@ -41,7 +41,7 @@ export const DefaultState: IState = {
 export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
   static contextType = SettingsContext;
-  declare settings: ISettings;
+  declare context: React.ContextType<typeof SettingsContext>;
 
   constructor(props: IProps) {
     super(props);
@@ -76,7 +76,9 @@ export class Composer extends React.Component<IProps, IState> {
     return {
       title: 'Run Workflow',
       body: ReactWidget.create(
-        <RunWorkflowDialog chart={this.state.chart} />
+        <SettingsContext.Provider value={this.context}>
+          <RunWorkflowDialog chart={this.state.chart} />
+        </SettingsContext.Provider>
       ) as Dialog.IBodyWidget<any>,
       buttons: [],
       hasClose: true
@@ -86,10 +88,10 @@ export class Composer extends React.Component<IProps, IState> {
   exportWorkflow = async (browserFactory: IFileBrowserFactory) => {
     NaaVREExternalService(
       'POST',
-      `${this.settings.workflowServiceUrl}/convert`,
+      `${this.context.workflowServiceUrl}/convert`,
       {},
       {
-        virtual_lab: this.settings.virtualLab,
+        virtual_lab: this.context.virtualLab,
         naavrewf2: this.state.chart
       }
     )
