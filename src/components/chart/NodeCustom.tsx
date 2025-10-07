@@ -56,7 +56,11 @@ function NodeTitle({
         sx={{
           padding: '10px',
           width: 'calc(100% - 60px + 8px)',
-          alignItems: 'center'
+          alignItems: 'center',
+          cursor: 'grab',
+          '&:active': {
+            cursor: 'grabbing'
+          }
         }}
       >
         <TooltipOverflowLabel variant="subtitle2" label={title} />
