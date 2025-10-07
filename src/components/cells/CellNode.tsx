@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { SxProps, TypographyVariant } from '@mui/material/styles';
+import { SxProps } from '@mui/material/styles';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ShareIcon from '@mui/icons-material/Share';
 import PeopleIcon from '@mui/icons-material/People';
@@ -14,46 +14,10 @@ import { REACT_FLOW_CHART } from '@mrblenny/react-flow-chart';
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { ISpecialCell } from '../../utils/specialCells';
 import { cellToChartNode } from '../../utils/chart';
-import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import { CellShareDialog } from './CellShareDialog';
 import { UserInfoContext } from './UserInfoContext';
-
-function TooltipOverflowLabel({
-  label,
-  variant
-}: {
-  label: string;
-  variant?: TypographyVariant;
-}) {
-  const [isOverflowed, setIsOverflow] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    ref.current &&
-      setIsOverflow(ref.current.scrollWidth > ref.current.clientWidth);
-  }, []);
-
-  return (
-    <Tooltip
-      title={label}
-      disableHoverListener={!isOverflowed}
-      placement="bottom"
-      arrow
-    >
-      <Typography
-        variant={variant}
-        ref={ref}
-        sx={{
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis'
-        }}
-      >
-        {label}
-      </Typography>
-    </Tooltip>
-  );
-}
+import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 
 function CellTitle({
   cell,

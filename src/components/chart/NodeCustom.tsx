@@ -1,71 +1,107 @@
 import React, { CSSProperties, ForwardedRef } from 'react';
 import styled from 'styled-components';
-import Tooltip from '@mui/material/Tooltip';
-import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
+import { INode, INodeDefaultProps } from '@mrblenny/react-flow-chart';
+import IconButton from '@mui/material/IconButton';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
+import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import Stack from '@mui/material/Stack';
+import { Typography } from '@mui/material';
+import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 
 const NodeContainer = styled.div<{ width?: string; height?: string }>`
   position: absolute;
   background: white;
   width: ${props => props.width || '250px'};
   height: ${props => props.height || '150px'};
-  border-radius: 5px;
+  min-height: 60px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   border: 1px solid lightgray;
+  border-top-width: 0;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 7px 10px 0;
 `;
 
 function NodeTitle({
-  title,
+  cell,
+  isSpecialNode,
   backgroundColor
 }: {
-  title: string;
+  cell: ICell;
+  isSpecialNode: boolean;
   backgroundColor: CSSProperties['color'];
 }) {
+  const regex = new RegExp(`-${cell.owner}$`);
+  const title = cell.title.replace(regex, '');
+
   return (
-    <Tooltip title={title} placement="bottom" arrow>
-      <div
-        style={{
-          borderTopLeftRadius: '5px',
-          borderTopRightRadius: '5px',
-          padding: '5px',
-          textAlign: 'center',
-          backgroundColor: backgroundColor
+    <div
+      style={{
+        position: 'absolute',
+        bottom: '100%',
+        left: '-1px',
+        width: '100%',
+        borderTopLeftRadius: '5px',
+        borderTopRightRadius: '5px',
+        border: '1px solid lightgray',
+        borderBottomWidth: 0,
+        backgroundColor: backgroundColor,
+        display: 'flex',
+        justifyContent: 'space-between'
+      }}
+    >
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          padding: '10px',
+          width: 'calc(100% - 60px + 8px)',
+          alignItems: 'center'
         }}
       >
-        <div
-          style={{
-            fontSize: 'small',
-            display: 'inline-block',
-            maxWidth: '200px',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}
-        >
-          {title}
-        </div>
-      </div>
-    </Tooltip>
+        <TooltipOverflowLabel variant="subtitle2" label={title} />
+        {isSpecialNode || (
+          <Typography variant="body2">v{cell.version}</Typography>
+        )}
+      </Stack>
+      <IconButton
+        aria-label="Info"
+        style={{ borderRadius: '100%' }}
+        sx={{ width: '40px', marginLeft: '-8px' }}
+      >
+        <InfoOutlinedIcon />
+      </IconButton>
+    </div>
   );
+}
+
+function getNodeHeight(node: INode) {
+  const maxPortsCount = Math.max(
+    Object.values(node.ports).filter(p => p.type === 'left').length,
+    Object.values(node.ports).filter(p => p.type === 'right').length
+  );
+  const portHeightPx = 26;
+  const heightPx = maxPortsCount * (portHeightPx || 1);
+  return `${heightPx}px`;
 }
 
 function NodeCustomElement(
   { node, children, ...otherProps }: INodeDefaultProps,
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const is_special_node = node.type !== 'workflow-cell';
+  const isSpecialNode = node.type !== 'workflow-cell';
 
-  let width = '250px';
-  let height = '150px';
-  if (node.type === 'splitter' || node.type === 'merger') {
-    width = '200px';
-    height = '100px';
-  }
+  getNodeHeight(node);
+  const width = isSpecialNode ? '200px' : '250px';
+  const height = getNodeHeight(node);
 
   return (
     <NodeContainer width={width} height={height} ref={ref} {...otherProps}>
       <NodeTitle
-        title={node.properties.cell.title}
+        cell={node.properties.cell}
+        isSpecialNode={isSpecialNode}
         backgroundColor={
-          is_special_node ? 'rgb(195, 235, 202)' : 'rgb(229,252,233)'
+          isSpecialNode ? 'rgb(195, 235, 202)' : 'rgb(229,252,233)'
         }
       />
       {children}
