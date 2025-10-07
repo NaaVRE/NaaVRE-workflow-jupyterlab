@@ -19,6 +19,7 @@ import { SettingsContext } from '../settings';
 import { NodeCustom } from './chart/NodeCustom';
 import { NodeInnerCustom } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
+import { LinkCustom } from './chart/LinkCustom';
 import { ChartElementEditor } from './chart/ChartElementEditor';
 import { RunWorkflowDialog } from './workflowRunDialog/RunWorkflowDialog';
 import { CellsSideBar } from './cells/CellsSideBar';
@@ -138,7 +139,8 @@ export class Composer extends React.Component<IProps, IState> {
               Components={{
                 Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
                 NodeInner: NodeInnerCustom,
-                Port: PortCustom
+                Port: PortCustom,
+                Link: LinkCustom
               }}
             />
             {this.state.chart.selected.id && (

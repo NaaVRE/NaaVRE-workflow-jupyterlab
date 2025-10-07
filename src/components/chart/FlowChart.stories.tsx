@@ -12,6 +12,7 @@ import { chart as mockChart } from '../../mocks/chart';
 import { NodeCustom } from './NodeCustom';
 import { NodeInnerCustom } from './NodeInnerCustom';
 import { PortCustom } from './PortCustom';
+import { LinkCustom } from './LinkCustom';
 
 function FlowChartStory() {
   const [chart, setChart] = useState<IChart>(mockChart);
@@ -34,7 +35,8 @@ function FlowChartStory() {
       Components={{
         Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
         NodeInner: NodeInnerCustom,
-        Port: PortCustom
+        Port: PortCustom,
+        Link: LinkCustom
       }}
     />
   );
