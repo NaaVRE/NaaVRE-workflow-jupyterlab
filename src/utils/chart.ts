@@ -1,5 +1,9 @@
 import ColorHash from 'color-hash';
-import { IChart, INode } from '@mrblenny/react-flow-chart';
+import {
+  IChart,
+  INode,
+  IOnLinkCompleteInput
+} from '@mrblenny/react-flow-chart';
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { ISpecialCell } from './specialCells';
@@ -60,4 +64,15 @@ export function cellToChartNode(cell: ICell | ISpecialCell): INode {
       })
     ])
   };
+}
+
+export function validateLink(
+  props: IOnLinkCompleteInput & { chart: IChart }
+): boolean {
+  const { fromNodeId, toNodeId } = props;
+  // no links between same node
+  if (fromNodeId === toNodeId) {
+    return false;
+  }
+  return true;
 }

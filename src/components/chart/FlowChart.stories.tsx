@@ -13,6 +13,7 @@ import { NodeCustom } from './NodeCustom';
 import { NodeInnerCustom } from './NodeInnerCustom';
 import { PortCustom } from './PortCustom';
 import { LinkCustom } from './LinkCustom';
+import { validateLink } from '../../utils/chart';
 
 function FlowChartStory() {
   const [chart, setChart] = useState<IChart>(mockChart);
@@ -30,7 +31,8 @@ function FlowChartStory() {
       chart={chart}
       callbacks={chartStateActions}
       config={{
-        readonly: false
+        readonly: false,
+        validateLink: validateLink
       }}
       Components={{
         Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,

@@ -13,7 +13,7 @@ import {
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '../naavre-common/handler';
-import { defaultChart } from '../utils/chart';
+import { defaultChart, validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
 import { NodeCustom } from './chart/NodeCustom';
@@ -59,7 +59,8 @@ export class Composer extends React.Component<IProps, IState> {
   chartConfig: IConfig = {
     // This is needed because onDeleteKey assumes config.readonly is defined...
     // https://github.com/MrBlenny/react-flow-chart/blob/0.0.14/src/container/actions.ts#L182
-    readonly: false
+    readonly: false,
+    validateLink: validateLink
   };
 
   setSelectedCell = (cell: ICell | null, cellNode: HTMLDivElement | null) => {
