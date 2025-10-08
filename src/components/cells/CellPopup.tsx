@@ -4,8 +4,7 @@ import { useClickOutside } from '@mantine/hooks';
 
 import { CellInfo } from '../common/CellInfo';
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { CellInfoHeader } from '../common/CellInfoHeader';
 
 export function CellPopup({
   cell,
@@ -33,23 +32,7 @@ export function CellPopup({
         overflowY: 'scroll'
       }}
     >
-      <div
-        className="naavre-workflow-section-header"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <p style={{ margin: '0' }}>{cell.title}</p>
-        <IconButton
-          aria-label="Close"
-          style={{ color: 'white', borderRadius: '100%' }}
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </div>
+      <CellInfoHeader onClose={onClose}>{cell.title}</CellInfoHeader>
       <CellInfo cell={cell} />
     </Paper>
   );

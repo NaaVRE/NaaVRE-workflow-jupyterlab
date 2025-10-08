@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
@@ -14,10 +14,10 @@ import { getVariableColor } from '../../utils/chart';
 
 function PropsTable({
   title,
-  children
+  rows
 }: {
   title?: string;
-  children: ReactNode;
+  rows: Array<Array<ReactNode>>;
 }) {
   return (
     <>
@@ -29,13 +29,15 @@ function PropsTable({
           {title}
         </Typography>
       )}
-      <Paper elevation={1}>
-        <TableContainer>
-          <Table>
-            <TableBody>{children}</TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {rows.map(cells => (
+              <PropsTableRow cells={cells} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }
@@ -50,13 +52,19 @@ function PropsTableRow({ cells }: { cells: Array<ReactNode> }) {
   );
 }
 
-function IOVarDot({ name }: { name: string }) {
+function IOVarDot({
+  name,
+  color
+}: {
+  name: string;
+  color?: CSSProperties['color'];
+}) {
   return (
     <div
       style={{
         width: '20px',
         height: '20px',
-        background: getVariableColor(name),
+        background: color || getVariableColor(name),
         borderRadius: '50%'
       }}
     />
@@ -64,81 +72,94 @@ function IOVarDot({ name }: { name: string }) {
 }
 
 export function CellInfo({ cell }: { cell: ICell }) {
+  const isSpecialNode = cell.title === 'Splitter' || cell.title === 'Merger';
+
+  const cellTables = [
+    {
+      title: undefined,
+      rows: [
+        ['Description', cell.description],
+        ['Owner', cell.owner],
+        [
+          'Version',
+          isSpecialNode
+            ? null
+            : `${cell.version} ${cell.next_version ? '' : '(latest)'}`
+        ],
+        [
+          'Shared',
+          isSpecialNode
+            ? null
+            : cell.shared_with_scopes.length > 0 ||
+                cell.shared_with_users.length > 0
+              ? 'Yes'
+              : 'No'
+        ]
+      ]
+    },
+    {
+      title: 'Inputs',
+      rows: cell.inputs.map(v => [
+        <IOVarDot
+          name={v.name}
+          color={isSpecialNode ? '#3C8F49' : undefined}
+        />,
+        v.name,
+        v.type
+      ])
+    },
+    {
+      title: 'Outputs',
+      rows: cell.outputs.map(v => [
+        <IOVarDot
+          name={v.name}
+          color={isSpecialNode ? '#3C8F49' : undefined}
+        />,
+        v.name,
+        v.type
+      ])
+    },
+    {
+      title: 'Parameters',
+      rows: cell.params.map(v => [v.name, v.type, v.default_value])
+    },
+    {
+      title: 'Secrets',
+      rows: cell.secrets.map(v => [v.name, v.type])
+    },
+    {
+      title: 'Technical information',
+      rows: [
+        ['Image name', cell.container_image],
+        ['Base image (build)', cell.base_container_image?.build],
+        ['Base image (runtime)', cell.base_container_image?.runtime],
+        ['Kernel', cell.kernel],
+        [
+          'Source',
+          cell.source_url && (
+            <Link href={cell.source_url} target="_blank" rel="noreferrer">
+              {cell.source_url}
+            </Link>
+          )
+        ]
+      ]
+    }
+  ];
+  const cellTablesFiltered = cellTables
+    .map(({ title, rows }) => ({
+      title: title,
+      rows: rows.filter(
+        row =>
+          row.at(-1) !== undefined && row.at(-1) !== null && row.at(-1) !== ''
+      )
+    }))
+    .filter(({ rows }) => rows.length > 0);
+
   return (
     <Box sx={{ margin: '15px' }}>
-      <PropsTable>
-        {cell.container_image && (
-          <PropsTableRow cells={['Image name', cell.container_image]} />
-        )}
-        {cell.base_container_image && (
-          <>
-            <PropsTableRow
-              cells={['Base image (build)', cell.base_container_image.build]}
-            />
-            <PropsTableRow
-              cells={[
-                'Base image (runtime)',
-                cell.base_container_image.runtime
-              ]}
-            />
-          </>
-        )}
-        {cell.kernel && <PropsTableRow cells={['Kernel', cell.kernel]} />}
-        {cell.source_url && (
-          <PropsTableRow
-            cells={[
-              'Source',
-              <Link href={cell.source_url} target="_blank" rel="noreferrer">
-                {cell.source_url}
-              </Link>
-            ]}
-          />
-        )}
-      </PropsTable>
-
-      {cell.inputs.length > 0 && (
-        <>
-          <PropsTable title="Inputs">
-            {cell.inputs.map(v => (
-              <PropsTableRow
-                cells={[<IOVarDot name={v.name} />, v.name, v.type]}
-              />
-            ))}
-          </PropsTable>
-        </>
-      )}
-
-      {cell.outputs.length > 0 && (
-        <>
-          <PropsTable title="Outputs">
-            {cell.outputs.map(v => (
-              <PropsTableRow
-                cells={[<IOVarDot name={v.name} />, v.name, v.type]}
-              />
-            ))}
-          </PropsTable>
-        </>
-      )}
-
-      {cell.params.length > 0 && (
-        <>
-          <PropsTable title="Parameters">
-            {cell.params.map(v => (
-              <PropsTableRow cells={[v.name, v.type, v.default_value]} />
-            ))}
-          </PropsTable>
-        </>
-      )}
-
-      {cell.secrets.length > 0 && (
-        <>
-          <PropsTable title="Secrets">
-            {cell.secrets.map(v => (
-              <PropsTableRow cells={[v.name]} />
-            ))}
-          </PropsTable>
-        </>
-      )}
+      {cellTablesFiltered.map(({ title, rows }) => (
+        <PropsTable title={title} rows={rows} />
+      ))}
     </Box>
   );
 }

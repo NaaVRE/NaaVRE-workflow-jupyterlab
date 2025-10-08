@@ -10,62 +10,19 @@ import {
 } from '@mrblenny/react-flow-chart';
 
 import { CellInfo } from '../common/CellInfo';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { ReactNode } from 'react';
-
-function EditorHeader({
-  children,
-  onClose
-}: {
-  children: ReactNode;
-  onClose: () => void;
-}) {
-  return (
-    <div
-      className="naavre-workflow-section-header"
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}
-    >
-      <p style={{ margin: '0' }}>{children}</p>
-      <IconButton
-        aria-label="Close"
-        style={{ color: 'white', borderRadius: '100%' }}
-        onClick={onClose}
-      >
-        <CloseIcon />
-      </IconButton>
-    </div>
-  );
-}
+import { CellInfoHeader } from '../common/CellInfoHeader';
 
 function LinkEditor({ link, onClose }: { link: ILink; onClose: () => void }) {
-  return <EditorHeader onClose={onClose}>Link</EditorHeader>;
+  return <CellInfoHeader onClose={onClose}>Link</CellInfoHeader>;
 }
 
 function NodeEditor({ node, onClose }: { node: INode; onClose: () => void }) {
-  let title: string = '';
-  switch (node.type) {
-    case 'splitter':
-      title = 'Splitter';
-      break;
-    case 'merger':
-      title = 'Merger';
-      break;
-    case 'workflow-cell':
-      title = node.properties.cell.title;
-      break;
-  }
-
   return (
     <>
-      <EditorHeader onClose={onClose}>{title}</EditorHeader>
-      {node.type === 'workflow-cell' && (
-        <CellInfo cell={node.properties.cell} />
-      )}
+      <CellInfoHeader onClose={onClose}>
+        {node.properties.cell.title}
+      </CellInfoHeader>
+      <CellInfo cell={node.properties.cell} />
     </>
   );
 }
