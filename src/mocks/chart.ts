@@ -119,7 +119,8 @@ export const chart: IChart = {
           params: [],
           secrets: [],
           title: 'test-cell-2-with-a-looooooooooooooong-name-test-user-2',
-          description: '',
+          description:
+            'Description of test-cell-2-with-a-looooooooooooooong-name-test-user-2',
           created: '2025-01-19T21:39:53.924000Z',
           modified: '2025-01-19T21:39:53.924000Z',
           version: 1,
@@ -161,7 +162,7 @@ export const chart: IChart = {
           params: [],
           secrets: [],
           title: 'shared-with-vl-1',
-          description: '',
+          description: 'Description of shared-with-vl-1',
           created: '2025-09-19T18:48:23.397000Z',
           modified: '2025-09-19T18:48:23.397000Z',
           version: 1,
@@ -203,7 +204,7 @@ export const chart: IChart = {
           params: [],
           secrets: [],
           title: 'shared-with-user',
-          description: '',
+          description: 'Description of shared-with-user',
           created: '2025-09-19T18:48:23.397000Z',
           modified: '2025-09-19T18:48:23.397000Z',
           version: 1,
@@ -290,13 +291,15 @@ export const chart: IChart = {
             }
           ],
           title: 'test-cell-1-test-user-2',
-          description: '',
+          description: 'Description of test-cell-1-test-user-2',
           created: '2025-01-19T21:37:23.503000Z',
           modified: '2025-01-19T21:37:23.503000Z',
           version: 1,
-          container_image: 'example.com/naavre-cells/test-cell-1:49c621b',
+          container_image:
+            'ghcr.io/naavre/cells-vl-openlab/test-py-input-list-gabriel-pelouze-lifewatch-eu:b6301bf',
           kernel: 'ipython',
-          source_url: '',
+          source_url:
+            'https://github.com/NaaVRE/cells-vl-openlab/tree/49c8e8db12af5350c26b699da1300884c91a76dc/test-py-input-list-gabriel-pelouze-lifewatch-eu',
           next_version:
             'http://localhost:56848/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
         }
@@ -445,7 +448,7 @@ export const chart: IChart = {
             }
           ],
           title: 'test-cell-1-test-user-2',
-          description: '',
+          description: 'Description of test-cell-1-test-user-2',
           created: '2025-01-19T21:38:23.503000Z',
           modified: '2025-01-19T21:37:23.503000Z',
           version: 2,
@@ -505,7 +508,8 @@ export const chart: IChart = {
           params: [],
           secrets: [],
           title: 'test-cell-2-with-a-looooooooooooooong-name-test-user-2',
-          description: '',
+          description:
+            'Description of test-cell-2-with-a-looooooooooooooong-name-test-user-2',
           created: '2025-01-19T21:39:53.924000Z',
           modified: '2025-01-19T21:39:53.924000Z',
           version: 1,
@@ -547,7 +551,7 @@ export const chart: IChart = {
           params: [],
           secrets: [],
           title: 'shared-with-community',
-          description: '',
+          description: 'Description of shared-with-community',
           created: '2025-09-19T18:48:23.397000Z',
           modified: '2025-09-19T18:48:23.397000Z',
           version: 1,
@@ -797,7 +801,7 @@ export const chart: IChart = {
           params: [],
           secrets: [],
           title: 'test-cell-3-test-user-2',
-          description: '',
+          description: 'Description of test-cell-3-test-user-2',
           created: '2025-10-07T08:57:38.023654Z',
           modified: '2025-10-07T09:00:25.258582Z',
           version: 1,
