@@ -128,26 +128,30 @@ export function CellNode({
         userIsOwner={userIsOwner}
         sx={{ width: 'calc(100% - 80px + 8px)' }}
       />
-      <IconButton
-        aria-label="Info"
-        style={{ borderRadius: '100%' }}
-        sx={{ width: '40px' }}
-        onClick={() => setShareDialogOpen(true)}
-      >
-        {cell.shared_with_users.length > 0 ||
-        cell.shared_with_scopes.length > 0 ? (
-          <PeopleIcon />
-        ) : (
-          <ShareIcon />
-        )}
-      </IconButton>
-      <CellShareDialog
-        open={shareDialogOpen}
-        onClose={() => setShareDialogOpen(false)}
-        onUpdated={fetchCellsListResponse}
-        cell={cell}
-        readonly={!userIsOwner}
-      />
+      {isSpecialNode || (
+        <>
+          <IconButton
+            aria-label="Info"
+            style={{ borderRadius: '100%' }}
+            sx={{ width: '40px' }}
+            onClick={() => setShareDialogOpen(true)}
+          >
+            {cell.shared_with_users.length > 0 ||
+            cell.shared_with_scopes.length > 0 ? (
+              <PeopleIcon />
+            ) : (
+              <ShareIcon />
+            )}
+          </IconButton>
+          <CellShareDialog
+            open={shareDialogOpen}
+            onClose={() => setShareDialogOpen(false)}
+            onUpdated={fetchCellsListResponse}
+            cell={cell}
+            readonly={!userIsOwner}
+          />
+        </>
+      )}
       <IconButton
         aria-label="Info"
         style={{ borderRadius: '100%' }}
