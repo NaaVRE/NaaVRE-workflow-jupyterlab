@@ -19,6 +19,6 @@ export interface IBaseAsset {
   modified?: string;
   owner?: string;
   virtual_lab?: string | null;
-  shared_with_scopes: string[]; // ISharingScope slug
-  shared_with_users: string[]; // User slug
+  shared_with_scopes?: string[]; // ISharingScope slug
+  shared_with_users?: string[]; // User slug
 }

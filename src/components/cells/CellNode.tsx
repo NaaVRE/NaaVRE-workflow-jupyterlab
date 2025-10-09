@@ -136,8 +136,8 @@ export function CellNode({
             sx={{ width: '40px' }}
             onClick={() => setShareDialogOpen(true)}
           >
-            {cell.shared_with_users.length > 0 ||
-            cell.shared_with_scopes.length > 0 ? (
+            {(cell.shared_with_users || []).length > 0 ||
+            (cell.shared_with_scopes || []).length > 0 ? (
               <PeopleIcon />
             ) : (
               <ShareIcon />
