@@ -84,14 +84,16 @@ export function CellInfo({ cell }: { cell: ICell }) {
           'Version',
           isSpecialNode
             ? null
-            : `${cell.version} ${cell.next_version ? '' : '(latest)'}`
+            : cell.version
+              ? `${cell.version} ${cell.next_version ? '' : '(latest)'}`
+              : 'N/A'
         ],
         [
           'Shared',
           isSpecialNode
             ? null
-            : cell.shared_with_scopes.length > 0 ||
-                cell.shared_with_users.length > 0
+            : (cell.shared_with_scopes || []).length > 0 ||
+                (cell.shared_with_users || []).length > 0
               ? 'Yes'
               : 'No'
         ]

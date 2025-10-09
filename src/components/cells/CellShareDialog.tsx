@@ -126,7 +126,9 @@ export function CellShareDialog({
   cell: ICell;
   readonly: boolean;
 }) {
-  const [usernames, setUsernames] = useState<string[]>(cell.shared_with_users);
+  const [usernames, setUsernames] = useState<string[]>(
+    cell.shared_with_users || []
+  );
 
   const {
     checkboxFilters,
@@ -141,7 +143,7 @@ export function CellShareDialog({
   useEffect(() => {
     setCheckboxFilters(checkboxFilters => {
       checkboxFilters.forEach(f => {
-        f.checked = cell.shared_with_scopes.includes(f.key);
+        f.checked = cell.shared_with_scopes?.includes(f.key) || false;
       });
       return checkboxFilters;
     });
