@@ -2,6 +2,29 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.4.7
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.6...6ee03183ffb018527752c968621f354a8c90a168))
+
+### Enhancements made
+
+- Increase params input field width [#82](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/82) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump the jupyterlab group across 1 directory with 6 updates [#83](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/83) ([@dependabot](https://github.com/dependabot))
+- Bump the mui group with 3 updates [#78](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/78) ([@dependabot](https://github.com/dependabot))
+- Bump actions/download-artifact from 5 to 6 [#76](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/76) ([@dependabot](https://github.com/dependabot))
+- Bump actions/upload-artifact from 4 to 5 [#75](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/75) ([@dependabot](https://github.com/dependabot))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-10-09&to=2025-11-18&type=c))
+
+[@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-10-09..2025-11-18&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-10-09..2025-11-18&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.4.6
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.5...4d7e6ebae108dfcf69255544d828681ae9210b0d))
@@ -15,8 +38,6 @@
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-10-08&to=2025-10-09&type=c))
 
 [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-10-08..2025-10-09&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.4.5
 
