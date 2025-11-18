@@ -172,7 +172,11 @@ export function RunWorkflowDialog({ chart }: { chart: IChart }) {
                 </Button>
               </div>
             )}
-            <Stack direction="column" spacing={2} style={{ width: '80vw', maxWidth: '950px' }}>
+            <Stack
+              direction="column"
+              spacing={2}
+              style={{ width: '80vw', maxWidth: '950px' }}
+            >
               {Object.entries(params).map(([k, v]) => (
                 <TextField
                   key={k}
