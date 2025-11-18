@@ -3,11 +3,6 @@ import AutoModeIcon from '@mui/icons-material/AutoMode';
 import Button from '@mui/material/Button';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import { green } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
@@ -162,7 +157,7 @@ export function RunWorkflowDialog({ chart }: { chart: IChart }) {
               <div
                 style={{
                   textAlign: 'right',
-                  padding: '10px 15px 0 0'
+                  padding: '10px 15px 10px 15px'
                 }}
               >
                 <Button
@@ -177,40 +172,32 @@ export function RunWorkflowDialog({ chart }: { chart: IChart }) {
                 </Button>
               </div>
             )}
-            <TableContainer>
-              <Table stickyHeader aria-label="sticky table">
-                <TableBody>
-                  {Object.entries(params).map(([k, v]) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={k}>
-                      <TableCell key={k} align={'right'}>
-                        {k}
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        <TextField
-                          value={params[k].value}
-                          onChange={e => updateParamValue(e, k)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {Object.entries(secrets).map(([k, v]) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={k}>
-                      <TableCell key={k} align={'right'}>
-                        {k}
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        <TextField
-                          type="password"
-                          autoComplete="off"
-                          value={secrets[k].value}
-                          onChange={e => updateSecretValue(e, k)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <Stack
+              direction="column"
+              spacing={2}
+              style={{ width: '80vw', maxWidth: '950px' }}
+            >
+              {Object.entries(params).map(([k, v]) => (
+                <TextField
+                  key={k}
+                  label={k}
+                  slotProps={{ inputLabel: { shrink: true } }}
+                  value={params[k].value}
+                  onChange={e => updateParamValue(e, k)}
+                />
+              ))}
+              {Object.entries(secrets).map(([k, v]) => (
+                <TextField
+                  key={k}
+                  label={k}
+                  slotProps={{ inputLabel: { shrink: true } }}
+                  type="password"
+                  autoComplete="off"
+                  value={secrets[k].value}
+                  onChange={e => updateSecretValue(e, k)}
+                />
+              ))}
+            </Stack>
             <Stack
               direction="row"
               spacing={2}
