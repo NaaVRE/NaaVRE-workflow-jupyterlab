@@ -18,6 +18,9 @@ import { theme } from '../../Theme';
 import { SettingsContext } from '../../settings';
 import WorkflowRepeatPicker from '../WorkflowRepeatPicker';
 import { runWorkflowNotification } from './runWorkflowNotification';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 
 interface IParamValue {
   value: string | null;
@@ -33,7 +36,32 @@ declare type SubmitWorkflowResponse = {
   run_url: string;
 };
 
-export function RunWorkflowDialog({ chart }: { chart: IChart }) {
+export function RunWorkflowDialog({
+  open,
+  onClose,
+  chart
+}: {
+  open: boolean;
+  onClose: () => void;
+  chart: IChart;
+}) {
+  return (
+    <Dialog onClose={onClose} open={open}>
+      <DialogTitle>Run Workflow</DialogTitle>
+      <DialogContent>
+        <RunWorkflowDialogContent onClose={onClose} chart={chart} />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function RunWorkflowDialogContent({
+  onClose,
+  chart
+}: {
+  onClose: () => void;
+  chart: IChart;
+}) {
   const settings = useContext(SettingsContext);
   const [params, setParams] = useState<{ [name: string]: IParamValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretValue }>({});
@@ -140,24 +168,41 @@ export function RunWorkflowDialog({ chart }: { chart: IChart }) {
         }}
       >
         {submittedWorkflow ? (
-          <div
-            style={{
-              padding: '10px',
-              alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'column'
-            }}
-          >
-            <CheckCircleOutlineIcon
-              fontSize="large"
-              sx={{ color: green[500] }}
-            />
-            <p style={{ fontSize: 'large' }}>
-              Workflow submitted! You can track it{' '}
-              <a target={'_blank'} href={submittedWorkflow.run_url}>
-                here
-              </a>
-            </p>
+          <div>
+            <div
+              style={{
+                padding: '10px',
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
+              <CheckCircleOutlineIcon
+                fontSize="large"
+                sx={{ color: green[500] }}
+              />
+              <p style={{ fontSize: 'large' }}>Workflow submitted!</p>
+            </div>
+            <Stack
+              direction="row"
+              spacing={2}
+              style={{
+                float: 'right',
+                alignItems: 'center'
+              }}
+            >
+              <Button
+                variant="contained"
+                className={'lw-panel-button'}
+                onClick={onClose}
+                color="primary"
+                style={{
+                  float: 'right'
+                }}
+              >
+                Ok
+              </Button>
+            </Stack>
           </div>
         ) : (
           <div>
@@ -183,7 +228,7 @@ export function RunWorkflowDialog({ chart }: { chart: IChart }) {
             <Stack
               direction="column"
               spacing={2}
-              style={{ width: '80vw', maxWidth: '950px' }}
+              style={{ width: '80vw', maxWidth: '100%' }}
             >
               {Object.entries(params).map(([k, v]) => (
                 <TextField

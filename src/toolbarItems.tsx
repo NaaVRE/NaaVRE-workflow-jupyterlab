@@ -1,6 +1,6 @@
 import { CommandRegistry } from '@lumino/commands';
 import { Widget } from '@lumino/widgets';
-import { ToolbarButton, showDialog } from '@jupyterlab/apputils';
+import { ToolbarButton } from '@jupyterlab/apputils';
 import { codeIcon, runIcon, saveIcon } from '@jupyterlab/ui-components';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 
@@ -41,9 +41,7 @@ export namespace ToolbarItems {
       tooltip: 'Run the workflow',
       icon: runIcon,
       onClick: () =>
-        showDialog(
-          widget.content.composerRef.current?.getRunWorkflowDialogOptions()
-        )
+        widget.content.composerRef.current?.setRunWorkflowDialogOpen(true)
     });
   }
 }

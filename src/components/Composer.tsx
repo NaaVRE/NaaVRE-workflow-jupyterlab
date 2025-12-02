@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mapValues } from 'lodash';
-import { Dialog, ReactWidget } from '@jupyterlab/apputils';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { ThemeProvider } from '@mui/material/styles';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
@@ -31,12 +30,14 @@ export interface IState {
   chart: IChart;
   selectedCellInList: ICell | null;
   selectedCellNode: HTMLDivElement | null;
+  runWorkflowDialogOpen: boolean;
 }
 
 export const DefaultState: IState = {
   chart: defaultChart,
   selectedCellInList: null,
-  selectedCellNode: null
+  selectedCellNode: null,
+  runWorkflowDialogOpen: false
 };
 
 export class Composer extends React.Component<IProps, IState> {
@@ -74,17 +75,8 @@ export class Composer extends React.Component<IProps, IState> {
     this.setState({ chart: chart });
   };
 
-  getRunWorkflowDialogOptions = (): Partial<Dialog.IOptions<any>> => {
-    return {
-      title: 'Run Workflow',
-      body: ReactWidget.create(
-        <SettingsContext.Provider value={this.context}>
-          <RunWorkflowDialog chart={this.state.chart} />
-        </SettingsContext.Provider>
-      ) as Dialog.IBodyWidget<any>,
-      buttons: [],
-      hasClose: true
-    };
+  setRunWorkflowDialogOpen = (open: boolean) => {
+    this.setState({ runWorkflowDialogOpen: open });
   };
 
   exportWorkflow = async (browserFactory: IFileBrowserFactory) => {
@@ -116,6 +108,11 @@ export class Composer extends React.Component<IProps, IState> {
   render(): React.ReactElement {
     return (
       <ThemeProvider theme={theme}>
+        <RunWorkflowDialog
+          open={this.state.runWorkflowDialogOpen}
+          onClose={() => this.setRunWorkflowDialogOpen(false)}
+          chart={this.state.chart}
+        />
         <div
           style={{
             display: 'flex',
