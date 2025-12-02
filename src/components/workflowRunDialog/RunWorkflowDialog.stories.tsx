@@ -16,20 +16,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    chart: mockChart
+    chart: mockChart,
+    open: true,
+    onClose: () => {}
   },
   decorators: [
     (Story, { parameters }) => {
-      return (
-        <div className="lm-widget jp-Dialog jp-ThemedContainer">
-          <div className="lm-widget jp-Dialog-content">
-            <div className="lm-widget jp-Dialog-header">Run Workflow</div>
-            <div className="lm-widget jp-Dialog-body">
-              <Story />
-            </div>
-          </div>
-        </div>
-      );
+      return <Story />;
     }
   ]
 };
