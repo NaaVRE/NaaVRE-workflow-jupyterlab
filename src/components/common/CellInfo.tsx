@@ -123,7 +123,11 @@ export function CellInfo({ cell }: { cell: ICell }) {
     },
     {
       title: 'Parameters',
-      rows: cell.params.map(v => [v.name, v.type, v.default_value])
+      rows: cell.params.map(v =>
+        v.default_value
+          ? [v.name, v.type, v.default_value]
+          : [v.name, v.type, <p style={{ fontStyle: 'italic' }}>n/a</p>]
+      )
     },
     {
       title: 'Secrets',
