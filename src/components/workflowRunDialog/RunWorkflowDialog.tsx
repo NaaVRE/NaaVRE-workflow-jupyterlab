@@ -78,17 +78,21 @@ function RunWorkflowDialogContent({
   const isCron = cron !== null;
 
   useEffect(() => {
+    const params: { [name: string]: IParamValue } = {};
+    const secrets: { [name: string]: ISecretValue } = {};
     Object.values(chart.nodes).forEach(node => {
       node.properties.cell.params.forEach((param: IParam) => {
-        setParam(param.name, {
+        params[param.name] = {
           value: null,
           default_value: param.default_value
-        });
+        };
       });
       node.properties.cell.secrets.forEach((secret: ISecret) => {
-        setSecret(secret.name, { value: null });
+        secrets[secret.name] = { value: null };
       });
     });
+    setParams(Object.fromEntries(Object.entries(params).sort()));
+    setSecrets(Object.fromEntries(Object.entries(secrets).sort()));
   }, [chart.nodes]);
 
   const updateParamValue = async (

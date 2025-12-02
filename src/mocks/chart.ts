@@ -279,6 +279,11 @@ export const chart: IChart = {
           ],
           params: [
             {
+              name: 'param_z',
+              type: 'str',
+              default_value: 'test value'
+            },
+            {
               name: 'param_test_1',
               type: 'str',
               default_value: 'test value'
