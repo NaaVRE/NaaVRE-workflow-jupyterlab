@@ -27,7 +27,6 @@ declare type ArgoWorkflowStatus = {
 
 declare type WorkflowStatusResponse = {
   status: ArgoWorkflowStatus;
-  // TODO check if we get https://argo-workflows.readthedocs.io/en/latest/fields/#cronworkflowstatus
 } | null;
 
 async function callStatusAPI(workflowUrl: string, settings: ISettings) {

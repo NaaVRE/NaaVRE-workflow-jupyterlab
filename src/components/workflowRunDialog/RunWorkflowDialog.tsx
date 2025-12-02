@@ -75,6 +75,7 @@ function RunWorkflowDialogContent({
   const setSecret = (name: string, value: ISecretValue) => {
     setSecrets(prevState => ({ ...prevState, [name]: value }));
   };
+  const isCron = cron !== null;
 
   useEffect(() => {
     Object.values(chart.nodes).forEach(node => {
@@ -148,8 +149,10 @@ function RunWorkflowDialogContent({
           throw `${resp.status_code} ${resp.reason}`;
         }
         const data: SubmitWorkflowResponse = JSON.parse(resp.content);
-        runWorkflowNotification(data.run_url, settings);
         setSubmittedWorkflow(data);
+        if (!isCron) {
+          runWorkflowNotification(data.run_url, settings);
+        }
       })
       .catch(error => {
         const msg = `Error running the workflow: ${error}`;
@@ -181,7 +184,27 @@ function RunWorkflowDialogContent({
                 fontSize="large"
                 sx={{ color: green[500] }}
               />
-              <p style={{ fontSize: 'large' }}>Workflow submitted!</p>
+              {isCron ? (
+                <>
+                  <p style={{ fontSize: 'large' }}>
+                    Recurring workflow scheduled!
+                  </p>
+                  <p style={{ fontSize: 'medium' }}>
+                    <a
+                      style={{
+                        textDecoration: 'underline',
+                        color: 'var(--jp-content-link-color)'
+                      }}
+                      href={submittedWorkflow.run_url}
+                      target="_blank"
+                    >
+                      Show in workflow engine
+                    </a>
+                  </p>
+                </>
+              ) : (
+                <p style={{ fontSize: 'large' }}>Workflow submitted!</p>
+              )}
             </div>
             <Stack
               direction="row"
