@@ -17,6 +17,7 @@ import { NaaVREExternalService } from '../../naavre-common/handler';
 import { theme } from '../../Theme';
 import { SettingsContext } from '../../settings';
 import WorkflowRepeatPicker from '../WorkflowRepeatPicker';
+import { runWorkflowNotification } from './runWorkflowNotification';
 
 interface IParamValue {
   value: string | null;
@@ -27,12 +28,18 @@ interface ISecretValue {
   value: string | null;
 }
 
+// Partial type for POST {workflowServiceUrl}/submit
+declare type SubmitWorkflowResponse = {
+  run_url: string;
+};
+
 export function RunWorkflowDialog({ chart }: { chart: IChart }) {
   const settings = useContext(SettingsContext);
   const [params, setParams] = useState<{ [name: string]: IParamValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretValue }>({});
   const [cron, setCron] = useState<string | null>(null);
-  const [submittedWorkflow, setSubmittedWorkflow] = useState<any>(null);
+  const [submittedWorkflow, setSubmittedWorkflow] =
+    useState<SubmitWorkflowResponse | null>(null);
 
   const setParam = (name: string, value: IParamValue) => {
     setParams(prevState => ({ ...prevState, [name]: value }));
@@ -112,7 +119,8 @@ export function RunWorkflowDialog({ chart }: { chart: IChart }) {
         if (resp.status_code !== 200) {
           throw `${resp.status_code} ${resp.reason}`;
         }
-        const data = JSON.parse(resp.content);
+        const data: SubmitWorkflowResponse = JSON.parse(resp.content);
+        runWorkflowNotification(data.run_url, settings);
         setSubmittedWorkflow(data);
       })
       .catch(error => {
