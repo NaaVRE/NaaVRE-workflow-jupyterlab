@@ -32,7 +32,7 @@ export function CellsSideBar({
     response: cellsListResponse
   } = useCatalogueList<ICell>({
     settings,
-    initialPath: 'workflow-cells/?ordering=-modified'
+    initialPath: 'workflow-cells/?ordering=-created'
   });
 
   const { response: sharingScopesResponse } = useCatalogueList<ISharingScope>({
