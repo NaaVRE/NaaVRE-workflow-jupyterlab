@@ -6,8 +6,8 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { updateSearchParams } from './ListFilter';
 
 const orderingOptions = [
-  { value: 'modified', title: 'First modified' },
-  { value: '-modified', title: 'Last modified' },
+  { value: 'created', title: 'First created' },
+  { value: '-created', title: 'Last created' },
   { value: 'title', title: 'A-Z' },
   { value: '-title', title: 'Z-A' }
 ];
@@ -17,7 +17,7 @@ export function ListFilterOrdering({
 }: {
   setUrl: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
-  const [ordering, setOrdering] = useState<string | null>('-modified');
+  const [ordering, setOrdering] = useState<string | null>('-created');
 
   useEffect(() => {
     setUrl((url: string | null) =>
