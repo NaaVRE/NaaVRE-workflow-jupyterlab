@@ -281,7 +281,7 @@ export const chart: IChart = {
             {
               name: 'param_z',
               type: 'str',
-              default_value: 'test value'
+              default_value: null
             },
             {
               name: 'param_test_1',
