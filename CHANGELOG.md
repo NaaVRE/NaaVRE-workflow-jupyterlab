@@ -2,6 +2,34 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.4.8
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.7...e9718a9e1fab10c36b157bf45c14068b6423ab2b))
+
+### Enhancements made
+
+- Sort parameters alphabetically [#91](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/91) ([@gpelouze](https://github.com/gpelouze))
+- Order cells by creation date instead of modification [#90](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/90) ([@gpelouze](https://github.com/gpelouze))
+- Show workflow status and progress in jupyter lab [#89](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/89) ([@gpelouze](https://github.com/gpelouze))
+
+### Bugs fixed
+
+- Fix #81 Param is not shown when default_value is null [#92](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/92) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump @mui/x-date-pickers from 8.18.0 to 8.19.0 in the mui group [#86](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/86) ([@dependabot](https://github.com/dependabot))
+- Bump actions/checkout from 5 to 6 [#85](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/85) ([@dependabot](https://github.com/dependabot))
+- Bump js-yaml from 3.14.1 to 3.14.2 [#84](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/84) ([@dependabot](https://github.com/dependabot))
+
+### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-11-18&to=2025-12-02&type=c))
+
+[@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-11-18..2025-12-02&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-11-18..2025-12-02&type=Issues)
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.4.7
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.6...6ee03183ffb018527752c968621f354a8c90a168))
@@ -22,8 +50,6 @@
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-10-09&to=2025-11-18&type=c))
 
 [@dependabot](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Adependabot+updated%3A2025-10-09..2025-11-18&type=Issues) | [@gpelouze](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-10-09..2025-11-18&type=Issues)
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.4.6
 
