@@ -53,6 +53,20 @@
       "default": []
     }
   },
+  "jupyter.lab.menus": {
+    "main": [
+      {
+        "id": "naavre-menu",
+        "label": "NaaVRE",
+        "rank": 10000,
+        "items": [
+          {
+            "command": "create-vre-composer"
+          }
+        ]
+      }
+    ]
+  },
   "additionalProperties": false,
   "definitions": {
     "toolbarItem": {
