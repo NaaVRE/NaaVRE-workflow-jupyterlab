@@ -21,6 +21,7 @@ import { runWorkflowNotification } from './runWorkflowNotification';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
+import Alert from '@mui/material/Alert';
 
 interface IParamValue {
   value: string | null;
@@ -66,6 +67,7 @@ function RunWorkflowDialogContent({
   const [params, setParams] = useState<{ [name: string]: IParamValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretValue }>({});
   const [cron, setCron] = useState<string | null>(null);
+  const [hasDraftCells, setHasDraftCells] = useState<boolean>(true);
   const [submittedWorkflow, setSubmittedWorkflow] =
     useState<SubmitWorkflowResponse | null>(null);
 
@@ -81,6 +83,9 @@ function RunWorkflowDialogContent({
     const params: { [name: string]: IParamValue } = {};
     const secrets: { [name: string]: ISecretValue } = {};
     Object.values(chart.nodes).forEach(node => {
+      if (node.properties.cell.isDraft) {
+        setHasDraftCells(true);
+      }
       node.properties.cell.params.forEach((param: IParam) => {
         params[param.name] = {
           value: null,
@@ -231,6 +236,10 @@ function RunWorkflowDialogContent({
               </Button>
             </Stack>
           </div>
+        ) : hasDraftCells ? (
+          <Alert severity="error">
+            You cannot run this workflow because it contains draft cells.
+          </Alert>
         ) : (
           <div>
             {Object.keys(params).length !== 0 && (
