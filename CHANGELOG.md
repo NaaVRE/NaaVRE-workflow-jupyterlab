@@ -2,6 +2,30 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.4.10
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.9...8c736cbe5e69eeac1fdc2dfab42e89e7dc4860c3))
+
+### Enhancements made
+
+- Add support for draft workflow components [#107](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/107) ([@gpelouze](https://github.com/gpelouze))
+- Add NaaVRE menu entry [#104](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/104) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump tar from 7.4.3 to 7.5.3 [#105](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/105) ([@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-01-09&to=2026-01-19&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-01-09..2026-01-19&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.4.9
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.8...b4558fdd996c559d8c7fda58ac5e27598a830ccf))
@@ -23,8 +47,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2025-12-02&to=2026-01-09&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2025-12-02..2026-01-09&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.4.8
 

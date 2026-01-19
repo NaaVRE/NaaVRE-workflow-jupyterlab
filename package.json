@@ -1,6 +1,6 @@
 {
     "name": "@naavre/workflow-jupyterlab",
-    "version": "0.4.9",
+    "version": "0.4.10",
     "description": "NaaVRE workflow editor frontend on Jupyter Lab",
     "keywords": [
         "jupyter",
