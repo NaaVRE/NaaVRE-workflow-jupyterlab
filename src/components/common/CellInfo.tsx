@@ -96,7 +96,8 @@ export function CellInfo({ cell }: { cell: ICell }) {
                 (cell.shared_with_users || []).length > 0
               ? 'Yes'
               : 'No'
-        ]
+        ],
+        ['Draft', cell.is_draft ? 'Yes' : 'No']
       ]
     },
     {

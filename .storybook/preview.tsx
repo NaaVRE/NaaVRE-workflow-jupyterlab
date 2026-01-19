@@ -26,7 +26,7 @@ const preview: Preview = {
     settings: {
       virtualLab: 'test-virtual-lab-1',
       workflowServiceUrl: 'http://localhost:62438',
-      catalogueServiceUrl: 'http://localhost:56848'
+      catalogueServiceUrl: 'http://localhost:8000'
     },
     msw: {
       handlers: externalServiceHandlers

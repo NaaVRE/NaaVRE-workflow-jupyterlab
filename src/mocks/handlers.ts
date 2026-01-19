@@ -39,7 +39,7 @@ export const externalServiceHandlers = [
     '/naavre-communicator/external-service',
     getExternalServiceHandler(
       'GET',
-      'http://localhost:56848',
+      'http://localhost:8000',
       '/sharing-scopes/',
       getSharingScopesList
     )
@@ -48,7 +48,7 @@ export const externalServiceHandlers = [
     '/naavre-communicator/external-service',
     getExternalServiceHandler(
       'GET',
-      'http://localhost:56848',
+      'http://localhost:8000',
       '/users/',
       getUsersList
     )
@@ -57,7 +57,7 @@ export const externalServiceHandlers = [
     '/naavre-communicator/external-service',
     getExternalServiceHandler(
       'GET',
-      'http://localhost:56848',
+      'http://localhost:8000',
       '/workflow-cells/',
       getCellsList
     )
@@ -66,7 +66,7 @@ export const externalServiceHandlers = [
     '/naavre-communicator/external-service',
     getExternalServiceHandler(
       'PATCH',
-      'http://localhost:56848',
+      'http://localhost:8000',
       '/workflow-cells/*/',
       patchCell
     )

@@ -139,6 +139,18 @@
   },
   {
     "model": "base_assets.baseasset",
+    "pk": "5b8bdf8a-7759-4064-b23d-c6593224cbe1",
+    "fields": {
+      "title": "draft-cell-1-test-user-2",
+      "description": "",
+      "created": "2025-01-19T21:37:23.503Z",
+      "modified": "2025-01-19T21:37:23.503Z",
+      "owner": 3,
+      "virtual_lab": "test-virtual-lab-1"
+    }
+  },
+  {
+    "model": "base_assets.baseasset",
     "pk": "b6923c9e-eeb6-49fe-81f2-3df7003f8332",
     "fields": {
       "title": "test-cell-2-with-a-looooooooooooooong-name-test-user-2",
@@ -339,6 +351,25 @@
       "confs": [2],
       "params": [6],
       "secrets": [7]
+    }
+  },
+  {
+    "model": "workflow_cells.cell",
+    "pk": "5b8bdf8a-7759-4064-b23d-c6593224cbe1",
+    "fields": {
+      "version": 1,
+      "next_version": null,
+      "container_image": null,
+      "base_container_image": null,
+      "kernel": "ipython",
+      "source_url": "",
+      "dependencies": [],
+      "inputs": [],
+      "outputs": [],
+      "confs": [],
+      "params": [],
+      "secrets": [],
+      "is_draft": true
     }
   },
   {

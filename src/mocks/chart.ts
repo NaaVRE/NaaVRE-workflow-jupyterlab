@@ -98,7 +98,7 @@ export const chart: IChart = {
       },
       properties: {
         cell: {
-          url: 'http://localhost:56848/workflow-cells/b6923c9e-eeb6-49fe-81f2-3df7003f8332/',
+          url: 'http://localhost:8000/workflow-cells/b6923c9e-eeb6-49fe-81f2-3df7003f8332/',
           owner: 'test-user-2',
           virtual_lab: 'test-virtual-lab-1',
           shared_with_scopes: [],
@@ -146,7 +146,7 @@ export const chart: IChart = {
       ports: {},
       properties: {
         cell: {
-          url: 'http://localhost:56848/workflow-cells/d7fa87ca-79a3-43eb-993a-83afec93f1e4/',
+          url: 'http://localhost:8000/workflow-cells/d7fa87ca-79a3-43eb-993a-83afec93f1e4/',
           owner: 'fixture-user-1',
           virtual_lab: 'test-virtual-lab-1',
           shared_with_scopes: ['test-virtual-lab-1'],
@@ -188,7 +188,7 @@ export const chart: IChart = {
       ports: {},
       properties: {
         cell: {
-          url: 'http://localhost:56848/workflow-cells/a9ad6181-e78c-45b0-83c1-69385b9f9404/',
+          url: 'http://localhost:8000/workflow-cells/a9ad6181-e78c-45b0-83c1-69385b9f9404/',
           owner: 'fixture-user-1',
           virtual_lab: 'test-virtual-lab-1',
           shared_with_scopes: [],
@@ -243,7 +243,7 @@ export const chart: IChart = {
       },
       properties: {
         cell: {
-          url: 'http://localhost:56848/workflow-cells/d1d41322-1101-489c-82a1-8038ea999416/',
+          url: 'http://localhost:8000/workflow-cells/d1d41322-1101-489c-82a1-8038ea999416/',
           owner: 'test-user-2',
           virtual_lab: 'test-virtual-lab-1',
           shared_with_scopes: [],
@@ -306,7 +306,7 @@ export const chart: IChart = {
           source_url:
             'https://github.com/NaaVRE/cells-vl-openlab/tree/49c8e8db12af5350c26b699da1300884c91a76dc/test-py-input-list-gabriel-pelouze-lifewatch-eu',
           next_version:
-            'http://localhost:56848/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
+            'http://localhost:8000/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
         }
       },
       size: {
@@ -405,7 +405,7 @@ export const chart: IChart = {
       },
       properties: {
         cell: {
-          url: 'http://localhost:56848/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/',
+          url: 'http://localhost:8000/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/',
           owner: 'test-user-2',
           virtual_lab: 'test-virtual-lab-1',
           shared_with_scopes: [],
@@ -492,7 +492,7 @@ export const chart: IChart = {
       },
       properties: {
         cell: {
-          url: 'http://localhost:56848/workflow-cells/b6923c9e-eeb6-49fe-81f2-3df7003f8332/',
+          url: 'http://localhost:8000/workflow-cells/b6923c9e-eeb6-49fe-81f2-3df7003f8332/',
           owner: 'test-user-2',
           virtual_lab: 'test-virtual-lab-1',
           shared_with_scopes: [],
@@ -540,7 +540,7 @@ export const chart: IChart = {
       ports: {},
       properties: {
         cell: {
-          url: 'http://localhost:56848/workflow-cells/cbd0bc89-7418-4536-a8c4-6eb3bb6bf2e6/',
+          url: 'http://localhost:8000/workflow-cells/cbd0bc89-7418-4536-a8c4-6eb3bb6bf2e6/',
           owner: 'fixture-user-1',
           virtual_lab: 'test-virtual-lab-1',
           shared_with_scopes: ['test-community-1'],
@@ -739,7 +739,7 @@ export const chart: IChart = {
       },
       properties: {
         cell: {
-          url: 'http://localhost:56848/workflow-cells/383fae90-c7be-4e87-b9f5-3183b1b8058a/',
+          url: 'http://localhost:8000/workflow-cells/383fae90-c7be-4e87-b9f5-3183b1b8058a/',
           owner: 'test-user-2',
           virtual_lab: 'test-virtual-lab-1',
           shared_with_scopes: [],
