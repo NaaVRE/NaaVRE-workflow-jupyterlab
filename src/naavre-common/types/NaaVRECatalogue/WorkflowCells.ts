@@ -34,8 +34,8 @@ export interface ISecret extends IBaseVariable {}
 export interface ICell extends IBaseAsset {
   version?: number;
   next_version?: string | null;
-  container_image: string;
-  base_container_image?: IBaseImage;
+  container_image: string | null;
+  base_container_image?: IBaseImage | null;
   dependencies: Array<IDependency>;
   inputs: Array<IInput>;
   outputs: Array<IOutput>;
@@ -44,4 +44,5 @@ export interface ICell extends IBaseAsset {
   secrets: Array<ISecret>;
   kernel?: string;
   source_url?: string;
+  is_draft?: boolean;
 }

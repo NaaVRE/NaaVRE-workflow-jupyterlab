@@ -44,6 +44,11 @@ function CellTitle({
             alignItems: 'center'
           }}
         >
+          {cell.is_draft && (
+            <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
+              draft
+            </Typography>
+          )}
           <LocalOfferIcon color="action" fontSize="inherit" />
           <Typography variant="body2">v{cell.version}</Typography>
           {cell.owner && (
@@ -106,13 +111,15 @@ export function CellNode({
         fontSize: '14px',
         display: 'flex',
         height: '25px',
-        border: '1px solid lightgray',
+        border: cell.is_draft ? '1px dashed darkgray' : '1px solid lightgray',
         justifyContent: 'space-between',
         alignItems: 'center',
         background: 'rgb(195, 235, 202)',
         backgroundColor: isSpecialNode
           ? 'rgb(195, 235, 202)'
-          : 'rgb(229,252,233)',
+          : cell.is_draft
+            ? 'rgb(240,240,240)'
+            : 'rgb(229,252,233)',
         borderRadius: '5px',
         padding: '10px',
         paddingRight: '1px',

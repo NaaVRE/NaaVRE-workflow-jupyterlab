@@ -312,6 +312,30 @@ export const cells: ICell[] = [
     kernel: 'ipython',
     source_url: '',
     next_version: null
+  },
+  {
+    url: 'http://localhost:8000/workflow-cells/5b8bdf8a-7759-4064-b23d-c6593224cbe1/',
+    owner: 'test-user-2',
+    virtual_lab: 'test-virtual-lab-1',
+    shared_with_scopes: [],
+    shared_with_users: [],
+    base_container_image: null,
+    dependencies: [],
+    inputs: [],
+    outputs: [],
+    confs: [],
+    params: [],
+    secrets: [],
+    title: 'draft-cell-1-test-user-2',
+    description: '',
+    created: '2025-01-19T21:37:23.503000Z',
+    modified: '2025-01-19T21:37:23.503000Z',
+    version: 1,
+    container_image: null,
+    kernel: 'ipython',
+    source_url: '',
+    is_draft: true,
+    next_version: null
   }
 ];
 
