@@ -67,7 +67,7 @@ function RunWorkflowDialogContent({
   const [params, setParams] = useState<{ [name: string]: IParamValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretValue }>({});
   const [cron, setCron] = useState<string | null>(null);
-  const [hasDraftCells, setHasDraftCells] = useState<boolean>(true);
+  const [hasDraftCells, setHasDraftCells] = useState<boolean>(false);
   const [submittedWorkflow, setSubmittedWorkflow] =
     useState<SubmitWorkflowResponse | null>(null);
 
@@ -80,11 +80,12 @@ function RunWorkflowDialogContent({
   const isCron = cron !== null;
 
   useEffect(() => {
+    let hasDraftCells = false;
     const params: { [name: string]: IParamValue } = {};
     const secrets: { [name: string]: ISecretValue } = {};
     Object.values(chart.nodes).forEach(node => {
-      if (node.properties.cell.isDraft) {
-        setHasDraftCells(true);
+      if (node.properties.cell.is_draft === true) {
+        hasDraftCells = true;
       }
       node.properties.cell.params.forEach((param: IParam) => {
         params[param.name] = {
@@ -96,6 +97,7 @@ function RunWorkflowDialogContent({
         secrets[secret.name] = { value: null };
       });
     });
+    setHasDraftCells(hasDraftCells);
     setParams(Object.fromEntries(Object.entries(params).sort()));
     setSecrets(Object.fromEntries(Object.entries(secrets).sort()));
   }, [chart.nodes]);
