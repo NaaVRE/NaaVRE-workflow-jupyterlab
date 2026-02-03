@@ -62,14 +62,14 @@ export function CellsSideBar({
       <SharingScopesContext.Provider value={sharingScopesResponse.results}>
         <UserInfoContext.Provider value={userInfo}>
           <CellsList
-            title="Cells Catalog"
+            title="Workflow Components Catalog"
             cells={cellsListResponse.results}
             loading={loading}
             message={
               errorMessage
                 ? errorMessage
                 : cellsListResponse.count === 0
-                  ? 'There are no cells in your catalogue. Get started by creating a notebook and containerizing a cell.'
+                  ? 'There are no workflow components in your catalogue. Get started by creating a notebook and containerizing a cell.'
                   : null
             }
             selectedCellInList={selectedCellInList}
@@ -95,7 +95,7 @@ export function CellsSideBar({
             }
           />
           <CellsList
-            title="Special cells"
+            title="Special Components"
             cells={specialCells}
             loading={false}
             message={null}
