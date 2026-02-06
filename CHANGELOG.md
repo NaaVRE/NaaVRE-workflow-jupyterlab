@@ -2,6 +2,33 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.4.12
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.11...e1da3f57ea906f2c2be4a91283d515cb8fba6bab))
+
+### Maintenance and upkeep improvements
+
+- Bump webpack from 5.101.3 to 5.105.0 [#119](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/119) ([@gpelouze](https://github.com/gpelouze))
+- Bump css-loader from 6.11.0 to 7.1.3 [#116](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/116) ([@gpelouze](https://github.com/gpelouze))
+- Bump the mui group with 3 updates [#115](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/115) ([@gpelouze](https://github.com/gpelouze))
+- Bump tar from 7.5.3 to 7.5.7 [#114](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/114) ([@gpelouze](https://github.com/gpelouze))
+- Bump lodash from 4.17.21 to 4.17.23 [#111](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/111) ([@gpelouze](https://github.com/gpelouze))
+
+### Documentation improvements
+
+- Change title of catalog and special components [#118](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/118) ([@KoenGreuell](https://github.com/KoenGreuell), [@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-01-20&to=2026-02-06&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-01-20..2026-02-06&type=Issues)) | @KoenGreuell ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3AKoenGreuell+updated%3A2026-01-20..2026-02-06&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.4.11
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.10...2ec5d99ab0545c4d156dc909cd88f4f8def8208a))
@@ -18,8 +45,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-01-19&to=2026-01-20&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-01-19..2026-01-20&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.4.10
 
