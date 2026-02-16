@@ -2,6 +2,8 @@ import * as React from 'react';
 import { mapValues } from 'lodash';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { ThemeProvider } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
 import {
   FlowChart,
@@ -12,7 +14,7 @@ import {
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '../naavre-common/handler';
-import { defaultChart, validateLink } from '../utils/chart';
+import { validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
 import { NodeCustom } from './chart/NodeCustom';
@@ -27,14 +29,14 @@ import { CellPopup } from './cells/CellPopup';
 export interface IProps {}
 
 export interface IState {
-  chart: IChart;
+  chart: IChart | null;
   selectedCellInList: ICell | null;
   selectedCellNode: HTMLDivElement | null;
   runWorkflowDialogOpen: boolean;
 }
 
 export const DefaultState: IState = {
-  chart: defaultChart,
+  chart: null,
   selectedCellInList: null,
   selectedCellNode: null,
   runWorkflowDialogOpen: false
@@ -80,6 +82,10 @@ export class Composer extends React.Component<IProps, IState> {
   };
 
   exportWorkflow = async (browserFactory: IFileBrowserFactory) => {
+    if (this.state.chart === null) {
+      console.error('Export failed: workflow is null');
+      return;
+    }
     NaaVREExternalService(
       'POST',
       `${this.context.workflowServiceUrl}/convert`,
@@ -106,63 +112,78 @@ export class Composer extends React.Component<IProps, IState> {
   }
 
   render(): React.ReactElement {
-    return (
-      <ThemeProvider theme={theme}>
-        <RunWorkflowDialog
-          open={this.state.runWorkflowDialogOpen}
-          onClose={() => this.setRunWorkflowDialogOpen(false)}
-          chart={this.state.chart}
-        />
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            flex: 1,
-            maxWidth: '100vw',
-            maxHeight: '100vh'
-          }}
-        >
+    if (this.state.chart === null) {
+      return (
+        <ThemeProvider theme={theme}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+          >
+            <CircularProgress />
+          </Box>
+        </ThemeProvider>
+      );
+    } else {
+      return (
+        <ThemeProvider theme={theme}>
+          <RunWorkflowDialog
+            open={this.state.runWorkflowDialogOpen}
+            onClose={() => this.setRunWorkflowDialogOpen(false)}
+            chart={this.state.chart}
+          />
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column',
-              flex: '1',
-              overflow: 'hidden'
+              flexDirection: 'row',
+              flex: 1,
+              maxWidth: '100vw',
+              maxHeight: '100vh'
             }}
           >
-            <FlowChart
-              chart={this.state.chart}
-              callbacks={this.chartStateActions}
-              config={this.chartConfig}
-              Components={{
-                Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
-                NodeInner: NodeInnerCustom,
-                Port: PortCustom,
-                Link: LinkCustom
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: '1',
+                overflow: 'hidden'
               }}
-            />
-            {this.state.chart.selected.id && (
-              <ChartElementEditor
+            >
+              <FlowChart
                 chart={this.state.chart}
-                setChart={this.setChart}
                 callbacks={this.chartStateActions}
                 config={this.chartConfig}
+                Components={{
+                  Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
+                  NodeInner: NodeInnerCustom,
+                  Port: PortCustom,
+                  Link: LinkCustom
+                }}
               />
-            )}
-            {this.state.selectedCellInList && (
-              <CellPopup
-                cell={this.state.selectedCellInList}
-                cellNode={this.state.selectedCellNode}
-                onClose={() => this.setSelectedCell(null, null)}
+              {this.state.chart.selected.id && (
+                <ChartElementEditor
+                  chart={this.state.chart}
+                  setChart={this.setChart}
+                  callbacks={this.chartStateActions}
+                  config={this.chartConfig}
+                />
+              )}
+              {this.state.selectedCellInList && (
+                <CellPopup
+                  cell={this.state.selectedCellInList}
+                  cellNode={this.state.selectedCellNode}
+                  onClose={() => this.setSelectedCell(null, null)}
+                />
+              )}
+              <CellsSideBar
+                selectedCellInList={this.state.selectedCellInList}
+                setSelectedCell={this.setSelectedCell}
               />
-            )}
-            <CellsSideBar
-              selectedCellInList={this.state.selectedCellInList}
-              setSelectedCell={this.setSelectedCell}
-            />
+            </div>
           </div>
-        </div>
-      </ThemeProvider>
-    );
+        </ThemeProvider>
+      );
+    }
   }
 }

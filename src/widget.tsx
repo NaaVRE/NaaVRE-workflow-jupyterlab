@@ -28,7 +28,6 @@ import { ReactWidget } from '@jupyterlab/apputils';
 import lodash from 'lodash';
 import { Composer } from './components/Composer';
 import React from 'react';
-import { defaultChart } from './utils/chart';
 import { ISettings, SettingsContext } from './settings';
 
 /**
@@ -149,10 +148,11 @@ export class ExperimentManagerWidget extends ReactWidget {
             !lodash.isEqual(
               this._model.chart,
               this.composerRef.current?.state.chart
-            )
+            ) &&
+            this.composerRef.current !== null &&
+            this.composerRef.current.state.chart !== null
           ) {
-            this._model.chart =
-              this.composerRef.current?.state.chart || defaultChart;
+            this._model.chart = this.composerRef.current.state.chart;
           }
           break;
       }
