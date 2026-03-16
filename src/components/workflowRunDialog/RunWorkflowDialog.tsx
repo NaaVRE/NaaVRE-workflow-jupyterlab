@@ -23,14 +23,31 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Alert from '@mui/material/Alert';
 
-interface IParamValue {
+interface IBaseVariableFormValue {
+  name: string;
+  node_ids: Array<string>;
+  type: string | null;
   value: string | null;
-  default_value?: string;
 }
 
-interface ISecretValue {
-  value: string | null;
+interface IParamFormValue extends IBaseVariableFormValue {
+  default_value: string | null;
 }
+
+interface ISecretFormValue extends IBaseVariableFormValue {}
+
+interface IBaseVariablePayloadValue {
+  name: string;
+  node_id: string;
+  type: string | null;
+  value: string;
+}
+
+interface IParamValuePayload extends IBaseVariablePayloadValue {
+  default_value: string | null;
+}
+
+interface ISecretValuePayload extends IBaseVariablePayloadValue {}
 
 // Partial type for POST {workflowServiceUrl}/submit
 declare type SubmitWorkflowResponse = {
@@ -64,37 +81,57 @@ function RunWorkflowDialogContent({
   chart: IChart;
 }) {
   const settings = useContext(SettingsContext);
-  const [params, setParams] = useState<{ [name: string]: IParamValue }>({});
-  const [secrets, setSecrets] = useState<{ [name: string]: ISecretValue }>({});
+  const [params, setParams] = useState<{ [name: string]: IParamFormValue }>({});
+  const [secrets, setSecrets] = useState<{ [name: string]: ISecretFormValue }>(
+    {}
+  );
   const [cron, setCron] = useState<string | null>(null);
   const [hasDraftCells, setHasDraftCells] = useState<boolean>(false);
   const [submittedWorkflow, setSubmittedWorkflow] =
     useState<SubmitWorkflowResponse | null>(null);
 
-  const setParam = (name: string, value: IParamValue) => {
+  const setParam = (name: string, value: IParamFormValue) => {
     setParams(prevState => ({ ...prevState, [name]: value }));
   };
-  const setSecret = (name: string, value: ISecretValue) => {
+  const setSecret = (name: string, value: ISecretFormValue) => {
     setSecrets(prevState => ({ ...prevState, [name]: value }));
   };
   const isCron = cron !== null;
 
   useEffect(() => {
     let hasDraftCells = false;
-    const params: { [name: string]: IParamValue } = {};
-    const secrets: { [name: string]: ISecretValue } = {};
+    const params: { [name: string]: IParamFormValue } = {};
+    const secrets: { [name: string]: ISecretFormValue } = {};
+    const paramNodeIds: { [name: string]: Array<string> } = {};
+    const secretNodeIds: { [name: string]: Array<string> } = {};
     Object.values(chart.nodes).forEach(node => {
       if (node.properties.cell.is_draft === true) {
         hasDraftCells = true;
       }
       node.properties.cell.params.forEach((param: IParam) => {
+        if (!(param.name in paramNodeIds)) {
+          paramNodeIds[param.name] = [];
+        }
+        paramNodeIds[param.name].push(node.id);
         params[param.name] = {
+          name: param.name,
+          node_ids: paramNodeIds[param.name],
+          type: param.type,
           value: null,
-          default_value: param.default_value
+          default_value: param.default_value || null
         };
       });
       node.properties.cell.secrets.forEach((secret: ISecret) => {
-        secrets[secret.name] = { value: null };
+        if (!(secret.name in secretNodeIds)) {
+          secretNodeIds[secret.name] = [];
+        }
+        secretNodeIds[secret.name].push(node.id);
+        secrets[secret.name] = {
+          name: secret.name,
+          node_ids: secretNodeIds[secret.name],
+          type: secret.type,
+          value: null
+        };
       });
     });
     setHasDraftCells(hasDraftCells);
@@ -107,8 +144,8 @@ function RunWorkflowDialogContent({
     key: string
   ) => {
     setParam(key, {
-      value: event.target.value,
-      default_value: params[key].default_value
+      ...params[key],
+      value: event.target.value
     });
   };
 
@@ -116,7 +153,10 @@ function RunWorkflowDialogContent({
     event: ChangeEvent<{ value: string }>,
     key: string
   ) => {
-    setSecret(key, { value: event.target.value });
+    setSecret(key, {
+      ...secrets[key],
+      value: event.target.value
+    });
   };
 
   const allValuesFilled = () => {
@@ -133,16 +173,46 @@ function RunWorkflowDialogContent({
   const getValuesFromCatalog = async () => {
     Object.entries(params).forEach(([k, v]) => {
       setParam(k, {
-        value: v.default_value || null,
-        default_value: v.default_value
+        ...v,
+        value: v.default_value || null
       });
     });
   };
 
   const runWorkflow = async (
-    params: { [name: string]: any },
-    secrets: { [name: string]: any }
+    params: {
+      [name: string]: IParamFormValue;
+    },
+    secrets: {
+      [name: string]: ISecretFormValue;
+    }
   ) => {
+    const paramsPayload: Array<IParamValuePayload> = [];
+    const secretsPayload: Array<ISecretValuePayload> = [];
+    Object.values(params).forEach(({ node_ids, value, ...rest }) => {
+      node_ids.forEach(nodeId => {
+        if (value === null) {
+          throw Error(`Cannot submit workflow with null param: ${rest.name}`);
+        }
+        paramsPayload.push({
+          ...rest,
+          value: value,
+          node_id: nodeId
+        });
+      });
+    });
+    Object.values(secrets).forEach(({ node_ids, value, ...rest }) => {
+      node_ids.forEach(nodeId => {
+        if (value === null) {
+          throw Error(`Cannot submit workflow with null secret: ${rest.name}`);
+        }
+        secretsPayload.push({
+          ...rest,
+          value: value,
+          node_id: nodeId
+        });
+      });
+    });
     NaaVREExternalService(
       'POST',
       `${settings.workflowServiceUrl}/submit`,
@@ -150,8 +220,8 @@ function RunWorkflowDialogContent({
       {
         virtual_lab: settings.virtualLab,
         naavrewf2: chart,
-        params: params,
-        secrets: secrets,
+        params: paramsPayload,
+        secrets: secretsPayload,
         cron_schedule: cron
       }
     )
