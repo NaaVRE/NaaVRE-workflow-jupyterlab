@@ -16,7 +16,6 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import EventRepeatIcon from '@mui/icons-material/EventRepeat';
 import dayjs, { type Dayjs } from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
@@ -259,9 +258,11 @@ function TimePicker({
 }
 
 export default function WorkflowRepeatPicker({
-  setCron
+  setCron,
+  disabled = false
 }: {
   setCron: (cron: string | null) => void;
+  disabled?: boolean;
 }) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -299,8 +300,9 @@ export default function WorkflowRepeatPicker({
         size="small"
         variant="text"
         startIcon={<EventRepeatIcon fontSize="inherit" />}
+        color="inherit"
+        disabled={disabled}
         style={{
-          color: grey[900],
           textTransform: 'none',
           minWidth: '10rem'
         }}
