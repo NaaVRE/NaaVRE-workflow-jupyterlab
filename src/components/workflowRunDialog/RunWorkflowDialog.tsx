@@ -238,10 +238,6 @@ function RunWorkflowDialogContent({
               </Button>
             </Stack>
           </div>
-        ) : hasDraftCells ? (
-          <Alert severity="error">
-            You cannot run this workflow because it contains draft cells.
-          </Alert>
         ) : (
           <div>
             {Object.keys(params).length !== 0 && (
@@ -289,6 +285,19 @@ function RunWorkflowDialogContent({
                 />
               ))}
             </Stack>
+            {hasDraftCells && (
+              <Stack
+                direction="column"
+                spacing={2}
+                style={{
+                  marginTop: '2rem'
+                }}
+              >
+                <Alert severity="error">
+                  You cannot run this workflow because it contains draft cells.
+                </Alert>
+              </Stack>
+            )}
             <Stack
               direction="row"
               spacing={2}
@@ -298,13 +307,16 @@ function RunWorkflowDialogContent({
                 alignItems: 'center'
               }}
             >
-              <WorkflowRepeatPicker setCron={setCron} />
+              <WorkflowRepeatPicker
+                setCron={setCron}
+                disabled={hasDraftCells}
+              />
               <Button
                 variant="contained"
                 className={'lw-panel-button'}
                 onClick={() => runWorkflow(params, secrets)}
                 color="primary"
-                disabled={!allValuesFilled()}
+                disabled={hasDraftCells || !allValuesFilled()}
                 style={{
                   float: 'right'
                 }}
