@@ -2,6 +2,40 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.5.0
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.13...db15530978b91cae2f6f16a7cd6408d445a91646))
+
+### Enhancements made
+
+- Show params and secrets form when workflow contains draft cells [#136](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/136) ([@gpelouze](https://github.com/gpelouze))
+- Update workflow submit payload to send cell-scoped secrets and params [#135](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/135) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump yaml from 1.10.2 to 1.10.3 [#140](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/140) ([@gpelouze](https://github.com/gpelouze))
+- Bump flatted from 3.3.2 to 3.4.2 [#139](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/139) ([@gpelouze](https://github.com/gpelouze))
+- Bump lodash-es from 4.17.21 to 4.17.23 [#138](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/138) ([@gpelouze](https://github.com/gpelouze))
+- Bump dompurify from 3.3.0 to 3.3.3 [#137](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/137) ([@gpelouze](https://github.com/gpelouze))
+- Bump tar from 7.5.9 to 7.5.11 [#133](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/133) ([@gpelouze](https://github.com/gpelouze))
+- Bump the mui group with 3 updates [#129](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/129) ([@gpelouze](https://github.com/gpelouze))
+- Bump the jupyterlab group with 6 updates [#128](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/128) ([@gpelouze](https://github.com/gpelouze))
+- Bump actions/download-artifact from 7 to 8 [#127](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/127) ([@gpelouze](https://github.com/gpelouze))
+- Bump actions/upload-artifact from 6 to 7 [#126](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/126) ([@gpelouze](https://github.com/gpelouze))
+- Bump ajv from 6.12.6 to 6.14.0 [#122](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/122) ([@gpelouze](https://github.com/gpelouze))
+- Bump tar from 7.5.7 to 7.5.9 [#121](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/121) ([@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-02-16&to=2026-04-20&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-02-16..2026-04-20&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.4.13
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.12...e3221445d4b0a6f8f8e9cd59a6b37bc722b08b44))
@@ -18,8 +52,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-02-06&to=2026-02-16&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-02-06..2026-02-16&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.4.12
 
