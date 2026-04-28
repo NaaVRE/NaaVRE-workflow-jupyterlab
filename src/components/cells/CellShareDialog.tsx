@@ -197,7 +197,7 @@ export function CellShareDialog({
   }, [onClose, onUpdated]);
 
   return (
-    <Dialog onClose={onCancel} open={open}>
+    <Dialog open={open}>
       <DialogTitle>{cell.title}</DialogTitle>
       <DialogContent>
         {readonly && (
