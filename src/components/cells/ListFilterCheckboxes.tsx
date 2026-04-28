@@ -111,6 +111,16 @@ export function ListFilterCheckboxes({
           vertical: 'bottom',
           horizontal: 'left'
         }}
+        slotProps={{
+          paper: {
+            sx: {
+              maxHeight: anchorEl
+                ? `calc(100dvh - ${anchorEl.getBoundingClientRect().bottom + 16}px)`
+                : '80vh',
+              overflowY: 'auto'
+            }
+          }
+        }}
       >
         <FormGroup sx={{ px: 2, py: 1 }}>
           {checkboxFiltersBySection.map(section => (

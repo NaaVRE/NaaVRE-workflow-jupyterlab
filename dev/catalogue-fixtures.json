@@ -83,10 +83,210 @@
     "model": "base_assets.sharingscope",
     "pk": "test-virtual-lab-2",
     "fields": {
-      "title": "Test Virtual Lab 2",
+      "title": "Test Virtual Lab 2 with a title just long enough to make you wonder whether it is reasonable",
       "label": "virtual_lab",
       "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
       "check_in_virtual_labs": ["test-virtual-lab-2"]
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-1",
+    "fields": {
+      "title": "Extra Virtual Lab 1",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-2",
+    "fields": {
+      "title": "Extra Virtual Lab 2",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-3",
+    "fields": {
+      "title": "Extra Virtual Lab 3",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-4",
+    "fields": {
+      "title": "Extra Virtual Lab 4",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-5",
+    "fields": {
+      "title": "Extra Virtual Lab 5",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-6",
+    "fields": {
+      "title": "Extra Virtual Lab 6",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-7",
+    "fields": {
+      "title": "Extra Virtual Lab 7",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-8",
+    "fields": {
+      "title": "Extra Virtual Lab 8",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-9",
+    "fields": {
+      "title": "Extra Virtual Lab 9",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-10",
+    "fields": {
+      "title": "Extra Virtual Lab 10",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-11",
+    "fields": {
+      "title": "Extra Virtual Lab 11",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-12",
+    "fields": {
+      "title": "Extra Virtual Lab 12",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-13",
+    "fields": {
+      "title": "Extra Virtual Lab 13",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-14",
+    "fields": {
+      "title": "Extra Virtual Lab 14",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-15",
+    "fields": {
+      "title": "Extra Virtual Lab 15",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-16",
+    "fields": {
+      "title": "Extra Virtual Lab 16",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-17",
+    "fields": {
+      "title": "Extra Virtual Lab 17",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-18",
+    "fields": {
+      "title": "Extra Virtual Lab 18",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-19",
+    "fields": {
+      "title": "Extra Virtual Lab 19",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
+    }
+  },
+  {
+    "model": "base_assets.sharingscope",
+    "pk": "extra-virtual-lab-20",
+    "fields": {
+      "title": "Extra Virtual Lab 20",
+      "label": "virtual_lab",
+      "show_in_virtual_labs": ["test-virtual-lab-1", "test-virtual-lab-2"],
+      "check_in_virtual_labs": []
     }
   },
   {
