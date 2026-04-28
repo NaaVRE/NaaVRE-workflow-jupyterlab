@@ -26,7 +26,6 @@ import Alert from '@mui/material/Alert';
 interface IBaseVariableFormValue {
   name: string;
   node_ids: Array<string>;
-  type: string | null;
   value: string | null;
 }
 
@@ -39,13 +38,10 @@ interface ISecretFormValue extends IBaseVariableFormValue {}
 interface IBaseVariablePayloadValue {
   name: string;
   node_id: string;
-  type: string | null;
   value: string;
 }
 
-interface IParamValuePayload extends IBaseVariablePayloadValue {
-  default_value: string | null;
-}
+interface IParamValuePayload extends IBaseVariablePayloadValue {}
 
 interface ISecretValuePayload extends IBaseVariablePayloadValue {}
 
@@ -116,7 +112,6 @@ function RunWorkflowDialogContent({
         params[param.name] = {
           name: param.name,
           node_ids: paramNodeIds[param.name],
-          type: param.type,
           value: null,
           default_value: param.default_value || null
         };
@@ -129,7 +124,6 @@ function RunWorkflowDialogContent({
         secrets[secret.name] = {
           name: secret.name,
           node_ids: secretNodeIds[secret.name],
-          type: secret.type,
           value: null
         };
       });
@@ -189,27 +183,27 @@ function RunWorkflowDialogContent({
   ) => {
     const paramsPayload: Array<IParamValuePayload> = [];
     const secretsPayload: Array<ISecretValuePayload> = [];
-    Object.values(params).forEach(({ node_ids, value, ...rest }) => {
+    Object.values(params).forEach(({ node_ids, name, value, ...rest }) => {
       node_ids.forEach(nodeId => {
         if (value === null) {
-          throw Error(`Cannot submit workflow with null param: ${rest.name}`);
+          throw Error(`Cannot submit workflow with null param: ${name}`);
         }
         paramsPayload.push({
-          ...rest,
-          value: value,
-          node_id: nodeId
+          node_id: nodeId,
+          name: name,
+          value: value
         });
       });
     });
-    Object.values(secrets).forEach(({ node_ids, value, ...rest }) => {
+    Object.values(secrets).forEach(({ node_ids, name, value, ...rest }) => {
       node_ids.forEach(nodeId => {
         if (value === null) {
-          throw Error(`Cannot submit workflow with null secret: ${rest.name}`);
+          throw Error(`Cannot submit workflow with null secret: ${name}`);
         }
         secretsPayload.push({
-          ...rest,
-          value: value,
-          node_id: nodeId
+          node_id: nodeId,
+          name: name,
+          value: value
         });
       });
     });
