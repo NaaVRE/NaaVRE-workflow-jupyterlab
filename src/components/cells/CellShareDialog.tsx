@@ -126,9 +126,7 @@ export function CellShareDialog({
   cell: ICell;
   readonly: boolean;
 }) {
-  const [usernames, setUsernames] = useState<string[]>(
-    cell.shared_with_users || []
-  );
+  const [usernames, setUsernames] = useState<string[]>([]);
 
   const {
     checkboxFilters,
@@ -140,13 +138,21 @@ export function CellShareDialog({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setCheckboxFilters(checkboxFilters => {
-      checkboxFilters.forEach(f => {
-        f.checked = cell.shared_with_scopes?.includes(f.key) || false;
+  const setStateFromCell = useCallback(
+    (cell: ICell) => {
+      setUsernames(usernames => cell.shared_with_users || []);
+      setCheckboxFilters(checkboxFilters => {
+        checkboxFilters.forEach(f => {
+          f.checked = cell.shared_with_scopes?.includes(f.key) || false;
+        });
+        return checkboxFilters;
       });
-      return checkboxFilters;
-    });
+    },
+    [setUsernames, setCheckboxFilters]
+  );
+
+  useEffect(() => {
+    setStateFromCell(cell);
   }, [cell]);
 
   // Update activeSharingScopes when checkboxFilters changes.
@@ -174,8 +180,24 @@ export function CellShareDialog({
     }
   }, [cell, usernames, activeSharingScopes]);
 
+  const onCancel = useCallback(async () => {
+    onClose();
+    // reset state
+    setStateFromCell(cell);
+  }, [onClose]);
+
+  const onApply = useCallback(async () => {
+    setError(null);
+    setLoading(true);
+    saveCell()
+      .then(onClose)
+      .then(onUpdated)
+      .catch(e => setError(e))
+      .finally(() => setLoading(false));
+  }, [onClose, onUpdated]);
+
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog open={open}>
       <DialogTitle>{cell.title}</DialogTitle>
       <DialogContent>
         {readonly && (
@@ -229,21 +251,10 @@ export function CellShareDialog({
         {loading && <LinearProgress sx={{ mt: 2 }} />}
       </DialogContent>
       <DialogActions>
-        <Button color="secondary" onClick={onClose}>
+        <Button color="secondary" onClick={onCancel}>
           Cancel
         </Button>
-        <Button
-          disabled={readonly}
-          onClick={async () => {
-            setError(null);
-            setLoading(true);
-            saveCell()
-              .then(onClose)
-              .then(onUpdated)
-              .catch(e => setError(e))
-              .finally(() => setLoading(false));
-          }}
-        >
+        <Button disabled={readonly} onClick={onApply}>
           Apply
         </Button>
       </DialogActions>
