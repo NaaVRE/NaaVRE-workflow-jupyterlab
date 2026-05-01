@@ -2,6 +2,35 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.5.1
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.5.0...4663ad0c1ae2a5918fe0b1d824ae853dbde32f13))
+
+### Bugs fixed
+
+- Fix #151 Cell list filters drop down takes up the whole screen [#153](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/153) ([@gpelouze](https://github.com/gpelouze))
+- Fix #150 Sharing popup leads users to think sharing status is updated, while it is not [#152](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/152) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Remove redundent values from params and secrets values list when submitting a workflow [#154](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/154) ([@gpelouze](https://github.com/gpelouze))
+- Bump dompurify from 3.3.3 to 3.4.1 [#149](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/149) ([@gpelouze](https://github.com/gpelouze))
+- Bump lodash from 4.17.23 to 4.18.1 [#146](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/146) ([@gpelouze](https://github.com/gpelouze))
+- Bump the jupyterlab group with 6 updates [#143](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/143) ([@gpelouze](https://github.com/gpelouze))
+- Bump actions/create-github-app-token from 2 to 3 [#142](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/142) ([@gpelouze](https://github.com/gpelouze))
+- Bump picomatch from 2.3.1 to 2.3.2 [#141](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/141) ([@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-04-20&to=2026-05-01&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-04-20..2026-05-01&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.5.0
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.4.13...db15530978b91cae2f6f16a7cd6408d445a91646))
@@ -33,8 +62,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-02-16&to=2026-04-20&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-02-16..2026-04-20&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.4.13
 
