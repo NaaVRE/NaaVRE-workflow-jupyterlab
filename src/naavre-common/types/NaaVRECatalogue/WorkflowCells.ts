@@ -1,4 +1,4 @@
-import { IBaseAsset } from './BaseAssets';
+import { IBaseAsset, IAssetVersionsRef } from './BaseAssets';
 
 export interface IBaseImage {
   build: string;
@@ -33,7 +33,7 @@ export interface ISecret extends IBaseVariable {}
 
 export interface ICell extends IBaseAsset {
   version?: number;
-  next_version?: string | null;
+  versions?: IAssetVersionsRef[];
   container_image: string | null;
   base_container_image?: IBaseImage | null;
   dependencies: Array<IDependency>;

@@ -11,6 +11,11 @@ export interface IUser {
   name: string;
 }
 
+export interface IAssetVersionsRef {
+  version: number;
+  url: string;
+}
+
 export interface IBaseAsset {
   url: string;
   title: string;

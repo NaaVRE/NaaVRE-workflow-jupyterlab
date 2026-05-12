@@ -82,11 +82,7 @@ export function CellInfo({ cell }: { cell: ICell }) {
         ['Owner', cell.owner],
         [
           'Version',
-          isSpecialNode
-            ? null
-            : cell.version
-              ? `${cell.version} ${cell.next_version ? '' : '(latest)'}`
-              : 'N/A'
+          isSpecialNode ? null : cell.version ? `${cell.version}` : 'N/A'
         ],
         [
           'Shared',
