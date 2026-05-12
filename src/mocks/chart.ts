@@ -47,7 +47,7 @@ export const chart: IChart = {
           title: 'Splitter',
           type: 'splitter',
           version: 1,
-          next_version: null,
+          versions: [],
           container_image: '',
           dependencies: [],
           inputs: [
@@ -124,10 +124,15 @@ export const chart: IChart = {
           created: '2025-01-19T21:39:53.924000Z',
           modified: '2025-01-19T21:39:53.924000Z',
           version: 1,
+          versions: [
+            {
+              version: 1,
+              url: 'http://localhost:8000/workflow-cells/b6923c9e-eeb6-49fe-81f2-3df7003f8332/'
+            }
+          ],
           container_image: 'example.com/naavre-cells/test-cell-2:f7b1772',
           kernel: '',
-          source_url: '',
-          next_version: null
+          source_url: ''
         }
       },
       size: {
@@ -166,10 +171,15 @@ export const chart: IChart = {
           created: '2025-09-19T18:48:23.397000Z',
           modified: '2025-09-19T18:48:23.397000Z',
           version: 1,
+          versions: [
+            {
+              version: 1,
+              url: 'http://localhost:8000/workflow-cells/d7fa87ca-79a3-43eb-993a-83afec93f1e4/'
+            }
+          ],
           container_image: 'example.com/naavre-cells/shared:93807f0f',
           kernel: 'ipython',
-          source_url: '',
-          next_version: null
+          source_url: ''
         }
       },
       size: {
@@ -208,10 +218,15 @@ export const chart: IChart = {
           created: '2025-09-19T18:48:23.397000Z',
           modified: '2025-09-19T18:48:23.397000Z',
           version: 1,
+          versions: [
+            {
+              version: 1,
+              url: 'http://localhost:8000/workflow-cells/a9ad6181-e78c-45b0-83c1-69385b9f9404/'
+            }
+          ],
           container_image: 'example.com/naavre-cells/shared:93807f0f',
           kernel: 'ipython',
-          source_url: '',
-          next_version: null
+          source_url: ''
         }
       },
       size: {
@@ -300,13 +315,21 @@ export const chart: IChart = {
           created: '2025-01-19T21:37:23.503000Z',
           modified: '2025-01-19T21:37:23.503000Z',
           version: 1,
+          versions: [
+            {
+              version: 1,
+              url: 'http://localhost:56848/workflow-cells/d1d41322-1101-489c-82a1-8038ea999416/'
+            },
+            {
+              version: 2,
+              url: 'http://localhost:56848/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
+            }
+          ],
           container_image:
             'ghcr.io/naavre/cells-vl-openlab/test-py-input-list-gabriel-pelouze-lifewatch-eu:b6301bf',
           kernel: 'ipython',
           source_url:
-            'https://github.com/NaaVRE/cells-vl-openlab/tree/49c8e8db12af5350c26b699da1300884c91a76dc/test-py-input-list-gabriel-pelouze-lifewatch-eu',
-          next_version:
-            'http://localhost:8000/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
+            'https://github.com/NaaVRE/cells-vl-openlab/tree/49c8e8db12af5350c26b699da1300884c91a76dc/test-py-input-list-gabriel-pelouze-lifewatch-eu'
         }
       },
       size: {
@@ -354,7 +377,7 @@ export const chart: IChart = {
           title: 'Merger',
           type: 'merger',
           version: 1,
-          next_version: null,
+          versions: [],
           container_image: '',
           dependencies: [],
           inputs: [
@@ -460,7 +483,16 @@ export const chart: IChart = {
           container_image: 'example.com/naavre-cells/test-cell-1:7abc41dd',
           kernel: 'ipython',
           source_url: '',
-          next_version: null
+          versions: [
+            {
+              version: 1,
+              url: 'http://localhost:56848/workflow-cells/d1d41322-1101-489c-82a1-8038ea999416/'
+            },
+            {
+              version: 2,
+              url: 'http://localhost:56848/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
+            }
+          ]
         }
       },
       size: {
@@ -518,10 +550,15 @@ export const chart: IChart = {
           created: '2025-01-19T21:39:53.924000Z',
           modified: '2025-01-19T21:39:53.924000Z',
           version: 1,
+          versions: [
+            {
+              version: 1,
+              url: 'http://localhost:8000/workflow-cells/b6923c9e-eeb6-49fe-81f2-3df7003f8332/'
+            }
+          ],
           container_image: 'example.com/naavre-cells/test-cell-2:f7b1772',
           kernel: '',
-          source_url: '',
-          next_version: null
+          source_url: ''
         }
       },
       size: {
@@ -560,10 +597,15 @@ export const chart: IChart = {
           created: '2025-09-19T18:48:23.397000Z',
           modified: '2025-09-19T18:48:23.397000Z',
           version: 1,
+          versions: [
+            {
+              version: 1,
+              url: 'http://localhost:8000/workflow-cells/cbd0bc89-7418-4536-a8c4-6eb3bb6bf2e6/'
+            }
+          ],
           container_image: 'example.com/naavre-cells/shared:93807f0f',
           kernel: 'ipython',
-          source_url: '',
-          next_version: null
+          source_url: ''
         }
       },
       size: {
@@ -810,10 +852,15 @@ export const chart: IChart = {
           created: '2025-10-07T08:57:38.023654Z',
           modified: '2025-10-07T09:00:25.258582Z',
           version: 1,
+          versions: [
+            {
+              version: 1,
+              url: 'http://localhost:8000/workflow-cells/383fae90-c7be-4e87-b9f5-3183b1b8058a/'
+            }
+          ],
           container_image: 'test',
           kernel: '',
-          source_url: '',
-          next_version: null
+          source_url: ''
         }
       },
       size: {

@@ -26,7 +26,12 @@ export const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/shared:93807f0f',
     kernel: 'ipython',
     source_url: '',
-    next_version: null
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/cbd0bc89-7418-4536-a8c4-6eb3bb6bf2e6/'
+      }
+    ]
   },
   {
     url: 'http://localhost:8000/workflow-cells/d7fa87ca-79a3-43eb-993a-83afec93f1e4/',
@@ -52,7 +57,12 @@ export const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/shared:93807f0f',
     kernel: 'ipython',
     source_url: '',
-    next_version: null
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/d7fa87ca-79a3-43eb-993a-83afec93f1e4/'
+      }
+    ]
   },
   {
     url: 'http://localhost:8000/workflow-cells/77e49ffb-7688-40c5-8287-6693ae3d096a/',
@@ -78,7 +88,12 @@ export const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/shared:93807f0f',
     kernel: 'ipython',
     source_url: '',
-    next_version: null
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/77e49ffb-7688-40c5-8287-6693ae3d096a/'
+      }
+    ]
   },
   {
     url: 'http://localhost:8000/workflow-cells/a9ad6181-e78c-45b0-83c1-69385b9f9404/',
@@ -104,7 +119,12 @@ export const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/shared:93807f0f',
     kernel: 'ipython',
     source_url: '',
-    next_version: null
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/a9ad6181-e78c-45b0-83c1-69385b9f9404/'
+      }
+    ]
   },
   {
     url: 'http://localhost:8000/workflow-cells/3995b067-95fd-4706-9325-2b89339afb2c/',
@@ -162,7 +182,12 @@ export const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/other-vl-cell-1:b078cae4',
     kernel: 'ipython',
     source_url: '',
-    next_version: null
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/3995b067-95fd-4706-9325-2b89339afb2c/'
+      }
+    ]
   },
   {
     url: 'http://localhost:8000/workflow-cells/b6923c9e-eeb6-49fe-81f2-3df7003f8332/',
@@ -194,7 +219,12 @@ export const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/test-cell-2:f7b1772',
     kernel: '',
     source_url: '',
-    next_version: null
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/b6923c9e-eeb6-49fe-81f2-3df7003f8332/'
+      }
+    ]
   },
   {
     url: 'http://localhost:8000/workflow-cells/d1d41322-1101-489c-82a1-8038ea999416/',
@@ -252,8 +282,16 @@ export const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/test-cell-1:49c621b',
     kernel: 'ipython',
     source_url: '',
-    next_version:
-      'http://localhost:8000/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/d1d41322-1101-489c-82a1-8038ea999416/'
+      },
+      {
+        version: 2,
+        url: 'http://localhost:8000/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
+      }
+    ]
   },
   {
     url: 'http://localhost:8000/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/',
@@ -311,7 +349,16 @@ export const cells: ICell[] = [
     container_image: 'example.com/naavre-cells/test-cell-1:7abc41dd',
     kernel: 'ipython',
     source_url: '',
-    next_version: null
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/d1d41322-1101-489c-82a1-8038ea999416/'
+      },
+      {
+        version: 2,
+        url: 'http://localhost:8000/workflow-cells/b58c627a-1843-421c-a897-89461ddc581a/'
+      }
+    ]
   },
   {
     url: 'http://localhost:8000/workflow-cells/5b8bdf8a-7759-4064-b23d-c6593224cbe1/',
@@ -335,7 +382,12 @@ export const cells: ICell[] = [
     kernel: 'ipython',
     source_url: '',
     is_draft: true,
-    next_version: null
+    versions: [
+      {
+        version: 1,
+        url: 'http://localhost:8000/workflow-cells/5b8bdf8a-7759-4064-b23d-c6593224cbe1/'
+      }
+    ]
   }
 ];
 

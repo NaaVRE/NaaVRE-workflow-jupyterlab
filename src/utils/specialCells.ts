@@ -18,7 +18,7 @@ export const specialCells: Array<ISpecialCell> = [
     shared_with_scopes: [],
     shared_with_users: [],
     version: 1,
-    next_version: null,
+    versions: [],
     container_image: '',
     base_container_image: {
       build: '',
@@ -46,7 +46,7 @@ export const specialCells: Array<ISpecialCell> = [
     shared_with_scopes: [],
     shared_with_users: [],
     version: 1,
-    next_version: null,
+    versions: [],
     container_image: '',
     base_container_image: {
       build: '',
