@@ -2,6 +2,29 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.6.0
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.5.1...2778ced25dabc02e5386bf1605d980b318563316))
+
+### Maintenance and upkeep improvements
+
+- Replace asset `.next_version` with `.versions` [#164](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/164) ([@gpelouze](https://github.com/gpelouze))
+- Bump mermaid from 11.12.3 to 11.15.0 [#162](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/162) ([@gpelouze](https://github.com/gpelouze))
+- Bump @babel/plugin-transform-modules-systemjs from 7.25.9 to 7.29.4 [#161](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/161) ([@gpelouze](https://github.com/gpelouze))
+- Bump fast-uri from 3.0.5 to 3.1.2 [#160](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/160) ([@gpelouze](https://github.com/gpelouze))
+- Bump the jupyterlab group with 6 updates [#155](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/155) ([@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-05-01&to=2026-05-12&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-05-01..2026-05-12&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.5.1
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.5.0...4663ad0c1ae2a5918fe0b1d824ae853dbde32f13))
@@ -28,8 +51,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-04-20&to=2026-05-01&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-04-20..2026-05-01&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.5.0
 
