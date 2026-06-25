@@ -53,14 +53,16 @@ declare type SubmitWorkflowResponse = {
 export function RunWorkflowDialog({
   open,
   onClose,
-  chart
+  chart,
+  container
 }: {
   open: boolean;
   onClose: () => void;
   chart: IChart;
+  container: HTMLDivElement | null;
 }) {
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog onClose={onClose} open={open} container={container}>
       <DialogTitle>Run Workflow</DialogTitle>
       <DialogContent>
         <RunWorkflowDialogContent onClose={onClose} chart={chart} />

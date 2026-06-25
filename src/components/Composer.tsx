@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { createRef } from 'react';
 import { mapValues } from 'lodash';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { ThemeProvider } from '@mui/material/styles';
@@ -44,11 +45,13 @@ export const DefaultState: IState = {
 
 export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
+  containerRef: React.RefObject<HTMLDivElement>;
   static contextType = SettingsContext;
   declare context: React.ContextType<typeof SettingsContext>;
 
   constructor(props: IProps) {
     super(props);
+    this.containerRef = createRef();
   }
 
   chartStateActions = mapValues(actions, (func: any) => (...args: any) => {
@@ -128,12 +131,8 @@ export class Composer extends React.Component<IProps, IState> {
     } else {
       return (
         <ThemeProvider theme={theme}>
-          <RunWorkflowDialog
-            open={this.state.runWorkflowDialogOpen}
-            onClose={() => this.setRunWorkflowDialogOpen(false)}
-            chart={this.state.chart}
-          />
           <div
+            ref={this.containerRef}
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -142,6 +141,12 @@ export class Composer extends React.Component<IProps, IState> {
               maxHeight: '100vh'
             }}
           >
+            <RunWorkflowDialog
+              open={this.state.runWorkflowDialogOpen}
+              onClose={() => this.setRunWorkflowDialogOpen(false)}
+              chart={this.state.chart}
+              container={this.containerRef.current}
+            />
             <div
               style={{
                 display: 'flex',
