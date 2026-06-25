@@ -1,6 +1,7 @@
 import React, {
   type ChangeEvent,
   type MouseEvent,
+  ReactNode,
   useEffect,
   useState
 } from 'react';
@@ -18,15 +19,17 @@ import {
 } from '@mui/material';
 import EventRepeatIcon from '@mui/icons-material/EventRepeat';
 import dayjs, { type Dayjs } from 'dayjs';
+import cron from 'cron-validate';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 dayjs.extend(advancedFormat);
 
-type PeriodUnit = 'hour' | 'day' | 'week' | 'month';
+type PeriodUnit = 'hour' | 'day' | 'week' | 'month' | 'custom';
 
 const defaultPeriodUnit = 'day';
+const defaultCron = '4 2 * * *';
 
 function getDefaultStartTime() {
   // Pick a random time in the middle of the night
@@ -45,7 +48,11 @@ function getRandomItem<T>(choices: Array<T>): T {
   return choices[getRandomInt(0, choices.length - 1)];
 }
 
-function getCron(periodUnit: PeriodUnit, startTime: Dayjs): string {
+function getCron(
+  periodUnit: PeriodUnit,
+  startTime: Dayjs,
+  customCron: string | undefined
+): string {
   switch (periodUnit) {
     case 'hour':
       return `${startTime.minute()} * * * *`;
@@ -55,13 +62,16 @@ function getCron(periodUnit: PeriodUnit, startTime: Dayjs): string {
       return `${startTime.minute()} ${startTime.hour()} * * ${startTime.day()}`;
     case 'month':
       return `${startTime.minute()} ${startTime.hour()} ${startTime.date()} * *`;
+    case 'custom':
+      return customCron ?? defaultCron;
   }
 }
 
 function getTextDescriptionShort(
   periodUnit: PeriodUnit,
-  startTime: Dayjs
-): string {
+  startTime: Dayjs,
+  customCron: string | undefined
+): ReactNode {
   switch (periodUnit) {
     case 'hour':
       return `Every hour at :${startTime.format('mm')}`;
@@ -71,13 +81,21 @@ function getTextDescriptionShort(
       return `Every ${startTime.format('dddd')}`;
     case 'month':
       return `On the ${startTime.format('Do')} of each month`;
+    case 'custom':
+      return (
+        <>
+          Custom cron (
+          <span style={{ fontFamily: 'monospace' }}>{customCron}</span>)
+        </>
+      );
   }
 }
 
 function getTextDescriptionLong(
   periodUnit: PeriodUnit,
-  startTime: Dayjs
-): string {
+  startTime: Dayjs,
+  customCron: string | undefined
+): ReactNode {
   const prefix = 'Your workflow will run ';
   switch (periodUnit) {
     case 'hour':
@@ -86,15 +104,25 @@ function getTextDescriptionLong(
     case 'week':
     case 'month':
       return prefix + `during quiet hours at ${startTime.format('HH:mm')}`;
+    case 'custom':
+      return (
+        <>
+          {prefix} with a custom cron expression (
+          <span style={{ fontFamily: 'monospace' }}>{customCron}</span>)
+        </>
+      );
   }
 }
 
 function PeriodPicker({
   periodUnit,
-  setPeriodUnit
+  handleChangePeriodUnit
 }: {
   periodUnit: PeriodUnit;
-  setPeriodUnit: (intervalType: PeriodUnit) => void;
+  handleChangePeriodUnit: (
+    lastPeriodUnit: PeriodUnit,
+    periodUnit: PeriodUnit
+  ) => void;
 }) {
   return (
     <Stack
@@ -119,7 +147,7 @@ function PeriodPicker({
         aria-describedby="repetion periodUnit duration"
         value={periodUnit}
         onChange={(event: SelectChangeEvent<PeriodUnit>) => {
-          setPeriodUnit(event.target.value as PeriodUnit);
+          handleChangePeriodUnit(periodUnit, event.target.value as PeriodUnit);
         }}
         style={{
           width: '50%'
@@ -134,6 +162,7 @@ function PeriodPicker({
         <MenuItem value={'day' as PeriodUnit}>{'day'}</MenuItem>
         <MenuItem value={'week' as PeriodUnit}>{'week'}</MenuItem>
         <MenuItem value={'month' as PeriodUnit}>{'month'}</MenuItem>
+        <MenuItem value={'custom' as PeriodUnit}>{'custom'}</MenuItem>
       </Select>
     </Stack>
   );
@@ -231,14 +260,83 @@ function DayOfMonthPicker({
   );
 }
 
+function CustomCronPicker({
+  customCron,
+  setCustomCron
+}: {
+  customCron: string | undefined;
+  setCustomCron: (customCron: string) => void;
+}) {
+  const [inputValue, setInputValue] = useState(customCron);
+  const [error, seterror] = useState<string | null>(null);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+
+    const cronResult = cron(value);
+    if (cronResult.isValid()) {
+      const validValue = cronResult.getValue();
+      if (!/^\d+$/.test(validValue.minutes)) {
+        seterror('Minutes field must be a number');
+      } else {
+        seterror(null);
+        setCustomCron(value);
+      }
+    } else {
+      seterror('Invalid cron expression');
+    }
+  };
+
+  return (
+    <Stack
+      direction="row"
+      spacing={2}
+      style={{
+        padding: '1rem',
+        alignItems: 'center'
+      }}
+    >
+      <InputLabel
+        style={{
+          width: '40%'
+        }}
+      >
+        Cron expression
+      </InputLabel>
+      <TextField
+        type="string"
+        id="customCron"
+        label="Cron expression"
+        value={inputValue}
+        onChange={handleChange}
+        error={error !== null}
+        helperText={error ?? undefined}
+        style={{
+          width: '60%'
+        }}
+        slotProps={{
+          input: {
+            sx: { fontFamily: 'monospace' }
+          }
+        }}
+      />
+    </Stack>
+  );
+}
+
 function TimePicker({
   periodUnit,
   time,
-  setTime
+  setTime,
+  customCron,
+  setCustomCron
 }: {
   periodUnit: PeriodUnit;
   time: Dayjs;
   setTime: (time: Dayjs) => void;
+  customCron: string | undefined;
+  setCustomCron: (customCron: string) => void;
 }) {
   return (
     <>
@@ -248,9 +346,15 @@ function TimePicker({
       {periodUnit === 'month' && (
         <DayOfMonthPicker time={time} setTime={setTime} />
       )}
+      {periodUnit === 'custom' && (
+        <CustomCronPicker
+          customCron={customCron}
+          setCustomCron={setCustomCron}
+        />
+      )}
       <Container>
         <Typography variant="body2">
-          {getTextDescriptionLong(periodUnit, time)}
+          {getTextDescriptionLong(periodUnit, time, customCron)}
         </Typography>
       </Container>
     </>
@@ -269,14 +373,25 @@ export default function WorkflowRepeatPicker({
   const [touched, setTouched] = useState<boolean>(false);
   const [periodUnit, setPeriodUnit] = useState<PeriodUnit>(defaultPeriodUnit);
   const [startTime, setStartTime] = useState<Dayjs>(getDefaultStartTime);
+  const [customCron, setCustomCron] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (!touched) {
       setCron(null);
     } else {
-      setCron(getCron(periodUnit, startTime));
+      setCron(getCron(periodUnit, startTime, customCron));
     }
-  }, [touched, setCron, periodUnit, startTime]);
+  }, [touched, setCron, periodUnit, startTime, customCron]);
+
+  const handleChangePeriodUnit = (
+    lastPeriodUnit: PeriodUnit,
+    periodUnit: PeriodUnit
+  ) => {
+    if (periodUnit === 'custom' && customCron === undefined) {
+      setCustomCron(getCron(lastPeriodUnit, startTime, customCron));
+    }
+    setPeriodUnit(periodUnit);
+  };
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (!touched) {
@@ -308,7 +423,7 @@ export default function WorkflowRepeatPicker({
         }}
       >
         {touched
-          ? getTextDescriptionShort(periodUnit, startTime)
+          ? getTextDescriptionShort(periodUnit, startTime, customCron)
           : 'Make recurring'}
       </Button>
       <Popover
@@ -333,12 +448,14 @@ export default function WorkflowRepeatPicker({
           >
             <PeriodPicker
               periodUnit={periodUnit}
-              setPeriodUnit={setPeriodUnit}
+              handleChangePeriodUnit={handleChangePeriodUnit}
             />
             <TimePicker
               periodUnit={periodUnit}
               time={startTime}
               setTime={setStartTime}
+              customCron={customCron}
+              setCustomCron={setCustomCron}
             />
             <Stack
               direction="row"
