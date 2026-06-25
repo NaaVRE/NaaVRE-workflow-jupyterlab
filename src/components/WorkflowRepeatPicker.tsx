@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import EventRepeatIcon from '@mui/icons-material/EventRepeat';
 import dayjs, { type Dayjs } from 'dayjs';
+import cron from 'cron-validate';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -251,7 +252,22 @@ function CustomCronPicker({
   customCron: string;
   setCustomCron: (customCron: string) => void;
 }) {
-  // TODO: validate cron expression
+  const [inputValue, setInputValue] = useState(customCron);
+  const [error, setError] = useState(false);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+
+    const cronResult = cron(value);
+    if (cronResult.isValid()) {
+      setError(false);
+      setCustomCron(value);
+    } else {
+      setError(true);
+    }
+  };
+
   return (
     <Stack
       direction="row"
@@ -272,10 +288,10 @@ function CustomCronPicker({
         type="string"
         id="customCron"
         label="Cron expression"
-        value={customCron}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          setCustomCron(customCron);
-        }}
+        value={inputValue}
+        onChange={handleChange}
+        error={error}
+        helperText={error ? 'Invalid cron expression' : undefined}
         style={{
           width: '60%'
         }}
