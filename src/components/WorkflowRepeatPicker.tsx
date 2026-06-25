@@ -1,6 +1,7 @@
 import React, {
   type ChangeEvent,
   type MouseEvent,
+  ReactNode,
   useEffect,
   useState
 } from 'react';
@@ -69,7 +70,7 @@ function getTextDescriptionShort(
   periodUnit: PeriodUnit,
   startTime: Dayjs,
   customCron: string
-): string {
+): ReactNode {
   switch (periodUnit) {
     case 'hour':
       return `Every hour at :${startTime.format('mm')}`;
@@ -80,7 +81,11 @@ function getTextDescriptionShort(
     case 'month':
       return `On the ${startTime.format('Do')} of each month`;
     case 'custom':
-      return `Cron: ${customCron}`;
+      return (
+        <>
+          Custom cron (<span style={{ fontFamily: 'monospace' }}>{customCron}</span>)
+        </>
+      );
   }
 }
 
@@ -88,7 +93,7 @@ function getTextDescriptionLong(
   periodUnit: PeriodUnit,
   startTime: Dayjs,
   customCron: string
-): string {
+): ReactNode {
   const prefix = 'Your workflow will run ';
   switch (periodUnit) {
     case 'hour':
@@ -98,7 +103,12 @@ function getTextDescriptionLong(
     case 'month':
       return prefix + `during quiet hours at ${startTime.format('HH:mm')}`;
     case 'custom':
-      return prefix + `with cron expression ${customCron}`;
+      return (
+        <>
+          {prefix} with a custom cron expression (
+          <span style={{ fontFamily: 'monospace' }}>{customCron}</span>)
+        </>
+      );
   }
 }
 
@@ -294,6 +304,11 @@ function CustomCronPicker({
         helperText={error ? 'Invalid cron expression' : undefined}
         style={{
           width: '60%'
+        }}
+        slotProps={{
+          input: {
+            sx: { fontFamily: 'monospace' }
+          }
         }}
       />
     </Stack>
