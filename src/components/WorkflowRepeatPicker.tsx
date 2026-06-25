@@ -268,7 +268,7 @@ function CustomCronPicker({
   setCustomCron: (customCron: string) => void;
 }) {
   const [inputValue, setInputValue] = useState(customCron);
-  const [error, setError] = useState(false);
+  const [error, seterror] = useState<string | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -276,10 +276,15 @@ function CustomCronPicker({
 
     const cronResult = cron(value);
     if (cronResult.isValid()) {
-      setError(false);
-      setCustomCron(value);
+      const validValue = cronResult.getValue();
+      if (!/^\d+$/.test(validValue.minutes)) {
+        seterror('Minutes field must be a number');
+      } else {
+        seterror(null);
+        setCustomCron(value);
+      }
     } else {
-      setError(true);
+      seterror('Invalid cron expression');
     }
   };
 
@@ -305,8 +310,8 @@ function CustomCronPicker({
         label="Cron expression"
         value={inputValue}
         onChange={handleChange}
-        error={error}
-        helperText={error ? 'Invalid cron expression' : undefined}
+        error={error !== null}
+        helperText={error ?? undefined}
         style={{
           width: '60%'
         }}
