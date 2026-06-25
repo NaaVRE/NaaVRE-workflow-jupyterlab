@@ -376,7 +376,7 @@ export default function WorkflowRepeatPicker({
     } else {
       setCron(getCron(periodUnit, startTime, customCron));
     }
-  }, [touched, setCron, periodUnit, startTime]);
+  }, [touched, setCron, periodUnit, startTime, customCron]);
 
   const handleChangePeriodUnit = (
     lastPeriodUnit: PeriodUnit,
