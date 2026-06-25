@@ -18,7 +18,8 @@ export const Default: Story = {
   args: {
     chart: mockChart,
     open: true,
-    onClose: () => {}
+    onClose: () => {},
+    container: null
   },
   decorators: [
     (Story, { parameters }) => {
