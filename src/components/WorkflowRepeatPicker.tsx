@@ -24,7 +24,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 dayjs.extend(advancedFormat);
 
-type PeriodUnit = 'hour' | 'day' | 'week' | 'month';
+type PeriodUnit = 'hour' | 'day' | 'week' | 'month' | 'custom';
 
 const defaultPeriodUnit = 'day';
 
@@ -45,7 +45,11 @@ function getRandomItem<T>(choices: Array<T>): T {
   return choices[getRandomInt(0, choices.length - 1)];
 }
 
-function getCron(periodUnit: PeriodUnit, startTime: Dayjs): string {
+function getCron(
+  periodUnit: PeriodUnit,
+  startTime: Dayjs,
+  customCron: string
+): string {
   switch (periodUnit) {
     case 'hour':
       return `${startTime.minute()} * * * *`;
@@ -55,12 +59,15 @@ function getCron(periodUnit: PeriodUnit, startTime: Dayjs): string {
       return `${startTime.minute()} ${startTime.hour()} * * ${startTime.day()}`;
     case 'month':
       return `${startTime.minute()} ${startTime.hour()} ${startTime.date()} * *`;
+    case 'custom':
+      return customCron;
   }
 }
 
 function getTextDescriptionShort(
   periodUnit: PeriodUnit,
-  startTime: Dayjs
+  startTime: Dayjs,
+  customCron: string
 ): string {
   switch (periodUnit) {
     case 'hour':
@@ -71,12 +78,15 @@ function getTextDescriptionShort(
       return `Every ${startTime.format('dddd')}`;
     case 'month':
       return `On the ${startTime.format('Do')} of each month`;
+    case 'custom':
+      return `Cron: ${customCron}`;
   }
 }
 
 function getTextDescriptionLong(
   periodUnit: PeriodUnit,
-  startTime: Dayjs
+  startTime: Dayjs,
+  customCron: string
 ): string {
   const prefix = 'Your workflow will run ';
   switch (periodUnit) {
@@ -86,6 +96,8 @@ function getTextDescriptionLong(
     case 'week':
     case 'month':
       return prefix + `during quiet hours at ${startTime.format('HH:mm')}`;
+    case 'custom':
+      return prefix + `with cron expression ${customCron}`;
   }
 }
 
@@ -134,6 +146,7 @@ function PeriodPicker({
         <MenuItem value={'day' as PeriodUnit}>{'day'}</MenuItem>
         <MenuItem value={'week' as PeriodUnit}>{'week'}</MenuItem>
         <MenuItem value={'month' as PeriodUnit}>{'month'}</MenuItem>
+        <MenuItem value={'custom' as PeriodUnit}>{'custom'}</MenuItem>
       </Select>
     </Stack>
   );
@@ -231,14 +244,58 @@ function DayOfMonthPicker({
   );
 }
 
+function CustomCronPicker({
+  customCron,
+  setCustomCron
+}: {
+  customCron: string;
+  setCustomCron: (customCron: string) => void;
+}) {
+  // TODO: validate cron expression
+  return (
+    <Stack
+      direction="row"
+      spacing={2}
+      style={{
+        padding: '1rem',
+        alignItems: 'center'
+      }}
+    >
+      <InputLabel
+        style={{
+          width: '40%'
+        }}
+      >
+        Cron expression
+      </InputLabel>
+      <TextField
+        type="string"
+        id="customCron"
+        label="Cron expression"
+        value={customCron}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          setCustomCron(customCron);
+        }}
+        style={{
+          width: '60%'
+        }}
+      />
+    </Stack>
+  );
+}
+
 function TimePicker({
   periodUnit,
   time,
-  setTime
+  setTime,
+  customCron,
+  setCustomCron
 }: {
   periodUnit: PeriodUnit;
   time: Dayjs;
   setTime: (time: Dayjs) => void;
+  customCron: string;
+  setCustomCron: (customCron: string) => void;
 }) {
   return (
     <>
@@ -248,9 +305,15 @@ function TimePicker({
       {periodUnit === 'month' && (
         <DayOfMonthPicker time={time} setTime={setTime} />
       )}
+      {periodUnit === 'custom' && (
+        <CustomCronPicker
+          customCron={customCron}
+          setCustomCron={setCustomCron}
+        />
+      )}
       <Container>
         <Typography variant="body2">
-          {getTextDescriptionLong(periodUnit, time)}
+          {getTextDescriptionLong(periodUnit, time, customCron)}
         </Typography>
       </Container>
     </>
@@ -269,12 +332,15 @@ export default function WorkflowRepeatPicker({
   const [touched, setTouched] = useState<boolean>(false);
   const [periodUnit, setPeriodUnit] = useState<PeriodUnit>(defaultPeriodUnit);
   const [startTime, setStartTime] = useState<Dayjs>(getDefaultStartTime);
+  const [customCron, setCustomCron] = useState<string>(
+    getCron(periodUnit, startTime, '')
+  );
 
   useEffect(() => {
     if (!touched) {
       setCron(null);
     } else {
-      setCron(getCron(periodUnit, startTime));
+      setCron(getCron(periodUnit, startTime, customCron));
     }
   }, [touched, setCron, periodUnit, startTime]);
 
@@ -308,7 +374,7 @@ export default function WorkflowRepeatPicker({
         }}
       >
         {touched
-          ? getTextDescriptionShort(periodUnit, startTime)
+          ? getTextDescriptionShort(periodUnit, startTime, customCron)
           : 'Make recurring'}
       </Button>
       <Popover
@@ -331,6 +397,7 @@ export default function WorkflowRepeatPicker({
               minWidth: '25rem'
             }}
           >
+            {/* TODO: set customCron from startTime and periodUnit */}
             <PeriodPicker
               periodUnit={periodUnit}
               setPeriodUnit={setPeriodUnit}
@@ -339,6 +406,8 @@ export default function WorkflowRepeatPicker({
               periodUnit={periodUnit}
               time={startTime}
               setTime={setStartTime}
+              customCron={customCron}
+              setCustomCron={setCustomCron}
             />
             <Stack
               direction="row"
