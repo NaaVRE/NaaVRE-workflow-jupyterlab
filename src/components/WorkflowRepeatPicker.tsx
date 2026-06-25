@@ -29,6 +29,7 @@ dayjs.extend(advancedFormat);
 type PeriodUnit = 'hour' | 'day' | 'week' | 'month' | 'custom';
 
 const defaultPeriodUnit = 'day';
+const defaultCron = '4 2 * * *';
 
 function getDefaultStartTime() {
   // Pick a random time in the middle of the night
@@ -50,7 +51,7 @@ function getRandomItem<T>(choices: Array<T>): T {
 function getCron(
   periodUnit: PeriodUnit,
   startTime: Dayjs,
-  customCron: string
+  customCron: string | undefined
 ): string {
   switch (periodUnit) {
     case 'hour':
@@ -62,14 +63,14 @@ function getCron(
     case 'month':
       return `${startTime.minute()} ${startTime.hour()} ${startTime.date()} * *`;
     case 'custom':
-      return customCron;
+      return customCron ?? defaultCron;
   }
 }
 
 function getTextDescriptionShort(
   periodUnit: PeriodUnit,
   startTime: Dayjs,
-  customCron: string
+  customCron: string | undefined
 ): ReactNode {
   switch (periodUnit) {
     case 'hour':
@@ -83,7 +84,8 @@ function getTextDescriptionShort(
     case 'custom':
       return (
         <>
-          Custom cron (<span style={{ fontFamily: 'monospace' }}>{customCron}</span>)
+          Custom cron (
+          <span style={{ fontFamily: 'monospace' }}>{customCron}</span>)
         </>
       );
   }
@@ -92,7 +94,7 @@ function getTextDescriptionShort(
 function getTextDescriptionLong(
   periodUnit: PeriodUnit,
   startTime: Dayjs,
-  customCron: string
+  customCron: string | undefined
 ): ReactNode {
   const prefix = 'Your workflow will run ';
   switch (periodUnit) {
@@ -114,10 +116,13 @@ function getTextDescriptionLong(
 
 function PeriodPicker({
   periodUnit,
-  setPeriodUnit
+  handleChangePeriodUnit
 }: {
   periodUnit: PeriodUnit;
-  setPeriodUnit: (intervalType: PeriodUnit) => void;
+  handleChangePeriodUnit: (
+    lastPeriodUnit: PeriodUnit,
+    periodUnit: PeriodUnit
+  ) => void;
 }) {
   return (
     <Stack
@@ -142,7 +147,7 @@ function PeriodPicker({
         aria-describedby="repetion periodUnit duration"
         value={periodUnit}
         onChange={(event: SelectChangeEvent<PeriodUnit>) => {
-          setPeriodUnit(event.target.value as PeriodUnit);
+          handleChangePeriodUnit(periodUnit, event.target.value as PeriodUnit);
         }}
         style={{
           width: '50%'
@@ -259,7 +264,7 @@ function CustomCronPicker({
   customCron,
   setCustomCron
 }: {
-  customCron: string;
+  customCron: string | undefined;
   setCustomCron: (customCron: string) => void;
 }) {
   const [inputValue, setInputValue] = useState(customCron);
@@ -325,7 +330,7 @@ function TimePicker({
   periodUnit: PeriodUnit;
   time: Dayjs;
   setTime: (time: Dayjs) => void;
-  customCron: string;
+  customCron: string | undefined;
   setCustomCron: (customCron: string) => void;
 }) {
   return (
@@ -363,9 +368,7 @@ export default function WorkflowRepeatPicker({
   const [touched, setTouched] = useState<boolean>(false);
   const [periodUnit, setPeriodUnit] = useState<PeriodUnit>(defaultPeriodUnit);
   const [startTime, setStartTime] = useState<Dayjs>(getDefaultStartTime);
-  const [customCron, setCustomCron] = useState<string>(
-    getCron(periodUnit, startTime, '')
-  );
+  const [customCron, setCustomCron] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (!touched) {
@@ -374,6 +377,16 @@ export default function WorkflowRepeatPicker({
       setCron(getCron(periodUnit, startTime, customCron));
     }
   }, [touched, setCron, periodUnit, startTime]);
+
+  const handleChangePeriodUnit = (
+    lastPeriodUnit: PeriodUnit,
+    periodUnit: PeriodUnit
+  ) => {
+    if (periodUnit === 'custom' && customCron === undefined) {
+      setCustomCron(getCron(lastPeriodUnit, startTime, customCron));
+    }
+    setPeriodUnit(periodUnit);
+  };
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (!touched) {
@@ -428,10 +441,9 @@ export default function WorkflowRepeatPicker({
               minWidth: '25rem'
             }}
           >
-            {/* TODO: set customCron from startTime and periodUnit */}
             <PeriodPicker
               periodUnit={periodUnit}
-              setPeriodUnit={setPeriodUnit}
+              handleChangePeriodUnit={handleChangePeriodUnit}
             />
             <TimePicker
               periodUnit={periodUnit}
