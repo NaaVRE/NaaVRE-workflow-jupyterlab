@@ -8,14 +8,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
 import {
   FlowChart,
-  IChart,
   IConfig,
   INodeDefaultProps
 } from '@mrblenny/react-flow-chart';
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '../naavre-common/handler';
-import { validateLink } from '../utils/chart';
+import { IChart, validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
 import { NodeCustom } from './chart/NodeCustom';

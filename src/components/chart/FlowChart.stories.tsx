@@ -4,7 +4,6 @@ import { mapValues } from 'lodash';
 import {
   actions,
   FlowChart,
-  IChart,
   INodeDefaultProps
 } from '@mrblenny/react-flow-chart';
 
@@ -13,7 +12,7 @@ import { NodeCustom } from './NodeCustom';
 import { NodeInnerCustom } from './NodeInnerCustom';
 import { PortCustom } from './PortCustom';
 import { LinkCustom } from './LinkCustom';
-import { validateLink } from '../../utils/chart';
+import { IChart, validateLink } from '../../utils/chart';
 
 function FlowChartStory() {
   const [chart, setChart] = useState<IChart>(mockChart);

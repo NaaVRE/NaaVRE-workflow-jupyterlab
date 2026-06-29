@@ -1,12 +1,21 @@
 import ColorHash from 'color-hash';
 import {
-  IChart,
-  INode,
+  IChart as IChartRFC,
+  INode as INodeRFC,
   IOnLinkCompleteInput
 } from '@mrblenny/react-flow-chart';
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { ISpecialCell } from './specialCells';
+
+export interface INodeProps {
+  cell: ICell;
+}
+
+export interface IChartProps {}
+
+export interface INode extends INodeRFC<INodeProps> {}
+export interface IChart extends IChartRFC<IChartProps, INodeProps> {}
 
 export const defaultChart: IChart = {
   offset: {
@@ -16,6 +25,7 @@ export const defaultChart: IChart = {
   scale: 1,
   nodes: {},
   links: {},
+  properties: {},
   selected: {},
   hovered: {}
 };
@@ -66,9 +76,7 @@ export function cellToChartNode(cell: ICell | ISpecialCell): INode {
   };
 }
 
-export function validateLink(
-  props: IOnLinkCompleteInput & { chart: IChart }
-): boolean {
+export function validateLink(props: IOnLinkCompleteInput): boolean {
   const { fromNodeId, toNodeId } = props;
   // no links between same node
   if (fromNodeId === toNodeId) {

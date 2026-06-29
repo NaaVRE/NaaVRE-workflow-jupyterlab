@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField';
 import { green } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
 import { ThemeProvider } from '@mui/material/styles';
-import { IChart } from '@mrblenny/react-flow-chart';
 
 import {
   IParam,
@@ -22,6 +21,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Alert from '@mui/material/Alert';
+import { IChart } from '../../utils/chart';
 
 interface IBaseVariableFormValue {
   name: string;

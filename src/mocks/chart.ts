@@ -1,4 +1,4 @@
-import { IChart } from '@mrblenny/react-flow-chart';
+import { IChart } from '../utils/chart';
 
 export const chart: IChart = {
   offset: {
@@ -45,7 +45,6 @@ export const chart: IChart = {
         cell: {
           url: 'splitter',
           title: 'Splitter',
-          type: 'splitter',
           version: 1,
           versions: [],
           container_image: '',
@@ -296,7 +295,7 @@ export const chart: IChart = {
             {
               name: 'param_z',
               type: 'str',
-              default_value: null
+              default_value: undefined
             },
             {
               name: 'param_test_1',
@@ -375,7 +374,6 @@ export const chart: IChart = {
         cell: {
           url: 'merger',
           title: 'Merger',
-          type: 'merger',
           version: 1,
           versions: [],
           container_image: '',
@@ -915,6 +913,7 @@ export const chart: IChart = {
       }
     }
   },
+  properties: {},
   selected: {
     type: 'node',
     id: '3f73c690-dbf3-4385-9185-a2945d788aec'
