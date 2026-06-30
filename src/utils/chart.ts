@@ -5,14 +5,28 @@ import {
   IOnLinkCompleteInput
 } from '@mrblenny/react-flow-chart';
 
-import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import {
+  ICell,
+  VariableType
+} from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { ISpecialCell } from './specialCells';
+
+export interface IChartParam {
+  node_id: string;
+  name: string;
+  value?: string;
+  type?: VariableType;
+  helpText?: string;
+  noValueText?: string;
+}
 
 export interface INodeProps {
   cell: ICell;
 }
 
-export interface IChartProps {}
+export interface IChartProps {
+  params: Array<IChartParam>;
+}
 
 export interface INode extends INodeRFC<INodeProps> {}
 export interface IChart extends IChartRFC<IChartProps, INodeProps> {}
@@ -25,7 +39,9 @@ export const defaultChart: IChart = {
   scale: 1,
   nodes: {},
   links: {},
-  properties: {},
+  properties: {
+    params: []
+  },
   selected: {},
   hovered: {}
 };
@@ -83,4 +99,58 @@ export function validateLink(props: IOnLinkCompleteInput): boolean {
     return false;
   }
   return true;
+}
+
+export function getChartParam(
+  chart: IChart | null,
+  ChartParam: IChartParam
+): string | undefined {
+  if (chart === null) {
+    return undefined;
+  }
+  const param = chart.properties.params.find(p => {
+    return p.node_id === ChartParam.node_id && p.name === ChartParam.name;
+  });
+  return param?.value;
+}
+
+export function setChartParam(
+  chart: IChart,
+  chartParam: IChartParam
+): IChart {
+  const { node_id, name, value } = chartParam;
+  if (value === undefined) {
+    console.warn(
+      `Cannot set NodeParam with undefined value: ${JSON.stringify(chartParam)}`
+    );
+    return chart;
+  }
+
+  const isParamInChartProperties =
+    getChartParam(chart, chartParam) !== undefined;
+  let updatedParams: Array<IChartParam>;
+  if (isParamInChartProperties) {
+    if (value === '') {
+      // remove from the params list
+      updatedParams = chart.properties.params.filter(
+        p => !(p.node_id === chartParam.node_id && p.name === chartParam.name)
+      );
+    } else {
+      // update the value in the params list
+      updatedParams = chart.properties.params.map(p =>
+        p.node_id === chartParam.node_id && p.name === chartParam.name
+          ? { ...p, value }
+          : p
+      );
+    }
+  } else {
+    updatedParams = [...chart.properties.params, { node_id, name, value }];
+  }
+
+  return {
+    ...chart,
+    properties: {
+      params: updatedParams
+    }
+  };
 }

@@ -14,17 +14,18 @@ import {
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '../naavre-common/handler';
-import { IChart, validateLink } from '../utils/chart';
+import { IChart, IChartParam, validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
 import { NodeCustom } from './chart/NodeCustom';
-import { NodeInnerCustom } from './chart/NodeInnerCustom';
+import { nodeInnerCustomFactory } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
 import { LinkCustom } from './chart/LinkCustom';
 import { ChartElementEditor } from './chart/ChartElementEditor';
 import { RunWorkflowDialog } from './workflowRunDialog/RunWorkflowDialog';
 import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
+import { NodeParamValueDialog } from './chart/NodeParamValue';
 
 export interface IProps {}
 
@@ -32,6 +33,7 @@ export interface IState {
   chart: IChart | null;
   selectedCellInList: ICell | null;
   selectedCellNode: HTMLDivElement | null;
+  selectedChartParam: IChartParam | null;
   runWorkflowDialogOpen: boolean;
 }
 
@@ -39,6 +41,7 @@ export const DefaultState: IState = {
   chart: null,
   selectedCellInList: null,
   selectedCellNode: null,
+  selectedChartParam: null,
   runWorkflowDialogOpen: false
 };
 
@@ -75,8 +78,18 @@ export class Composer extends React.Component<IProps, IState> {
     });
   };
 
-  setChart = (chart: IChart) => {
-    this.setState({ chart: chart });
+  setChart = (nextChart: IChart | ((prev: IChart | null) => IChart | null)) => {
+    if (typeof nextChart === 'function') {
+      this.setState(prevState => ({ chart: nextChart(prevState.chart) }));
+    } else {
+      this.setState({ chart: nextChart });
+    }
+  };
+
+  setSelectedChartParam = (selectedChartParam: IChartParam | null) => {
+    this.setState({
+      selectedChartParam: selectedChartParam
+    });
   };
 
   setRunWorkflowDialogOpen = (open: boolean) => {
@@ -160,7 +173,10 @@ export class Composer extends React.Component<IProps, IState> {
                 config={this.chartConfig}
                 Components={{
                   Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
-                  NodeInner: NodeInnerCustom,
+                  NodeInner: nodeInnerCustomFactory(
+                    this.state.chart,
+                    this.setSelectedChartParam
+                  ),
                   Port: PortCustom,
                   Link: LinkCustom
                 }}
@@ -173,6 +189,12 @@ export class Composer extends React.Component<IProps, IState> {
                   config={this.chartConfig}
                 />
               )}
+              <NodeParamValueDialog
+                chart={this.state.chart}
+                setChart={this.setChart}
+                chartParam={this.state.selectedChartParam}
+                setSelectedChartParam={this.setSelectedChartParam}
+              />
               {this.state.selectedCellInList && (
                 <CellPopup
                   cell={this.state.selectedCellInList}

@@ -9,13 +9,14 @@ import {
 
 import { chart as mockChart } from '../../mocks/chart';
 import { NodeCustom } from './NodeCustom';
-import { NodeInnerCustom } from './NodeInnerCustom';
+import { nodeInnerCustomFactory } from './NodeInnerCustom';
 import { PortCustom } from './PortCustom';
 import { LinkCustom } from './LinkCustom';
-import { IChart, validateLink } from '../../utils/chart';
+import { IChart, IChartParam, validateLink } from '../../utils/chart';
 
 function FlowChartStory() {
-  const [chart, setChart] = useState<IChart>(mockChart);
+  const [chart, setChart] = useState<IChart | null>(mockChart);
+  const setSelectedChartParam = (chartParam: IChartParam) => {};
   const chartStateActions = mapValues(
     actions,
     (func: any) =>
@@ -27,7 +28,7 @@ function FlowChartStory() {
   ) as typeof actions;
   return (
     <FlowChart
-      chart={chart}
+      chart={chart ?? mockChart}
       callbacks={chartStateActions}
       config={{
         readonly: false,
@@ -35,7 +36,7 @@ function FlowChartStory() {
       }}
       Components={{
         Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
-        NodeInner: NodeInnerCustom,
+        NodeInner: nodeInnerCustomFactory(chart, setSelectedChartParam),
         Port: PortCustom,
         Link: LinkCustom
       }}

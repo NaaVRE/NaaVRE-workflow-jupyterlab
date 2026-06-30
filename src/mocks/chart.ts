@@ -62,7 +62,13 @@ export const chart: IChart = {
             }
           ],
           confs: [],
-          params: [],
+          params: [
+            {
+              name: 'param_max_branches',
+              type: 'int',
+              default_value: undefined
+            }
+          ],
           secrets: [],
           shared_with_scopes: [],
           shared_with_users: []
@@ -913,7 +919,9 @@ export const chart: IChart = {
       }
     }
   },
-  properties: {},
+  properties: {
+    params: []
+  },
   selected: {
     type: 'node',
     id: '3f73c690-dbf3-4385-9185-a2945d788aec'
