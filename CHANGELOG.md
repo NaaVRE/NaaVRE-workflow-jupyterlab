@@ -2,6 +2,38 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.6.1
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.6.0...da0fb291d1fc4b7e20a01bf64ca5b176b96e83fa))
+
+### Enhancements made
+
+- Allow users to customize param_max_branches for splitters [#176](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/176) ([@gpelouze](https://github.com/gpelouze))
+- Display run workflow dialog over workflow instead of page [#175](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/175) ([@gpelouze](https://github.com/gpelouze))
+- Allow custom interval between recurring workflow runs [#174](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/174) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump js-yaml from 3.14.2 to 3.15.0 [#177](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/177) ([@gpelouze](https://github.com/gpelouze))
+- Bump form-data from 4.0.4 to 4.0.6 [#173](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/173) ([@gpelouze](https://github.com/gpelouze))
+- Bump @babel/core from 7.26.0 to 7.29.7 [#172](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/172) ([@gpelouze](https://github.com/gpelouze))
+- Bump tar from 7.5.11 to 7.5.16 [#171](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/171) ([@gpelouze](https://github.com/gpelouze))
+- Bump dompurify from 3.4.2 to 3.4.11 [#170](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/170) ([@gpelouze](https://github.com/gpelouze))
+- Bump shell-quote from 1.8.2 to 1.8.4 [#167](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/167) ([@gpelouze](https://github.com/gpelouze))
+- Bump ws from 8.18.0 to 8.21.0 [#166](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/166) ([@gpelouze](https://github.com/gpelouze))
+- Bump @tootallnate/once from 2.0.0 to 2.0.1 [#165](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/165) ([@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-05-12&to=2026-07-01&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-05-12..2026-07-01&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.6.0
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.5.1...2778ced25dabc02e5386bf1605d980b318563316))
@@ -22,8 +54,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-05-01&to=2026-05-12&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-05-01..2026-05-12&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.5.1
 
