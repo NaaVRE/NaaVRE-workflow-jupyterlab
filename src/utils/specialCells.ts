@@ -28,7 +28,13 @@ export const specialCells: Array<ISpecialCell> = [
     inputs: [{ name: 'splitter_source', type: 'list' }],
     outputs: [{ name: 'splitter_target', type: 'list' }],
     confs: [],
-    params: [],
+    params: [
+      {
+        name: 'param_max_branches',
+        type: 'int',
+        default_value: ''
+      }
+    ],
     secrets: [],
     kernel: undefined,
     source_url: undefined

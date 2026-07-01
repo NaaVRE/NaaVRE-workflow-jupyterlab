@@ -2,7 +2,7 @@ name: naavre-workflow-jl-dev
 
 services:
   workflow-service:
-    image: ghcr.io/naavre/naavre-workflow-service:v0.1.6
+    image: ghcr.io/naavre/naavre-workflow-service:v0.4.0
     ports:
       - "127.0.0.1:62438:8000"
     environment:
@@ -25,9 +25,9 @@ services:
     volumes:
       - ./catalogue-fixtures.json:/code/app/fixtures.json
     environment:
-      DEV_MODE: true
-      VERIFY_SSL: false
-      DISABLE_AUTH: true
+      DEV_MODE: "true"
+      VERIFY_SSL: "false"
+      DISABLE_AUTH: "true"
       DJANGO_SUPERUSER_USERNAME: admin
       DJANGO_SUPERUSER_PASSWORD: admin
       DJANGO_SUPERUSER_EMAIL: example@example.org

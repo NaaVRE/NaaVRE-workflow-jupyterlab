@@ -1,6 +1,6 @@
 import React, { CSSProperties, ForwardedRef } from 'react';
 import styled from 'styled-components';
-import { INode, INodeDefaultProps } from '@mrblenny/react-flow-chart';
+import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
 import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -8,6 +8,7 @@ import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
+import { INode } from '../../utils/chart';
 
 const NodeContainer = styled.div<{
   width?: string;
@@ -100,7 +101,7 @@ function getNodeHeight(node: INode) {
 }
 
 function NodeCustomElement(
-  { node, children, ...otherProps }: INodeDefaultProps,
+  { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const isSpecialNode = node.type !== 'workflow-cell';
@@ -135,7 +136,7 @@ function NodeCustomElement(
 
 export const NodeCustom = React.forwardRef(
   (
-    { node, children, ...otherProps }: INodeDefaultProps,
+    { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     return NodeCustomElement({ node, children, ...otherProps }, ref);

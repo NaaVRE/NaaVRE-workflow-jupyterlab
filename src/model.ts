@@ -12,8 +12,7 @@ import { PartialJSONObject, PartialJSONValue } from '@lumino/coreutils';
 
 import { ISignal, Signal } from '@lumino/signaling';
 
-import { IChart } from '@mrblenny/react-flow-chart';
-import { defaultChart } from './utils/chart';
+import { defaultChart, IChart } from './utils/chart';
 
 import * as Y from 'yjs';
 

@@ -4,10 +4,8 @@ import Button from '@mui/material/Button';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { green } from '@mui/material/colors';
-import { grey } from '@mui/material/colors';
+import { green, grey } from '@mui/material/colors';
 import { ThemeProvider } from '@mui/material/styles';
-import { IChart } from '@mrblenny/react-flow-chart';
 
 import {
   IParam,
@@ -22,6 +20,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Alert from '@mui/material/Alert';
+import { getChartParam, IChart } from '../../utils/chart';
+
+const ignoredParams = ['param_max_branches'];
 
 interface IBaseVariableFormValue {
   name: string;
@@ -107,16 +108,22 @@ function RunWorkflowDialogContent({
         hasDraftCells = true;
       }
       node.properties.cell.params.forEach((param: IParam) => {
-        if (!(param.name in paramNodeIds)) {
-          paramNodeIds[param.name] = [];
+        const isParamInChartProperties =
+          getChartParam(chart, { node_id: node.id, name: param.name }) !==
+          undefined;
+        const isIgnored = ignoredParams.includes(param.name);
+        if (!isParamInChartProperties && !isIgnored) {
+          if (!(param.name in paramNodeIds)) {
+            paramNodeIds[param.name] = [];
+          }
+          paramNodeIds[param.name].push(node.id);
+          params[param.name] = {
+            name: param.name,
+            node_ids: paramNodeIds[param.name],
+            value: null,
+            default_value: param.default_value || null
+          };
         }
-        paramNodeIds[param.name].push(node.id);
-        params[param.name] = {
-          name: param.name,
-          node_ids: paramNodeIds[param.name],
-          value: null,
-          default_value: param.default_value || null
-        };
       });
       node.properties.cell.secrets.forEach((secret: ISecret) => {
         if (!(secret.name in secretNodeIds)) {
@@ -133,7 +140,7 @@ function RunWorkflowDialogContent({
     setHasDraftCells(hasDraftCells);
     setParams(Object.fromEntries(Object.entries(params).sort()));
     setSecrets(Object.fromEntries(Object.entries(secrets).sort()));
-  }, [chart.nodes]);
+  }, [chart.properties, chart.nodes]);
 
   const updateParamValue = async (
     event: ChangeEvent<{ value: string }>,
@@ -197,6 +204,20 @@ function RunWorkflowDialogContent({
         });
       });
     });
+    Object.values(chart.properties.params).forEach(
+      ({ node_id, name, value, ...rest }) => {
+        if (value === undefined) {
+          throw Error(
+            `Cannot submit workflow with undefined node param: ${name}`
+          );
+        }
+        paramsPayload.push({
+          node_id: node_id,
+          name: name,
+          value: value
+        });
+      }
+    );
     Object.values(secrets).forEach(({ node_ids, name, value, ...rest }) => {
       node_ids.forEach(nodeId => {
         if (value === null) {

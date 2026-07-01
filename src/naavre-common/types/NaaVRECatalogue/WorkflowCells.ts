@@ -11,9 +11,11 @@ export interface IDependency {
   asname?: string | null;
 }
 
+export type VariableType = 'int' | 'float' | 'str' | 'list';
+
 export interface IBaseVariable {
   name: string;
-  type: string | null;
+  type: VariableType | null;
 }
 
 export interface IInput extends IBaseVariable {}

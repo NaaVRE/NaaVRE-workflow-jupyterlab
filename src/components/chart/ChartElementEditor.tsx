@@ -2,15 +2,14 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import {
-  IChart,
   IConfig,
   IFlowChartCallbacks,
-  ILink,
-  INode
+  ILink
 } from '@mrblenny/react-flow-chart';
 
 import { CellInfo } from '../common/CellInfo';
 import { CellInfoHeader } from '../common/CellInfoHeader';
+import { IChart, INode } from '../../utils/chart';
 
 function LinkEditor({ link, onClose }: { link: ILink; onClose: () => void }) {
   return <CellInfoHeader onClose={onClose}>Link</CellInfoHeader>;
