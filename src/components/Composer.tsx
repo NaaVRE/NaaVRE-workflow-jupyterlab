@@ -56,13 +56,25 @@ export class Composer extends React.Component<IProps, IState> {
     this.containerRef = createRef();
   }
 
-  chartStateActions = mapValues(actions, (func: any) => (...args: any) => {
-    const newChartTransformer = func(...args);
-    const newChart = newChartTransformer(this.state.chart);
-    this.setState({
-      chart: { ...this.state.chart, ...newChart }
-    });
-  }) as typeof actions;
+  chartStateActions = mapValues(
+    actions,
+    (func: any, actionKey) =>
+      (...args: any) => {
+        const newChartTransformer = func(...args);
+        const newChart: IChart = newChartTransformer(this.state.chart);
+        switch (actionKey) {
+          case 'onDeleteKey': {
+            // Remove params that reference removed nodes
+            newChart.properties.params = newChart.properties.params.filter(
+              param => param.node_id in newChart.nodes
+            );
+          }
+        }
+        this.setState({
+          chart: { ...this.state.chart, ...newChart }
+        });
+      }
+  ) as typeof actions;
 
   chartConfig: IConfig = {
     // This is needed because onDeleteKey assumes config.readonly is defined...
