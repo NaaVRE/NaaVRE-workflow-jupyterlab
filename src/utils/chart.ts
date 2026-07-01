@@ -114,10 +114,7 @@ export function getChartParam(
   return param?.value;
 }
 
-export function setChartParam(
-  chart: IChart,
-  chartParam: IChartParam
-): IChart {
+export function setChartParam(chart: IChart, chartParam: IChartParam): IChart {
   const { node_id, name, value } = chartParam;
   if (value === undefined) {
     console.warn(
