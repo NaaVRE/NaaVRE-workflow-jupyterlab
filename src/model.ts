@@ -13,6 +13,7 @@ import { PartialJSONObject, PartialJSONValue } from '@lumino/coreutils';
 import { ISignal, Signal } from '@lumino/signaling';
 
 import { defaultChart, IChart } from './utils/chart';
+import { migrateChart } from './utils/chartMigrations';
 
 import * as Y from 'yjs';
 
@@ -347,7 +348,7 @@ export class Workflow extends YDocument<WorkflowChange> {
     let chart: IChart = defaultChart;
     if (value) {
       const obj = JSON.parse(value);
-      chart = obj.chart;
+      chart = migrateChart(obj.chart);
     }
     this.transact(() => {
       this.set('chart', chart);
