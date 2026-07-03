@@ -1,0 +1,177 @@
+{
+  "chart": {
+    "offset": {
+      "x": -31,
+      "y": 65
+    },
+    "scale": 1,
+    "nodes": {
+      "c352527b-5a59-4087-9e23-a005fe5a74b2": {
+        "id": "c352527b-5a59-4087-9e23-a005fe5a74b2",
+        "position": {
+          "x": 487.45001220703125,
+          "y": 352
+        },
+        "orientation": 0,
+        "type": "workflow-cell",
+        "ports": {
+          "names": {
+            "id": "names",
+            "type": "right",
+            "properties": {
+              "color": "#2dd2ca",
+              "parentNodeType": "workflow-cell"
+            },
+            "position": {
+              "x": 226.5,
+              "y": 75
+            }
+          }
+        },
+        "properties": {
+          "cell": {
+            "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/95dbedc2-4ab5-4d11-9556-9ef6321ecfbc/",
+            "owner": "gpelouze",
+            "virtual_lab": "openlab",
+            "shared_with_scopes": [],
+            "shared_with_users": [],
+            "versions": [
+              {
+                "version": 1,
+                "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/95dbedc2-4ab5-4d11-9556-9ef6321ecfbc/"
+              }
+            ],
+            "base_container_image": {
+              "build": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-build:v0.3.10",
+              "runtime": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-runtime:v0.3.10"
+            },
+            "dependencies": [],
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "names",
+                "type": "list"
+              }
+            ],
+            "confs": [],
+            "params": [],
+            "secrets": [],
+            "title": "ex1-1-input-list-gpelouze",
+            "description": "ex1-1-input-list-gpelouze",
+            "created": "2026-07-02T14:21:34.831270Z",
+            "modified": "2026-07-02T14:21:35.172309Z",
+            "version": 1,
+            "template_format": "v1",
+            "container_image": "ghcr.io/naavre/cells-vl-openlab/ex1-1-input-list-gpelouze:307c95c",
+            "kernel": "ipython",
+            "source_url": "https://github.com/NaaVRE/cells-vl-openlab/tree/1081b4c7ae9b433ce223ab0a7b190f59c268b666/ex1-1-input-list-gpelouze",
+            "is_draft": false
+          }
+        },
+        "size": {
+          "width": 252,
+          "height": 152
+        }
+      },
+      "672cc49e-328c-4fad-a9f5-46e4d7549b13": {
+        "id": "672cc49e-328c-4fad-a9f5-46e4d7549b13",
+        "position": {
+          "x": 882.4500122070312,
+          "y": 354
+        },
+        "orientation": 0,
+        "type": "workflow-cell",
+        "ports": {
+          "names": {
+            "id": "names",
+            "type": "left",
+            "properties": {
+              "color": "#2dd2ca",
+              "parentNodeType": "workflow-cell"
+            },
+            "position": {
+              "x": 23.5,
+              "y": 75
+            }
+          }
+        },
+        "properties": {
+          "cell": {
+            "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/a2167923-aa02-466a-8891-1e5a13b6fae4/",
+            "owner": "gpelouze",
+            "virtual_lab": "openlab",
+            "shared_with_scopes": [],
+            "shared_with_users": [],
+            "versions": [
+              {
+                "version": 1,
+                "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/a2167923-aa02-466a-8891-1e5a13b6fae4/"
+              }
+            ],
+            "base_container_image": {
+              "build": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-build:v0.3.10",
+              "runtime": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-runtime:v0.3.10"
+            },
+            "dependencies": [],
+            "inputs": [
+              {
+                "name": "names",
+                "type": "list"
+              }
+            ],
+            "outputs": [],
+            "confs": [],
+            "params": [
+              {
+                "name": "param_greeting",
+                "type": "str",
+                "default_value": "Hello"
+              }
+            ],
+            "secrets": [
+              {
+                "name": "secret_password",
+                "type": "str"
+              }
+            ],
+            "title": "ex1-2-process-list-gpelouze",
+            "description": "ex1-2-process-list-gpelouze",
+            "created": "2026-07-02T14:21:46.247821Z",
+            "modified": "2026-07-02T14:21:46.836756Z",
+            "version": 1,
+            "template_format": "v1",
+            "container_image": "ghcr.io/naavre/cells-vl-openlab/ex1-2-process-list-gpelouze:c209902",
+            "kernel": "ipython",
+            "source_url": "https://github.com/NaaVRE/cells-vl-openlab/tree/f1dd3a771e630d6eccafc6a2afa23f61513684c2/ex1-2-process-list-gpelouze",
+            "is_draft": false
+          }
+        },
+        "size": {
+          "width": 252,
+          "height": 152
+        }
+      }
+    },
+    "links": {
+      "292b10ba-7651-4271-a09d-cb94310d6321": {
+        "id": "292b10ba-7651-4271-a09d-cb94310d6321",
+        "from": {
+          "nodeId": "c352527b-5a59-4087-9e23-a005fe5a74b2",
+          "portId": "names"
+        },
+        "to": {
+          "nodeId": "672cc49e-328c-4fad-a9f5-46e4d7549b13",
+          "portId": "names"
+        }
+      }
+    },
+    "selected": {},
+    "hovered": {},
+    "metadata": {
+      "version": "1.1"
+    },
+    "properties": {
+      "params": []
+    }
+  }
+}
