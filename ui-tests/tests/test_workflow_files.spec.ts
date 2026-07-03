@@ -28,7 +28,9 @@ test.describe('Open workflows files', () => {
   workflowFiles.forEach(workflowFile => {
     test(`Opening ${workflowFile}`, async ({ page, tmpPath }) => {
       await page.goto();
-      await page.getByRole('tab', { name: 'File Browser (Ctrl+Shift+F)' }).click();
+      await page
+        .getByRole('tab', { name: 'File Browser (Ctrl+Shift+F)' })
+        .click();
 
       await page.evaluate(async (filePath: string) => {
         await (window as any).jupyterapp.commands.execute('docmanager:open', {
@@ -49,7 +51,9 @@ test.describe('Open workflows files', () => {
       await expect(page.getByText('Workflow Components Catalog')).toBeVisible();
 
       await page.getByRole('button', { name: 'Run' }).click();
-      await expect(page.getByRole('heading', { name: 'Run Workflow' })).toBeVisible();
+      await expect(
+        page.getByRole('heading', { name: 'Run Workflow' })
+      ).toBeVisible();
     });
   });
 });
