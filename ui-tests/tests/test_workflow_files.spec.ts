@@ -2,7 +2,10 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { expect, test } from '@jupyterlab/galata';
 
-const workflowsDir = path.resolve(__dirname, '../test-assets/workflows');
+const workflowsDir = path.resolve(
+  __dirname,
+  '../test-assets/workflows'
+);
 const workflowFiles = fs
   .readdirSync(workflowsDir)
   .filter(f => f.endsWith('.naavrewf'));
@@ -22,7 +25,9 @@ test.describe('Open workflows files', () => {
       await page.filebrowser.open(workflowFile);
 
       // workflow opens
-      await expect(page.getByRole('tab', { name: workflowFile, exact: true })).toBeVisible();
+      await expect(
+        page.getByRole('tab', { name: workflowFile, exact: true })
+      ).toBeVisible();
       await expect(page.locator('.vre-composer')).toBeVisible();
       await expect(page.getByText('Workflow Components Catalog')).toBeVisible();
 
