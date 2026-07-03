@@ -19,14 +19,10 @@ test.describe('Open workflows files', () => {
         .getByRole('tab', { name: 'File Browser (Ctrl+Shift+F)' })
         .click();
 
-      await page.evaluate(async (filePath: string) => {
-        await (window as any).jupyterapp.commands.execute('docmanager:open', {
-          path: filePath
-        });
-      }, `${tmpPath}/${workflowFile}`);
+      await page.filebrowser.open(workflowFile);
 
       // workflow opens
-      await expect(page.getByRole('tab', { name: workflowFile })).toBeVisible();
+      await expect(page.getByRole('tab', { name: workflowFile, exact: true })).toBeVisible();
       await expect(page.locator('.vre-composer')).toBeVisible();
       await expect(page.getByText('Workflow Components Catalog')).toBeVisible();
 
@@ -36,7 +32,7 @@ test.describe('Open workflows files', () => {
         .first()
         .waitFor({ state: 'hidden' });
 
-      await page.getByRole('button', { name: 'Run' }).click();
+      await page.getByRole('button', { name: 'Run', exact: true }).click();
       await expect(
         page.getByRole('heading', { name: 'Run Workflow' })
       ).toBeVisible();
