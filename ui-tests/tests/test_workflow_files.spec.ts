@@ -15,11 +15,11 @@ test.describe('Open workflows files', () => {
         `${tmpPath}/${workflowFile}`
       );
 
+      await page.filebrowser.open(workflowFile);
+
       await page
         .getByRole('tab', { name: 'File Browser (Ctrl+Shift+F)' })
         .click();
-
-      await page.filebrowser.open(workflowFile);
 
       // workflow opens
       await expect(
