@@ -2,10 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { expect, test } from '@jupyterlab/galata';
 
-const workflowsDir = path.resolve(
-  __dirname,
-  '../test-assets/workflows'
-);
+const workflowsDir = path.resolve(__dirname, '../test-assets/workflows');
 const workflowFiles = fs
   .readdirSync(workflowsDir)
   .filter(f => f.endsWith('.naavrewf'));
