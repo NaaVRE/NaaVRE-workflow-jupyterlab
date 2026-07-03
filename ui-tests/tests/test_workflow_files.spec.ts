@@ -38,17 +38,16 @@ test.describe('Open workflows files', () => {
         });
       }, `${tmpPath}/${workflowFile}`);
 
-      await page
-        .getByRole('tab', { name: workflowFile })
-        .waitFor({ state: 'visible' });
+      // workflow opens
+      await expect(page.getByRole('tab', { name: workflowFile })).toBeVisible();
+      await expect(page.locator('.vre-composer')).toBeVisible();
+      await expect(page.getByText('Workflow Components Catalog')).toBeVisible();
+
+      // catalogue finished loading
       await page
         .locator('.MuiSkeleton-root')
         .first()
         .waitFor({ state: 'hidden' });
-
-      await expect(page.getByRole('tab', { name: workflowFile })).toBeVisible();
-      await expect(page.locator('.vre-composer')).toBeVisible();
-      await expect(page.getByText('Workflow Components Catalog')).toBeVisible();
 
       await page.getByRole('button', { name: 'Run' }).click();
       await expect(
