@@ -1,33 +1,20 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { expect, galata, test } from '@jupyterlab/galata';
+import { expect, test } from '@jupyterlab/galata';
 
 const workflowsDir = path.resolve(__dirname, '../test-assets/workflows');
 const workflowFiles = fs
   .readdirSync(workflowsDir)
   .filter(f => f.endsWith('.naavrewf'));
 
-test.use({ tmpPath: 'test-workflows' });
-
 test.describe('Open workflows files', () => {
-  test.beforeAll(async ({ request, tmpPath }) => {
-    const contents = galata.newContentsHelper(request);
-    for (const workflowFile of workflowFiles) {
-      await contents.uploadFile(
+  workflowFiles.forEach(workflowFile => {
+    test(`Opening ${workflowFile}`, async ({ page, tmpPath }) => {
+      await page.contents.uploadFile(
         path.join(workflowsDir, workflowFile),
         `${tmpPath}/${workflowFile}`
       );
-    }
-  });
 
-  test.afterAll(async ({ request, tmpPath }) => {
-    const contents = galata.newContentsHelper(request);
-    await contents.deleteDirectory(tmpPath);
-  });
-
-  workflowFiles.forEach(workflowFile => {
-    test(`Opening ${workflowFile}`, async ({ page, tmpPath }) => {
-      await page.goto();
       await page
         .getByRole('tab', { name: 'File Browser (Ctrl+Shift+F)' })
         .click();
