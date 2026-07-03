@@ -17,10 +17,6 @@ test.describe('Open workflows files', () => {
 
       await page.filebrowser.open(workflowFile);
 
-      await page
-        .getByRole('tab', { name: 'File Browser (Ctrl+Shift+F)' })
-        .click();
-
       // workflow opens
       await expect(
         page.getByRole('tab', { name: workflowFile, exact: true })
