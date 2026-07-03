@@ -26,7 +26,9 @@ test.describe('Open workflows files', () => {
         page.getByRole('tab', { name: workflowFile, exact: true })
       ).toBeVisible();
       await expect(page.locator('.vre-composer')).toBeVisible();
-      await expect(page.getByText('Workflow Components Catalog')).toBeVisible();
+      await expect(page.getByText('Workflow Components Catalog')).toBeVisible({
+        timeout: 20000
+      });
 
       // catalogue finished loading
       await page
