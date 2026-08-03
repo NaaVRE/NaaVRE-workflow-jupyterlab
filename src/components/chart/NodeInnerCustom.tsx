@@ -1,6 +1,7 @@
 import * as React from 'react';
 import CallMergeIcon from '@mui/icons-material/CallMerge';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
+import DatasetIcon from '@mui/icons-material/Dataset';
 import { SxProps } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import { INodeInnerDefaultProps } from '@mrblenny/react-flow-chart';
@@ -13,6 +14,8 @@ function SpecialCellIcon({ nodeType, sx }: { nodeType: string; sx: SxProps }) {
       return <CallSplitIcon sx={{ transform: 'rotate(90deg)', ...sx }} />;
     case 'merger':
       return <CallMergeIcon sx={{ transform: 'rotate(90deg)', ...sx }} />;
+    case 'fdo-writer':
+      return <DatasetIcon sx={sx} />;
     default:
       return <></>;
   }

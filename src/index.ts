@@ -23,6 +23,12 @@ import { WorkflowWidget } from './widget';
 import { ISettings } from './settings';
 import { ToolbarItems } from './toolbarItems';
 import { Commands, CommandIDs } from './commands';
+import { pastRunsIcon } from './icons';
+import { VizPanelWidget } from './components/vizPanel/VizPanelWidget';
+import {
+  PastRunsWidget,
+  PAST_RUNS_WIDGET_ID
+} from './components/vizPanel/PastRunsWidget';
 
 /**
  * The name of the factory that creates editor widgets.
@@ -64,11 +70,72 @@ const extension: JupyterFrontEndPlugin<void> = {
     );
     Commands.addCommands(app.commands, browserFactory, FACTORY);
 
+    const namespace = 'documents-naavrewf';
+    const tracker = new WidgetTracker<WorkflowWidget>({ namespace });
+
+    app.commands.addCommand(CommandIDs.openVizPanel, {
+      label: 'Open Viz Panel',
+      execute: (args: Record<string, unknown>) => {
+        const runId = String(args['runId'] ?? '');
+        const runUrl = String(args['runUrl'] ?? '');
+        const settings: ISettings =
+          tracker.currentWidget?.content.settings ?? {};
+
+        const existingPanel = Array.from(app.shell.widgets('main')).find(
+          (w: Widget) => w.id === `naavre-viz-panel-${runId}`
+        );
+        if (existingPanel) {
+          app.shell.activateById(existingPanel.id);
+          return;
+        }
+
+        const panel = new VizPanelWidget(
+          runId,
+          runUrl,
+          settings,
+          app.serviceManager.contents
+        );
+        app.shell.add(panel, 'main');
+        app.shell.activateById(panel.id);
+      }
+    });
+
+    app.commands.addCommand(CommandIDs.browsePastRuns, {
+      label: 'Browse past run results',
+      icon: args => (args['isPalette'] ? undefined : pastRunsIcon),
+      execute: () => {
+        const existing = Array.from(app.shell.widgets('main')).find(
+          (w: Widget) => w.id === PAST_RUNS_WIDGET_ID
+        );
+        if (existing) {
+          app.shell.activateById(existing.id);
+          return;
+        }
+
+        const browser = new PastRunsWidget(
+          app.serviceManager.contents,
+          (runId: string) => {
+            app.commands.execute(CommandIDs.openVizPanel, {
+              runId,
+              runUrl: ''
+            });
+          }
+        );
+        app.shell.add(browser, 'main');
+        app.shell.activateById(browser.id);
+      }
+    });
+
     if (launcher) {
       launcher.add({
         command: CommandIDs.createNew,
         category: 'VRE Components',
         rank: 0
+      });
+      launcher.add({
+        command: CommandIDs.browsePastRuns,
+        category: 'VRE Components',
+        rank: 1
       });
     }
 
@@ -91,7 +158,13 @@ const extension: JupyterFrontEndPlugin<void> = {
       toolbarRegistry.registerFactory<WorkflowWidget>(
         FACTORY,
         'runWorkflow',
-        widget => ToolbarItems.createRunButton(widget)
+        widget =>
+          ToolbarItems.createRunButton(
+            widget,
+            (runId: string, runUrl: string) => {
+              app.commands.execute(CommandIDs.openVizPanel, { runId, runUrl });
+            }
+          )
       );
       if (settingRegistry) {
         toolbarFactory = createToolbarFactory(
@@ -103,11 +176,6 @@ const extension: JupyterFrontEndPlugin<void> = {
         );
       }
     }
-
-    // Namespace for the tracker
-    const namespace = 'documents-naavrewf';
-    // Creating the tracker for the document
-    const tracker = new WidgetTracker<WorkflowWidget>({ namespace });
 
     // Handle state restoration.
     if (restorer) {

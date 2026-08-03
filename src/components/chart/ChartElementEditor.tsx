@@ -10,18 +10,33 @@ import {
 import { CellInfo } from '../common/CellInfo';
 import { CellInfoHeader } from '../common/CellInfoHeader';
 import { IChart, INode } from '../../utils/chart';
+import { FdoNodeEditor } from './FdoNodeEditor';
 
 function LinkEditor({ link, onClose }: { link: ILink; onClose: () => void }) {
   return <CellInfoHeader onClose={onClose}>Link</CellInfoHeader>;
 }
 
-function NodeEditor({ node, onClose }: { node: INode; onClose: () => void }) {
+function NodeEditor({
+  node,
+  chart,
+  setChart,
+  onClose
+}: {
+  node: INode;
+  chart: IChart;
+  setChart: (chart: IChart) => void;
+  onClose: () => void;
+}) {
   return (
     <>
       <CellInfoHeader onClose={onClose}>
         {node.properties.cell.title}
       </CellInfoHeader>
-      <CellInfo cell={node.properties.cell} />
+      {node.type === 'fdo-writer' ? (
+        <FdoNodeEditor node={node} chart={chart} setChart={setChart} />
+      ) : (
+        <CellInfo cell={node.properties.cell} />
+      )}
     </>
   );
 }
@@ -71,6 +86,8 @@ export function ChartElementEditor({
       {chart.selected.type === 'node' && (
         <NodeEditor
           node={chart.nodes[chart.selected.id as string]}
+          chart={chart}
+          setChart={setChart}
           onClose={onClose}
         />
       )}

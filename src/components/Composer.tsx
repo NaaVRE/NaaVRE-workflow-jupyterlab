@@ -48,6 +48,8 @@ export const DefaultState: IState = {
 export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
   containerRef: React.RefObject<HTMLDivElement>;
+  onWorkflowSubmitted: ((runId: string, runUrl: string) => void) | undefined =
+    undefined;
   static contextType = SettingsContext;
   declare context: React.ContextType<typeof SettingsContext>;
 
@@ -170,6 +172,7 @@ export class Composer extends React.Component<IProps, IState> {
               onClose={() => this.setRunWorkflowDialogOpen(false)}
               chart={this.state.chart}
               container={this.containerRef.current}
+              onSubmitted={this.onWorkflowSubmitted}
             />
             <div
               style={{

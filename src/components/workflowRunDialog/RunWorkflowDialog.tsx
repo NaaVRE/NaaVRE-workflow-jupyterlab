@@ -21,8 +21,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Alert from '@mui/material/Alert';
 import { getChartParam, IChart } from '../../utils/chart';
+import { DEFAULT_FDO_CONFIG } from '../../utils/specialCells';
 
-const ignoredParams = ['param_max_branches'];
+const ignoredParams = ['param_max_branches', 'run_id'];
 
 interface IBaseVariableFormValue {
   name: string;
@@ -55,18 +56,24 @@ export function RunWorkflowDialog({
   open,
   onClose,
   chart,
-  container
+  container,
+  onSubmitted
 }: {
   open: boolean;
   onClose: () => void;
   chart: IChart;
   container: HTMLDivElement | null;
+  onSubmitted?: (runId: string, runUrl: string) => void;
 }) {
   return (
     <Dialog onClose={onClose} open={open} container={container}>
       <DialogTitle>Run Workflow</DialogTitle>
       <DialogContent>
-        <RunWorkflowDialogContent onClose={onClose} chart={chart} />
+        <RunWorkflowDialogContent
+          onClose={onClose}
+          chart={chart}
+          onSubmitted={onSubmitted}
+        />
       </DialogContent>
     </Dialog>
   );
@@ -74,10 +81,12 @@ export function RunWorkflowDialog({
 
 function RunWorkflowDialogContent({
   onClose,
-  chart
+  chart,
+  onSubmitted
 }: {
   onClose: () => void;
   chart: IChart;
+  onSubmitted?: (runId: string, runUrl: string) => void;
 }) {
   const settings = useContext(SettingsContext);
   const [params, setParams] = useState<{ [name: string]: IParamFormValue }>({});
@@ -88,6 +97,7 @@ function RunWorkflowDialogContent({
   const [hasDraftCells, setHasDraftCells] = useState<boolean>(false);
   const [submittedWorkflow, setSubmittedWorkflow] =
     useState<SubmitWorkflowResponse | null>(null);
+  const [runId] = useState<string>(() => crypto.randomUUID());
 
   const setParam = (name: string, value: IParamFormValue) => {
     setParams(prevState => ({ ...prevState, [name]: value }));
@@ -218,6 +228,28 @@ function RunWorkflowDialogContent({
         });
       }
     );
+
+    // `run_id` is hidden from the form (see ignoredParams) because it names the
+    // storage directory the viz panel later reads, so it is generated here and
+    // shared by every node that declares it, the outputs of a single run must
+    // land in a single RO-Crate.
+    Object.values(chart.nodes).forEach(node => {
+      const declaresRunId = node.properties.cell.params.some(
+        (p: IParam) => p.name === 'run_id'
+      );
+      if (declaresRunId) {
+        paramsPayload.push({ node_id: node.id, name: 'run_id', value: runId });
+      }
+      if (node.type === 'fdo-writer') {
+        const fdo = node.properties.fdoConfig ?? DEFAULT_FDO_CONFIG;
+        paramsPayload.push(
+          { node_id: node.id, name: 'viz_kind', value: fdo.vizKind },
+          { node_id: node.id, name: 'output_name', value: fdo.outputName },
+          { node_id: node.id, name: 'data_format', value: fdo.dataFormat }
+        );
+      }
+    });
+
     Object.values(secrets).forEach(({ node_ids, name, value, ...rest }) => {
       node_ids.forEach(nodeId => {
         if (value === null) {
@@ -250,6 +282,7 @@ function RunWorkflowDialogContent({
         setSubmittedWorkflow(data);
         if (!isCron) {
           runWorkflowNotification(data.run_url, settings);
+          onSubmitted?.(runId, data.run_url);
         }
       })
       .catch(error => {
