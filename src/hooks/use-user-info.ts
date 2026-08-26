@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { requestAPI } from '../naavre-common/handler';
+import { requestAPI } from '@naavre/communicator-jupyterlab';
 
 export interface IUserInfo {
   sub: string | null;

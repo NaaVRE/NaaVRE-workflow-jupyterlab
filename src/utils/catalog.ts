@@ -1,4 +1,4 @@
-import { NaaVREExternalService } from '../naavre-common/handler';
+import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { ceil } from 'lodash';
 
 export interface ICatalogueListResponse<T> {

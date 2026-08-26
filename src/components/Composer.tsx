@@ -13,7 +13,7 @@ import {
 } from '@mrblenny/react-flow-chart';
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { NaaVREExternalService } from '../naavre-common/handler';
+import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { IChart, IChartParam, validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';

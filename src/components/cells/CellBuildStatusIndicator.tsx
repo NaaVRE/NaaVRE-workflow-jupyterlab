@@ -10,6 +10,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import CircularProgress from '@mui/material/CircularProgress';
 import { SxProps } from '@mui/material/styles';
+import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 
 const STATUS_LABELS: Record<IContainerizationJob['status'], string> = {
   queued: 'queued',
