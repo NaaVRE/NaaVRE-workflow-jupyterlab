@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ICell,
   IContainerizationJob
@@ -11,6 +11,8 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import CircularProgress from '@mui/material/CircularProgress';
 import { SxProps } from '@mui/material/styles';
 import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
+
+const BUILD_STATUS_POLL_INTERVAL_MS = 10000;
 
 const STATUS_LABELS: Record<IContainerizationJob['status'], string> = {
   queued: 'queued',
@@ -84,7 +86,46 @@ export function CellBuildStatusIndicator({
   cell: ICell;
   sx?: SxProps;
 }) {
-  const job = cell.containerization_job;
+  const [job, setJob] = useState<IContainerizationJob | null | undefined>(
+    cell.containerization_job
+  );
+
+  useEffect(() => {
+    setJob(cell.containerization_job);
+  }, [cell]);
+
+  useEffect(() => {
+    if (!job || job.status === 'completed') {
+      return;
+    }
+
+    let cancelled = false;
+
+    const poll = async () => {
+      try {
+        const resp = await NaaVREExternalService(
+          'GET',
+          cell.url,
+          { accept: 'application/json' },
+          {}
+        );
+        const updatedCell: ICell = JSON.parse(resp.content);
+        if (!cancelled) {
+          setJob(updatedCell.containerization_job);
+        }
+      } catch (error) {
+        console.error('Failed to refresh build status', error);
+      }
+    };
+
+    const intervalId = setInterval(poll, BUILD_STATUS_POLL_INTERVAL_MS);
+
+    return () => {
+      cancelled = true;
+      clearInterval(intervalId);
+    };
+  }, [job, cell.url]);
+
   const href = job?.html_url;
 
   return (
