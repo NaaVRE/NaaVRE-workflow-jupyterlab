@@ -18,6 +18,7 @@ import Box from '@mui/material/Box';
 import { CellShareDialog } from './CellShareDialog';
 import { UserInfoContext } from './UserInfoContext';
 import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
+import { CellBuildStatusIndicator } from './CellBuildStatusIndicator';
 
 function CellTitle({
   cell,
@@ -44,10 +45,12 @@ function CellTitle({
             alignItems: 'center'
           }}
         >
-          {cell.is_draft && (
+          {cell.is_draft ? (
             <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
               draft
             </Typography>
+          ) : (
+            <CellBuildStatusIndicator cell={cell} />
           )}
           <LocalOfferIcon color="action" fontSize="inherit" />
           <Typography variant="body2">v{cell.version}</Typography>
