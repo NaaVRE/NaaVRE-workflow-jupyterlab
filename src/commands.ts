@@ -6,6 +6,8 @@ import { launcherIcon } from './icons';
 
 export namespace CommandIDs {
   export const createNew = 'create-vre-composer';
+  export const openVizPanel = 'naavre:open-viz-panel';
+  export const browsePastRuns = 'naavre:browse-past-runs';
 }
 
 async function createNew(commands: CommandRegistry, cwd: any, FACTORY: string) {

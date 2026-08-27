@@ -35,13 +35,21 @@ export namespace ToolbarItems {
     });
   }
 
-  export function createRunButton(widget: WorkflowWidget): Widget {
+  export function createRunButton(
+    widget: WorkflowWidget,
+    onWorkflowSubmitted: (runId: string, runUrl: string) => void
+  ): Widget {
     return new ToolbarButton({
       label: 'Run',
       tooltip: 'Run the workflow',
       icon: runIcon,
-      onClick: () =>
-        widget.content.composerRef.current?.setRunWorkflowDialogOpen(true)
+      onClick: () => {
+        const composer = widget.content.composerRef.current;
+        if (composer) {
+          composer.onWorkflowSubmitted = onWorkflowSubmitted;
+        }
+        composer?.setRunWorkflowDialogOpen(true);
+      }
     });
   }
 }

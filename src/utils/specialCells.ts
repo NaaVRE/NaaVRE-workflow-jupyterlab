@@ -4,6 +4,28 @@ export interface ISpecialCell extends ICell {
   type: string;
 }
 
+export const FDO_VIZ_KINDS = [
+  'xy-plot',
+  'map',
+  'table',
+  'image',
+  'html'
+] as const;
+
+export type FdoVizKind = (typeof FDO_VIZ_KINDS)[number];
+
+export interface IFdoConfig {
+  vizKind: FdoVizKind;
+  outputName: string;
+  dataFormat: string;
+}
+
+export const DEFAULT_FDO_CONFIG: IFdoConfig = {
+  vizKind: 'xy-plot',
+  outputName: 'output',
+  dataFormat: 'text/csv'
+};
+
 export const specialCells: Array<ISpecialCell> = [
   {
     url: 'splitter',
@@ -35,6 +57,34 @@ export const specialCells: Array<ISpecialCell> = [
         default_value: ''
       }
     ],
+    secrets: [],
+    kernel: undefined,
+    source_url: undefined
+  },
+  {
+    url: 'fdo-writer',
+    title: 'FDO Writer',
+    description:
+      'Write a workflow output as a FAIR Digital Object (RO-Crate) to your cloud storage. Add one per output you want to visualise.',
+    type: 'fdo-writer',
+    created: undefined,
+    modified: undefined,
+    owner: undefined,
+    virtual_lab: undefined,
+    shared_with_scopes: [],
+    shared_with_users: [],
+    version: 1,
+    versions: [],
+    container_image: '',
+    base_container_image: {
+      build: '',
+      runtime: ''
+    },
+    dependencies: [],
+    inputs: [{ name: 'fdo_input', type: 'str' }],
+    outputs: [],
+    confs: [],
+    params: [{ name: 'run_id', type: 'str' }],
     secrets: [],
     kernel: undefined,
     source_url: undefined

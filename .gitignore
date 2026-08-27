@@ -10,6 +10,7 @@ node_modules/
 NaaVRE_workflow_jupyterlab/labextension
 # Version file is handled by hatchling
 NaaVRE_workflow_jupyterlab/_version.py
+.venv/
 
 # Integration tests
 ui-tests/test-results/

@@ -9,7 +9,7 @@ import {
   ICell,
   VariableType
 } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { ISpecialCell } from './specialCells';
+import { IFdoConfig, ISpecialCell } from './specialCells';
 
 export interface IChartParam {
   node_id: string;
@@ -22,6 +22,7 @@ export interface IChartParam {
 
 export interface INodeProps {
   cell: ICell;
+  fdoConfig?: IFdoConfig;
 }
 
 export interface IChartProps {
