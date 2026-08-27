@@ -438,6 +438,42 @@
     }
   },
   {
+    "model": "workflow_cells.cellcontainerizationjob",
+    "pk": 1,
+    "fields": {
+      "html_url": "https://github.com/NaaVRE/cells-vl-tests/actions/runs/32857246360",
+      "status": "completed",
+      "conclusion": "cancelled"
+    }
+  },
+  {
+    "model": "workflow_cells.cellcontainerizationjob",
+    "pk": 2,
+    "fields": {
+      "html_url": "https://github.com/NaaVRE/cells-vl-tests/actions/runs/32856924377",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  },
+  {
+    "model": "workflow_cells.cellcontainerizationjob",
+    "pk": 3,
+    "fields": {
+      "html_url": "https://github.com/NaaVRE/cells-vl-tests/actions/runs/32857246360",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  },
+  {
+    "model": "workflow_cells.cellcontainerizationjob",
+    "pk": 4,
+    "fields": {
+      "html_url": "https://github.com/NaaVRE/cells-vl-tests/actions/runs/32856924377",
+      "status": "in_progress",
+      "conclusion": null
+    }
+  },
+  {
     "model": "workflow_cells.dependency",
     "pk": 5,
     "fields": {
@@ -524,6 +560,8 @@
       "version": 1,
       "container_image": "example.com/naavre-cells/test-cell-1:49c621b",
       "base_container_image": 2,
+      "containerization_workflow_id": null,
+      "containerization_job": null,
       "kernel": "ipython",
       "source_url": "",
       "dependencies": [5, 6],
@@ -541,6 +579,8 @@
       "version": 2,
       "container_image": "example.com/naavre-cells/test-cell-1:7abc41dd",
       "base_container_image": 2,
+      "containerization_workflow_id": null,
+      "containerization_job": null,
       "kernel": "ipython",
       "source_url": "",
       "dependencies": [5, 6],
@@ -558,6 +598,8 @@
       "version": 1,
       "container_image": null,
       "base_container_image": null,
+      "containerization_workflow_id": null,
+      "containerization_job": null,
       "kernel": "ipython",
       "source_url": "",
       "dependencies": [],
@@ -576,6 +618,8 @@
       "version": 1,
       "container_image": "example.com/naavre-cells/test-cell-2:f7b1772",
       "base_container_image": 2,
+      "containerization_workflow_id": null,
+      "containerization_job": null,
       "kernel": "",
       "source_url": "",
       "dependencies": [],
@@ -593,6 +637,8 @@
       "version": 1,
       "container_image": "example.com/naavre-cells/other-vl-cell-1:b078cae4",
       "base_container_image": 2,
+      "containerization_workflow_id": null,
+      "containerization_job": null,
       "kernel": "ipython",
       "source_url": "",
       "dependencies": [5, 6],
@@ -610,6 +656,8 @@
       "version": 1,
       "container_image": "example.com/naavre-cells/shared:93807f0f",
       "base_container_image": 2,
+      "containerization_workflow_id": "f7d8774d-a585-4ad4-955a-31f23affb8ee",
+      "containerization_job": 1,
       "kernel": "ipython",
       "source_url": "",
       "dependencies": [],
@@ -627,6 +675,8 @@
       "version": 1,
       "container_image": "example.com/naavre-cells/shared:93807f0f",
       "base_container_image": 2,
+      "containerization_workflow_id": "27937e92-86d2-4507-a736-f24ca8945802",
+      "containerization_job": 2,
       "kernel": "ipython",
       "source_url": "",
       "dependencies": [],
@@ -644,6 +694,8 @@
       "version": 1,
       "container_image": "example.com/naavre-cells/shared:93807f0f",
       "base_container_image": 2,
+      "containerization_workflow_id": "f7d8774d-a585-4ad4-955a-31f23affb8ee",
+      "containerization_job": 3,
       "kernel": "ipython",
       "source_url": "",
       "dependencies": [],
@@ -661,6 +713,8 @@
       "version": 1,
       "container_image": "example.com/naavre-cells/shared:93807f0f",
       "base_container_image": 2,
+      "containerization_workflow_id": "27937e92-86d2-4507-a736-f24ca8945802",
+      "containerization_job": 4,
       "kernel": "ipython",
       "source_url": "",
       "dependencies": [],

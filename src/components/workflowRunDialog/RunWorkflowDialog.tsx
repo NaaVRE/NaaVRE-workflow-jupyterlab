@@ -11,7 +11,7 @@ import {
   IParam,
   ISecret
 } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { NaaVREExternalService } from '../../naavre-common/handler';
+import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { theme } from '../../Theme';
 import { SettingsContext } from '../../settings';
 import WorkflowRepeatPicker from '../WorkflowRepeatPicker';

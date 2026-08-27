@@ -1,5 +1,5 @@
 import { ISharingScope } from '../../naavre-common/types/NaaVRECatalogue/BaseAssets';
-import { INaaVREExternalServiceResponse } from '../../naavre-common/handler';
+import { INaaVREExternalServiceResponse } from '@naavre/communicator-jupyterlab';
 
 export const sharingScopes: ISharingScope[] = [
   {

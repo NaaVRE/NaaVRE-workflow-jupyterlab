@@ -1,5 +1,5 @@
 import { delay, http, HttpResponse, matchRequestUrl } from 'msw';
-import { INaaVREExternalServiceResponse } from '../naavre-common/handler';
+import { INaaVREExternalServiceResponse } from '@naavre/communicator-jupyterlab';
 import { getCellsList, patchCell } from './catalogue-service/workflow-cells';
 import { getSharingScopesList } from './catalogue-service/sharing-scopes';
 import { getUsersList } from './catalogue-service/users';

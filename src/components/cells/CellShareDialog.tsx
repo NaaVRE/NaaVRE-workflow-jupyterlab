@@ -20,7 +20,7 @@ import { useSharingScopeCheckboxes } from '../../hooks/use-sharing-scope-checkbo
 import { fetchListFromCatalogue } from '../../utils/catalog';
 import { SettingsContext } from '../../settings';
 import { IUser } from '../../naavre-common/types/NaaVRECatalogue/BaseAssets';
-import { NaaVREExternalService } from '../../naavre-common/handler';
+import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { SxProps } from '@mui/material/styles';
 
 function SectionTitle({ children }: { children: React.ReactNode }) {

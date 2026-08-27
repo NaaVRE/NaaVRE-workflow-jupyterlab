@@ -1,6 +1,6 @@
 import { Notification } from '@jupyterlab/apputils';
 
-import { NaaVREExternalService } from '../../naavre-common/handler';
+import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { ISettings } from '../../settings';
 
 // Partial https://argo-workflows.readthedocs.io/en/latest/fields/#nodestatus

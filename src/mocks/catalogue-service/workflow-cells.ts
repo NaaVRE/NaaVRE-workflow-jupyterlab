@@ -1,5 +1,5 @@
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { INaaVREExternalServiceResponse } from '../../naavre-common/handler';
+import { INaaVREExternalServiceResponse } from '@naavre/communicator-jupyterlab';
 
 export const cells: ICell[] = [
   {
@@ -11,6 +11,13 @@ export const cells: ICell[] = [
     base_container_image: {
       build: 'example.com/test-build-image:v0.0.1',
       runtime: 'example.com/test-runtime-image:v0.0.1'
+    },
+    containerization_workflow_id: '27937e92-86d2-4507-a736-f24ca8945802',
+    containerization_job: {
+      html_url:
+        'https://github.com/NaaVRE/cells-vl-tests/actions/runs/32856924377',
+      status: 'in_progress',
+      conclusion: null
     },
     dependencies: [],
     inputs: [],
@@ -43,6 +50,13 @@ export const cells: ICell[] = [
       build: 'example.com/test-build-image:v0.0.1',
       runtime: 'example.com/test-runtime-image:v0.0.1'
     },
+    containerization_workflow_id: '27937e92-86d2-4507-a736-f24ca8945802',
+    containerization_job: {
+      html_url:
+        'https://github.com/NaaVRE/cells-vl-tests/actions/runs/32856924377',
+      status: 'completed',
+      conclusion: 'success'
+    },
     dependencies: [],
     inputs: [],
     outputs: [],
@@ -73,6 +87,13 @@ export const cells: ICell[] = [
     base_container_image: {
       build: 'example.com/test-build-image:v0.0.1',
       runtime: 'example.com/test-runtime-image:v0.0.1'
+    },
+    containerization_workflow_id: 'f7d8774d-a585-4ad4-955a-31f23affb8ee',
+    containerization_job: {
+      html_url:
+        'https://github.com/NaaVRE/cells-vl-tests/actions/runs/32857246360',
+      status: 'completed',
+      conclusion: 'failure'
     },
     dependencies: [],
     inputs: [],
@@ -105,6 +126,13 @@ export const cells: ICell[] = [
       build: 'example.com/test-build-image:v0.0.1',
       runtime: 'example.com/test-runtime-image:v0.0.1'
     },
+    containerization_workflow_id: 'f7d8774d-a585-4ad4-955a-31f23affb8ee',
+    containerization_job: {
+      html_url:
+        'https://github.com/NaaVRE/cells-vl-tests/actions/runs/32857246360',
+      status: 'completed',
+      conclusion: 'cancelled'
+    },
     dependencies: [],
     inputs: [],
     outputs: [],
@@ -136,6 +164,8 @@ export const cells: ICell[] = [
       build: 'example.com/test-build-image:v0.0.1',
       runtime: 'example.com/test-runtime-image:v0.0.1'
     },
+    containerization_workflow_id: null,
+    containerization_job: null,
     dependencies: [
       {
         name: 'test-dependency-1',
@@ -199,6 +229,8 @@ export const cells: ICell[] = [
       build: 'example.com/test-build-image:v0.0.1',
       runtime: 'example.com/test-runtime-image:v0.0.1'
     },
+    containerization_workflow_id: null,
+    containerization_job: null,
     dependencies: [],
     inputs: [
       {
@@ -236,6 +268,8 @@ export const cells: ICell[] = [
       build: 'example.com/test-build-image:v0.0.1',
       runtime: 'example.com/test-runtime-image:v0.0.1'
     },
+    containerization_workflow_id: null,
+    containerization_job: null,
     dependencies: [
       {
         name: 'test-dependency-1',
@@ -303,6 +337,8 @@ export const cells: ICell[] = [
       build: 'example.com/test-build-image:v0.0.1',
       runtime: 'example.com/test-runtime-image:v0.0.1'
     },
+    containerization_workflow_id: null,
+    containerization_job: null,
     dependencies: [
       {
         name: 'test-dependency-1',
@@ -367,6 +403,8 @@ export const cells: ICell[] = [
     shared_with_scopes: [],
     shared_with_users: [],
     base_container_image: null,
+    containerization_workflow_id: null,
+    containerization_job: null,
     dependencies: [],
     inputs: [],
     outputs: [],

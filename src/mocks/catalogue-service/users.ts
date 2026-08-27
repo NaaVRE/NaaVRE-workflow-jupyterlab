@@ -1,4 +1,4 @@
-import { INaaVREExternalServiceResponse } from '../../naavre-common/handler';
+import { INaaVREExternalServiceResponse } from '@naavre/communicator-jupyterlab';
 import { IUser } from '../../naavre-common/types/NaaVRECatalogue/BaseAssets';
 
 export const users: IUser[] = [

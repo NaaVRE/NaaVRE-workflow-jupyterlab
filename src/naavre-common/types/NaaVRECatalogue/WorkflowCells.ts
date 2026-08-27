@@ -5,6 +5,26 @@ export interface IBaseImage {
   runtime: string;
 }
 
+export interface IContainerizationJob {
+  html_url: string;
+  status:
+    | 'queued'
+    | 'in_progress'
+    | 'completed'
+    | 'waiting'
+    | 'requested'
+    | 'pending';
+  conclusion:
+    | 'success'
+    | 'failure'
+    | 'neutral'
+    | 'cancelled'
+    | 'skipped'
+    | 'timed_out'
+    | 'action_required'
+    | null;
+}
+
 export interface IDependency {
   name: string;
   module?: string | null;
@@ -38,6 +58,8 @@ export interface ICell extends IBaseAsset {
   versions?: IAssetVersionsRef[];
   container_image: string | null;
   base_container_image?: IBaseImage | null;
+  containerization_job?: IContainerizationJob | null;
+  containerization_workflow_id?: string | null;
   dependencies: Array<IDependency>;
   inputs: Array<IInput>;
   outputs: Array<IOutput>;
