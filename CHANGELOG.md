@@ -2,6 +2,40 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.6.3
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.6.2...7b54fc4cf6d25ae13a4054e29384b4a2b93a2aef))
+
+### Enhancements made
+
+- Show cells containerization status [#202](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/202) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump nanoid from 3.3.11 to 3.3.18 [#199](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/199) ([@gpelouze](https://github.com/gpelouze))
+- Bump js-yaml from 3.15.0 to 3.15.1 [#198](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/198) ([@gpelouze](https://github.com/gpelouze))
+- Bump dompurify from 3.4.11 to 3.4.14 [#197](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/197) ([@gpelouze](https://github.com/gpelouze))
+- Bump mermaid from 11.16.0 to 11.17.2 [#196](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/196) ([@gpelouze](https://github.com/gpelouze))
+- Bump fast-uri from 3.1.2 to 3.1.6 [#195](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/195) ([@gpelouze](https://github.com/gpelouze))
+- Bump actions/setup-python from 6 to 7 [#193](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/193) ([@gpelouze](https://github.com/gpelouze))
+- Bump brace-expansion from 1.1.11 to 1.1.16 [#192](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/192) ([@gpelouze](https://github.com/gpelouze))
+- Bump tar from 7.5.16 to 7.5.22 [#191](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/191) ([@gpelouze](https://github.com/gpelouze))
+- Bump shell-quote from 1.8.4 to 1.10.0 [#190](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/190) ([@gpelouze](https://github.com/gpelouze))
+- Bump the jupyterlab group with 6 updates [#182](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/182) ([@gpelouze](https://github.com/gpelouze))
+- Bump actions/checkout from 6 to 7 [#181](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/181) ([@gpelouze](https://github.com/gpelouze))
+- Bump actions/cache from 5 to 6 [#180](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/180) ([@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-07-01&to=2026-08-31&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-07-01..2026-08-31&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.6.2
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.6.1...6030998044d3e837aeb8b0d5c534db62c1063dbc))
@@ -18,8 +52,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-07-01&to=2026-07-01&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-07-01..2026-07-01&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.6.1
 
