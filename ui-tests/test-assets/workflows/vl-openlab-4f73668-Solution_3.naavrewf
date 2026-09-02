@@ -1,0 +1,314 @@
+{
+  "chart": {
+    "offset": {
+      "x": 0.15,
+      "y": -22.49
+    },
+    "scale": 0.629,
+    "nodes": {
+      "f54e127d-2cbb-4c9f-8b9d-f647f1e7e082": {
+        "id": "f54e127d-2cbb-4c9f-8b9d-f647f1e7e082",
+        "position": {
+          "x": 552.1462833180146,
+          "y": 623.9904610492846
+        },
+        "orientation": 0,
+        "type": "workflow-cell",
+        "ports": {
+          "data_file": {
+            "id": "data_file",
+            "type": "right",
+            "properties": {
+              "color": "#79b3d2",
+              "parentNodeType": "workflow-cell"
+            },
+            "position": {
+              "x": 221,
+              "y": 75
+            }
+          }
+        },
+        "properties": {
+          "cell": {
+            "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/0a9664c3-3352-4110-8bd7-9d587654f9ac/",
+            "owner": "gpelouze",
+            "virtual_lab": "openlab",
+            "shared_with_scopes": [],
+            "shared_with_users": [],
+            "versions": [
+              {
+                "version": 1,
+                "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/0a9664c3-3352-4110-8bd7-9d587654f9ac/"
+              }
+            ],
+            "base_container_image": {
+              "build": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-build:v0.3.10",
+              "runtime": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-runtime:v0.3.10"
+            },
+            "dependencies": [
+              {
+                "name": "os",
+                "module": "",
+                "asname": null
+              },
+              {
+                "name": "numpy",
+                "module": "",
+                "asname": "np"
+              }
+            ],
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "data_file",
+                "type": "str"
+              }
+            ],
+            "confs": [
+              {
+                "name": "conf_data_path",
+                "assignation": "conf_data_path = '/tmp/data'"
+              }
+            ],
+            "params": [],
+            "secrets": [],
+            "title": "ex3-1-create-file-gpelouze",
+            "description": "ex3-1-create-file-gpelouze",
+            "created": "2026-07-02T14:25:34.178268Z",
+            "modified": "2026-07-02T14:25:34.435469Z",
+            "version": 1,
+            "template_format": "v1",
+            "container_image": "ghcr.io/naavre/cells-vl-openlab/ex3-1-create-file-gpelouze:584e01c",
+            "kernel": "ipython",
+            "source_url": "https://github.com/NaaVRE/cells-vl-openlab/tree/aa66cac4ec8d220a10c43b41f88853e0457fdd8c/ex3-1-create-file-gpelouze",
+            "is_draft": false
+          }
+        },
+        "size": {
+          "width": 252,
+          "height": 152
+        }
+      },
+      "376752d6-6c11-47bf-a6d4-c57aec6155d4": {
+        "id": "376752d6-6c11-47bf-a6d4-c57aec6155d4",
+        "position": {
+          "x": 862.1621815692068,
+          "y": 622.4006359300478
+        },
+        "orientation": 0,
+        "type": "workflow-cell",
+        "ports": {
+          "data_file": {
+            "id": "data_file",
+            "type": "left",
+            "properties": {
+              "color": "#79b3d2",
+              "parentNodeType": "workflow-cell"
+            },
+            "position": {
+              "x": 29,
+              "y": 75
+            }
+          },
+          "figure_file": {
+            "id": "figure_file",
+            "type": "right",
+            "properties": {
+              "color": "#862d3d",
+              "parentNodeType": "workflow-cell"
+            },
+            "position": {
+              "x": 216.5,
+              "y": 75
+            }
+          }
+        },
+        "properties": {
+          "cell": {
+            "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/d7a7642e-2213-4ff9-aa67-911356906fd4/",
+            "owner": "gpelouze",
+            "virtual_lab": "openlab",
+            "shared_with_scopes": [],
+            "shared_with_users": [],
+            "versions": [
+              {
+                "version": 1,
+                "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/d7a7642e-2213-4ff9-aa67-911356906fd4/"
+              }
+            ],
+            "base_container_image": {
+              "build": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-build:v0.3.10",
+              "runtime": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-runtime:v0.3.10"
+            },
+            "dependencies": [
+              {
+                "name": "numpy",
+                "module": "",
+                "asname": "np"
+              },
+              {
+                "name": "matplotlib.pyplot",
+                "module": "",
+                "asname": "plt"
+              },
+              {
+                "name": "os",
+                "module": "",
+                "asname": null
+              }
+            ],
+            "inputs": [
+              {
+                "name": "data_file",
+                "type": "str"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "figure_file",
+                "type": "str"
+              }
+            ],
+            "confs": [
+              {
+                "name": "conf_data_path",
+                "assignation": "conf_data_path = '/tmp/data'"
+              }
+            ],
+            "params": [],
+            "secrets": [],
+            "title": "ex3-2-plot-file-gpelouze",
+            "description": "ex3-2-plot-file-gpelouze",
+            "created": "2026-07-02T14:26:40.479313Z",
+            "modified": "2026-07-02T14:26:41.177271Z",
+            "version": 1,
+            "template_format": "v1",
+            "container_image": "ghcr.io/naavre/cells-vl-openlab/ex3-2-plot-file-gpelouze:7c5773a",
+            "kernel": "ipython",
+            "source_url": "https://github.com/NaaVRE/cells-vl-openlab/tree/8a70d7b869b10879fca677fff04d4fbca348aec4/ex3-2-plot-file-gpelouze",
+            "is_draft": false
+          }
+        },
+        "size": {
+          "width": 252,
+          "height": 152
+        }
+      },
+      "f1b23ed6-e915-4921-89dc-4f548c6bd5a2": {
+        "id": "f1b23ed6-e915-4921-89dc-4f548c6bd5a2",
+        "position": {
+          "x": 1170.5882547011636,
+          "y": 620.8108108108091
+        },
+        "orientation": 0,
+        "type": "workflow-cell",
+        "ports": {
+          "figure_file": {
+            "id": "figure_file",
+            "type": "left",
+            "properties": {
+              "color": "#862d3d",
+              "parentNodeType": "workflow-cell"
+            },
+            "position": {
+              "x": 33.5,
+              "y": 75
+            }
+          }
+        },
+        "properties": {
+          "cell": {
+            "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/6300ea7d-4233-42e9-b4be-4d2e51b9fa7b/",
+            "owner": "gpelouze",
+            "virtual_lab": "openlab",
+            "shared_with_scopes": [],
+            "shared_with_users": [],
+            "versions": [
+              {
+                "version": 1,
+                "url": "https://beta.naavre.net/naavre-catalogue-service/workflow-cells/6300ea7d-4233-42e9-b4be-4d2e51b9fa7b/"
+              }
+            ],
+            "base_container_image": {
+              "build": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-build:v0.3.10",
+              "runtime": "ghcr.io/naavre/flavors/naavre-fl-vanilla-cell-runtime:v0.3.10"
+            },
+            "dependencies": [
+              {
+                "name": "shutil",
+                "module": "",
+                "asname": null
+              },
+              {
+                "name": "os",
+                "module": "",
+                "asname": null
+              }
+            ],
+            "inputs": [
+              {
+                "name": "figure_file",
+                "type": "str"
+              }
+            ],
+            "outputs": [],
+            "confs": [
+              {
+                "name": "conf_cloud_storage_path",
+                "assignation": "conf_cloud_storage_path = '/home/jovyan/Cloud Storage/naa-vre-user-data/'"
+              }
+            ],
+            "params": [],
+            "secrets": [],
+            "title": "ex3-3-upload-file-gpelouze",
+            "description": "ex3-3-upload-file-gpelouze",
+            "created": "2026-07-02T14:22:27.801433Z",
+            "modified": "2026-07-02T14:22:28.055977Z",
+            "version": 1,
+            "template_format": "v1",
+            "container_image": "ghcr.io/naavre/cells-vl-openlab/ex3-3-upload-file-gpelouze:044b43a",
+            "kernel": "ipython",
+            "source_url": "https://github.com/NaaVRE/cells-vl-openlab/tree/5473df8a366b60dc0074b093bf095f682c42e0a2/ex3-3-upload-file-gpelouze",
+            "is_draft": false
+          }
+        },
+        "size": {
+          "width": 252,
+          "height": 152
+        }
+      }
+    },
+    "links": {
+      "1894ce48-7e4b-43be-8ead-b999e49425cb": {
+        "id": "1894ce48-7e4b-43be-8ead-b999e49425cb",
+        "from": {
+          "nodeId": "f54e127d-2cbb-4c9f-8b9d-f647f1e7e082",
+          "portId": "data_file"
+        },
+        "to": {
+          "nodeId": "376752d6-6c11-47bf-a6d4-c57aec6155d4",
+          "portId": "data_file"
+        }
+      },
+      "67c75bee-87f6-4835-9e7b-3015d72fece7": {
+        "id": "67c75bee-87f6-4835-9e7b-3015d72fece7",
+        "from": {
+          "nodeId": "376752d6-6c11-47bf-a6d4-c57aec6155d4",
+          "portId": "figure_file"
+        },
+        "to": {
+          "nodeId": "f1b23ed6-e915-4921-89dc-4f548c6bd5a2",
+          "portId": "figure_file"
+        }
+      }
+    },
+    "selected": {},
+    "hovered": {},
+    "metadata": {
+      "version": "1.1"
+    },
+    "properties": {
+      "params": []
+    }
+  }
+}
