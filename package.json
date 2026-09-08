@@ -63,6 +63,8 @@
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
         "@jupyterlab/application": "^4.0.0",
+        "@jupyterlab/coreutils": "^6.6.3",
+        "@jupyterlab/docmanager": "^4.6.3",
         "@jupyterlab/launcher": "^4.3.4",
         "@jupyterlab/settingregistry": "^4.0.0",
         "@jupyterlab/shared-models": "^3.6.8",

@@ -27,11 +27,8 @@ import {
 import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
-import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 
-export interface IProps {
-  fileBrowserFactory: IFileBrowserFactory;
-}
+export interface IProps {}
 
 interface IWorkflowActionDialogState {
   open: boolean;
@@ -162,7 +159,6 @@ export class Composer extends React.Component<IProps, IState> {
                 })
               }
               action={this.state.workflowActionDialog.action}
-              fileBrowserFactory={this.props.fileBrowserFactory}
               chart={this.state.chart}
               container={this.containerRef.current}
             />

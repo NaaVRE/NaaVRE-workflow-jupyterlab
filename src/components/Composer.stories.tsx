@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 import { Composer } from './Composer';
 import { chart as mockChart } from '../mocks/chart';
-import { fileBrowserFactory } from '../mocks/jupyter';
 
 function ComposerStory() {
   const composerRef = useRef<any>(null);
@@ -15,7 +14,7 @@ function ComposerStory() {
 
     return () => clearTimeout(timer);
   }, []);
-  return <Composer ref={composerRef} fileBrowserFactory={fileBrowserFactory} />;
+  return <Composer ref={composerRef} />;
 }
 
 const meta = {

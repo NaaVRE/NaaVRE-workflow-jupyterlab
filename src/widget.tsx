@@ -29,7 +29,7 @@ import lodash from 'lodash';
 import { Composer } from './components/Composer';
 import React from 'react';
 import { ISettings, SettingsContext } from './settings';
-import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
+import { IJupyterContext, JupyterContext } from './jupyter-context';
 
 /**
  * DocumentWidget: widget that represents the view or editor for a file type.
@@ -63,23 +63,23 @@ export class WorkflowWidget extends DocumentWidget<
 export class ExperimentManagerWidget extends ReactWidget {
   composerRef: React.RefObject<Composer>;
   settings: ISettings = {};
-  fileBrowserFactory: IFileBrowserFactory;
+  jupyterContext: IJupyterContext;
   private _model: WorkflowModel;
 
   /**
    * Construct a `ExperimentManagerWidget`.
    *
    * @param context - The document's context.
-   * @param fileBrowserFactory - The Jupyter file browser factory
+   * @param jupyterContext
    */
   constructor(
     context: DocumentRegistry.IContext<WorkflowModel>,
-    fileBrowserFactory: IFileBrowserFactory
+    jupyterContext: IJupyterContext
   ) {
     super();
     this.addClass('vre-composer');
     this.composerRef = React.createRef();
-    this.fileBrowserFactory = fileBrowserFactory;
+    this.jupyterContext = jupyterContext;
 
     this._model = context.model;
 
@@ -101,12 +101,11 @@ export class ExperimentManagerWidget extends ReactWidget {
 
   render() {
     return (
-      <SettingsContext.Provider value={this.settings}>
-        <Composer
-          ref={this.composerRef}
-          fileBrowserFactory={this.fileBrowserFactory}
-        />
-      </SettingsContext.Provider>
+      <JupyterContext.Provider value={this.jupyterContext}>
+        <SettingsContext.Provider value={this.settings}>
+          <Composer ref={this.composerRef} />
+        </SettingsContext.Provider>
+      </JupyterContext.Provider>
     );
   }
 

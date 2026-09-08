@@ -5,7 +5,7 @@ import { Contents } from '@jupyterlab/services';
 import { WorkflowWidget, ExperimentManagerWidget } from './widget';
 
 import { Workflow, WorkflowModel } from './model';
-import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
+import { IJupyterContext } from './jupyter-context';
 
 /**
  * A widget factory to create new instances of WorkflowWidget.
@@ -14,20 +14,20 @@ export class WorkflowWidgetFactory extends ABCWidgetFactory<
   WorkflowWidget,
   WorkflowModel
 > {
-  fileBrowserFactory: IFileBrowserFactory;
+  jupyterContext: IJupyterContext;
 
   /**
    * Constructor of WorkflowWidgetFactory.
    *
    * @param options Constructor options
-   * @param fileBrowserFactory
+   * @param jupyterContext
    */
   constructor(
     options: DocumentRegistry.IWidgetFactoryOptions,
-    fileBrowserFactory: IFileBrowserFactory
+    jupyterContext: IJupyterContext
   ) {
     super(options);
-    this.fileBrowserFactory = fileBrowserFactory;
+    this.jupyterContext = jupyterContext;
   }
 
   /**
@@ -41,7 +41,7 @@ export class WorkflowWidgetFactory extends ABCWidgetFactory<
   ): WorkflowWidget {
     return new WorkflowWidget({
       context,
-      content: new ExperimentManagerWidget(context, this.fileBrowserFactory)
+      content: new ExperimentManagerWidget(context, this.jupyterContext)
     });
   }
 }

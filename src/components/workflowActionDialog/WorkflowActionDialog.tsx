@@ -13,7 +13,6 @@ import {
 } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { theme } from '../../Theme';
-import { SettingsContext } from '../../settings';
 import WorkflowRepeatPicker from '../WorkflowRepeatPicker';
 import { runWorkflowNotification } from './runWorkflowNotification';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -21,7 +20,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Alert from '@mui/material/Alert';
 import { getChartParam, IChart } from '../../utils/chart';
-import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
+import { JupyterContext } from '../../jupyter-context';
+import { PathExt } from '@jupyterlab/coreutils';
+import { SettingsContext } from '../../settings';
 
 const ignoredParams = ['param_max_branches'];
 
@@ -76,14 +77,12 @@ export function WorkflowActionDialog({
   open,
   onClose,
   action,
-  fileBrowserFactory,
   chart,
   container
 }: {
   open: boolean;
   onClose: () => void;
   action: WorkflowAction;
-  fileBrowserFactory: IFileBrowserFactory;
   chart: IChart;
   container: HTMLDivElement | null;
 }) {
@@ -94,7 +93,6 @@ export function WorkflowActionDialog({
         <WorkflowActionDialogContent
           onClose={onClose}
           action={action}
-          fileBrowserFactory={fileBrowserFactory}
           chart={chart}
         />
       </DialogContent>
@@ -105,15 +103,15 @@ export function WorkflowActionDialog({
 function WorkflowActionDialogContent({
   onClose,
   action,
-  fileBrowserFactory,
   chart
 }: {
   onClose: () => void;
   action: WorkflowAction;
-  fileBrowserFactory: IFileBrowserFactory;
   chart: IChart;
 }) {
   const settings = useContext(SettingsContext);
+  const { docManager, browserFactory, labShell } =
+    useContext(JupyterContext);
   const [params, setParams] = useState<{ [name: string]: IParamFormValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretFormValue }>(
     {}
@@ -292,8 +290,14 @@ function WorkflowActionDialogContent({
             runWorkflowNotification(data.run_url, settings);
           }
         } else if (action === 'export') {
-          const filename: string = 'workflow.yaml';
-          fileBrowserFactory.tracker.currentWidget?.model
+          const currentWidget = labShell?.currentWidget;
+          const context =
+            currentWidget && docManager?.contextForWidget(currentWidget);
+          const baseName = context
+            ? PathExt.basename(context.path, PathExt.extname(context.path))
+            : 'workflow';
+          const filename = `${baseName}.yaml`;
+          browserFactory?.tracker.currentWidget?.model
             .upload(new File([resp.content], filename))
             .then(() => {
               setExportedWorkflow(filename);
