@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { green, grey } from '@mui/material/colors';
 import { ThemeProvider } from '@mui/material/styles';
+import { stringify } from 'yaml';
 
 import {
   IParam,
@@ -283,8 +284,8 @@ function WorkflowActionDialogContent({
         if (resp.status_code !== 200) {
           throw `${resp.status_code} ${resp.reason}`;
         }
+        const data: SubmitWorkflowResponse = JSON.parse(resp.content);
         if (action === 'run') {
-          const data: SubmitWorkflowResponse = JSON.parse(resp.content);
           setSubmittedWorkflow(data);
           if (!isCron) {
             runWorkflowNotification(data.run_url, settings);
@@ -298,7 +299,7 @@ function WorkflowActionDialogContent({
             : 'workflow';
           const filename = `${baseName}.yaml`;
           browserFactory?.tracker.currentWidget?.model
-            .upload(new File([resp.content], filename))
+            .upload(new File([stringify(data)], filename))
             .then(() => {
               setExportedWorkflow(filename);
             });
