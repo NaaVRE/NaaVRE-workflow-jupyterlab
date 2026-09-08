@@ -110,7 +110,7 @@ function WorkflowActionDialogContent({
   chart: IChart;
 }) {
   const settings = useContext(SettingsContext);
-  const { docManager, browserFactory, labShell } =
+  const { app, docManager, browserFactory, labShell } =
     useContext(JupyterContext);
   const [params, setParams] = useState<{ [name: string]: IParamFormValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretFormValue }>(
@@ -334,30 +334,50 @@ function WorkflowActionDialogContent({
                 fontSize="large"
                 sx={{ color: green[500] }}
               />
-              {submittedWorkflow &&
-                (isCron ? (
-                  <>
-                    <p style={{ fontSize: 'large' }}>
-                      Recurring workflow scheduled!
-                    </p>
-                    <p style={{ fontSize: 'medium' }}>
+              {submittedWorkflow && (
+                <>
+                  <p style={{ fontSize: 'large' }}>
+                    {isCron
+                      ? 'Recurring workflow scheduled'
+                      : 'Workflow submitted'}
+                  </p>
+                  <p style={{ fontSize: 'medium' }}>
+                    <a
+                      style={{
+                        textDecoration: 'underline',
+                        color: 'var(--jp-content-link-color)'
+                      }}
+                      href={submittedWorkflow.run_url}
+                      target="_blank"
+                    >
+                      Show in workflow engine
+                    </a>
+                  </p>
+                </>
+              )}
+              {exportedWorkflow && (
+                <p style={{ fontSize: 'large' }}>
+                  Workflow exported
+                  {app && (
+                    <>
+                      {' as '}
                       <a
                         style={{
                           textDecoration: 'underline',
-                          color: 'var(--jp-content-link-color)'
+                          color: 'var(--jp-content-link-color)',
+                          cursor: 'pointer'
                         }}
-                        href={submittedWorkflow.run_url}
-                        target="_blank"
+                        onClick={() =>
+                          app.commands.execute('docmanager:open', {
+                            path: exportedWorkflow
+                          })
+                        }
                       >
-                        Show in workflow engine
+                        {exportedWorkflow}
                       </a>
-                    </p>
-                  </>
-                ) : (
-                  <p style={{ fontSize: 'large' }}>Workflow submitted!</p>
-                ))}
-              {exportedWorkflow && (
-                <p style={{ fontSize: 'large' }}>Workflow exported!</p>
+                    </>
+                  )}
+                </p>
               )}
             </div>
             <Stack

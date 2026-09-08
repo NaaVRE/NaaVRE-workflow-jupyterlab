@@ -1,9 +1,10 @@
 import { createContext } from 'react';
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-import { ILabShell } from '@jupyterlab/application';
+import { ILabShell, JupyterFrontEnd } from '@jupyterlab/application';
 
 export interface IJupyterContext {
+  app?: JupyterFrontEnd;
   browserFactory?: IFileBrowserFactory;
   docManager?: IDocumentManager;
   labShell?: ILabShell;

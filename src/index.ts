@@ -171,6 +171,7 @@ const extension: JupyterFrontEndPlugin<void> = {
         toolbarFactory: toolbarFactory
       },
       {
+        app,
         browserFactory,
         docManager,
         labShell
