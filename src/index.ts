@@ -1,4 +1,5 @@
 import {
+  ILabShell,
   ILayoutRestorer,
   JupyterFrontEnd,
   JupyterFrontEndPlugin
@@ -10,6 +11,7 @@ import {
   ToolbarRegistry,
   WidgetTracker
 } from '@jupyterlab/apputils';
+import { IDocumentManager } from '@jupyterlab/docmanager';
 import { ILauncher } from '@jupyterlab/launcher';
 import { Token } from '@lumino/coreutils';
 import { Widget } from '@lumino/widgets';
@@ -41,7 +43,9 @@ const extension: JupyterFrontEndPlugin<void> = {
   id: '@naavre/workflow-jupyterlab:plugin',
   autoStart: true,
   requires: [
+    IDocumentManager,
     ILayoutRestorer,
+    ILabShell,
     ILauncher,
     ITranslator,
     IToolbarWidgetRegistry,
@@ -52,7 +56,9 @@ const extension: JupyterFrontEndPlugin<void> = {
   provides: IWorkflowTracker,
   activate: (
     app: JupyterFrontEnd,
+    docManager: IDocumentManager,
     restorer: ILayoutRestorer,
+    labShell: ILabShell,
     launcher: ILauncher,
     translator: ITranslator,
     toolbarRegistry: IToolbarWidgetRegistry | null,
@@ -86,7 +92,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       toolbarRegistry.registerFactory<WorkflowWidget>(
         FACTORY,
         'exportWorkflow',
-        widget => ToolbarItems.createExportButton(widget, browserFactory)
+        widget => ToolbarItems.createExportButton(widget)
       );
       toolbarRegistry.registerFactory<WorkflowWidget>(
         FACTORY,
@@ -156,13 +162,21 @@ const extension: JupyterFrontEndPlugin<void> = {
 
     // Creating the widget factory to register it so the document manager knows about
     // our new DocumentWidget
-    const widgetFactory = new WorkflowWidgetFactory({
-      name: FACTORY,
-      modelName: 'naavrewf-model',
-      fileTypes: ['naavrewf'],
-      defaultFor: ['naavrewf'],
-      toolbarFactory: toolbarFactory
-    });
+    const widgetFactory = new WorkflowWidgetFactory(
+      {
+        name: FACTORY,
+        modelName: 'naavrewf-model',
+        fileTypes: ['naavrewf'],
+        defaultFor: ['naavrewf'],
+        toolbarFactory: toolbarFactory
+      },
+      {
+        app,
+        browserFactory,
+        docManager,
+        labShell
+      }
+    );
 
     // Add the widget to the tracker when it's created
     widgetFactory.widgetCreated.connect((sender, widget) => {

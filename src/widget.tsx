@@ -29,6 +29,7 @@ import lodash from 'lodash';
 import { Composer } from './components/Composer';
 import React from 'react';
 import { ISettings, SettingsContext } from './settings';
+import { IJupyterContext, JupyterContext } from './jupyter-context';
 
 /**
  * DocumentWidget: widget that represents the view or editor for a file type.
@@ -62,17 +63,23 @@ export class WorkflowWidget extends DocumentWidget<
 export class ExperimentManagerWidget extends ReactWidget {
   composerRef: React.RefObject<Composer>;
   settings: ISettings = {};
+  jupyterContext: IJupyterContext;
   private _model: WorkflowModel;
 
   /**
    * Construct a `ExperimentManagerWidget`.
    *
    * @param context - The document's context.
+   * @param jupyterContext
    */
-  constructor(context: DocumentRegistry.IContext<WorkflowModel>) {
+  constructor(
+    context: DocumentRegistry.IContext<WorkflowModel>,
+    jupyterContext: IJupyterContext
+  ) {
     super();
     this.addClass('vre-composer');
     this.composerRef = React.createRef();
+    this.jupyterContext = jupyterContext;
 
     this._model = context.model;
 
@@ -94,9 +101,11 @@ export class ExperimentManagerWidget extends ReactWidget {
 
   render() {
     return (
-      <SettingsContext.Provider value={this.settings}>
-        <Composer ref={this.composerRef} />
-      </SettingsContext.Provider>
+      <JupyterContext.Provider value={this.jupyterContext}>
+        <SettingsContext.Provider value={this.settings}>
+          <Composer ref={this.composerRef} />
+        </SettingsContext.Provider>
+      </JupyterContext.Provider>
     );
   }
 

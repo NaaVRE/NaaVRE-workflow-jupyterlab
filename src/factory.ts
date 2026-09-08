@@ -5,6 +5,7 @@ import { Contents } from '@jupyterlab/services';
 import { WorkflowWidget, ExperimentManagerWidget } from './widget';
 
 import { Workflow, WorkflowModel } from './model';
+import { IJupyterContext } from './jupyter-context';
 
 /**
  * A widget factory to create new instances of WorkflowWidget.
@@ -13,13 +14,20 @@ export class WorkflowWidgetFactory extends ABCWidgetFactory<
   WorkflowWidget,
   WorkflowModel
 > {
+  jupyterContext: IJupyterContext;
+
   /**
    * Constructor of WorkflowWidgetFactory.
    *
    * @param options Constructor options
+   * @param jupyterContext
    */
-  constructor(options: DocumentRegistry.IWidgetFactoryOptions) {
+  constructor(
+    options: DocumentRegistry.IWidgetFactoryOptions,
+    jupyterContext: IJupyterContext
+  ) {
     super(options);
+    this.jupyterContext = jupyterContext;
   }
 
   /**
@@ -33,7 +41,7 @@ export class WorkflowWidgetFactory extends ABCWidgetFactory<
   ): WorkflowWidget {
     return new WorkflowWidget({
       context,
-      content: new ExperimentManagerWidget(context)
+      content: new ExperimentManagerWidget(context, this.jupyterContext)
     });
   }
 }

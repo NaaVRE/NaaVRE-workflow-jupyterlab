@@ -63,6 +63,8 @@
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
         "@jupyterlab/application": "^4.0.0",
+        "@jupyterlab/coreutils": "^6.5.10",
+        "@jupyterlab/docmanager": "^4.5.10",
         "@jupyterlab/launcher": "^4.3.4",
         "@jupyterlab/settingregistry": "^4.0.0",
         "@jupyterlab/shared-models": "^3.6.8",
@@ -80,7 +82,8 @@
         "js-sha1": "^0.7.0",
         "lodash": "^4.17.21",
         "sort-keys-recursive": "^2.1.10",
-        "styled-components": "^6.1.13"
+        "styled-components": "^6.1.13",
+        "yaml": "^2.9.0"
     },
     "devDependencies": {
         "@jupyterlab/builder": "^4.0.0",
@@ -88,6 +91,7 @@
         "@jupyterlab/theme-light-extension": "^4.4.10",
         "@storybook/addon-webpack5-compiler-swc": "^4.0.1",
         "@storybook/react-webpack5": "^9.1.7",
+        "@types/aria-query": "^5.0.4",
         "@types/jest": "^29.2.0",
         "@types/json-schema": "^7.0.11",
         "@types/react": "^18.0.26",

@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { green, grey } from '@mui/material/colors';
 import { ThemeProvider } from '@mui/material/styles';
+import { stringify } from 'yaml';
 
 import {
   IParam,
@@ -13,7 +14,6 @@ import {
 } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { theme } from '../../Theme';
-import { SettingsContext } from '../../settings';
 import WorkflowRepeatPicker from '../WorkflowRepeatPicker';
 import { runWorkflowNotification } from './runWorkflowNotification';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -21,6 +21,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Alert from '@mui/material/Alert';
 import { getChartParam, IChart } from '../../utils/chart';
+import { JupyterContext } from '../../jupyter-context';
+import { PathExt } from '@jupyterlab/coreutils';
+import { SettingsContext } from '../../settings';
 
 const ignoredParams = ['param_max_branches'];
 
@@ -51,35 +54,65 @@ declare type SubmitWorkflowResponse = {
   run_url: string;
 };
 
-export function RunWorkflowDialog({
+export declare type WorkflowAction = 'run' | 'export';
+
+function getWorkflowActionLabel(action: WorkflowAction) {
+  switch (action) {
+    case 'run':
+      return 'Run';
+    case 'export':
+      return 'Export';
+  }
+}
+
+function getWorkflowActionRoute(action: WorkflowAction) {
+  switch (action) {
+    case 'run':
+      return '/submit';
+    case 'export':
+      return '/convert';
+  }
+}
+
+export function WorkflowActionDialog({
   open,
   onClose,
+  action,
   chart,
   container
 }: {
   open: boolean;
   onClose: () => void;
+  action: WorkflowAction;
   chart: IChart;
   container: HTMLDivElement | null;
 }) {
   return (
     <Dialog onClose={onClose} open={open} container={container}>
-      <DialogTitle>Run Workflow</DialogTitle>
+      <DialogTitle>{getWorkflowActionLabel(action)} Workflow</DialogTitle>
       <DialogContent>
-        <RunWorkflowDialogContent onClose={onClose} chart={chart} />
+        <WorkflowActionDialogContent
+          onClose={onClose}
+          action={action}
+          chart={chart}
+        />
       </DialogContent>
     </Dialog>
   );
 }
 
-function RunWorkflowDialogContent({
+function WorkflowActionDialogContent({
   onClose,
+  action,
   chart
 }: {
   onClose: () => void;
+  action: WorkflowAction;
   chart: IChart;
 }) {
   const settings = useContext(SettingsContext);
+  const { app, docManager, browserFactory, labShell } =
+    useContext(JupyterContext);
   const [params, setParams] = useState<{ [name: string]: IParamFormValue }>({});
   const [secrets, setSecrets] = useState<{ [name: string]: ISecretFormValue }>(
     {}
@@ -88,6 +121,7 @@ function RunWorkflowDialogContent({
   const [hasDraftCells, setHasDraftCells] = useState<boolean>(false);
   const [submittedWorkflow, setSubmittedWorkflow] =
     useState<SubmitWorkflowResponse | null>(null);
+  const [exportedWorkflow, setExportedWorkflow] = useState<string | null>(null);
 
   const setParam = (name: string, value: IParamFormValue) => {
     setParams(prevState => ({ ...prevState, [name]: value }));
@@ -182,7 +216,7 @@ function RunWorkflowDialogContent({
     });
   };
 
-  const runWorkflow = async (
+  const doWorkflowAction = async (
     params: {
       [name: string]: IParamFormValue;
     },
@@ -195,7 +229,9 @@ function RunWorkflowDialogContent({
     Object.values(params).forEach(({ node_ids, name, value, ...rest }) => {
       node_ids.forEach(nodeId => {
         if (value === null) {
-          throw Error(`Cannot submit workflow with null param: ${name}`);
+          throw Error(
+            `Cannot perform action on workflow with null param: ${name}`
+          );
         }
         paramsPayload.push({
           node_id: nodeId,
@@ -208,7 +244,7 @@ function RunWorkflowDialogContent({
       ({ node_id, name, value, ...rest }) => {
         if (value === undefined) {
           throw Error(
-            `Cannot submit workflow with undefined node param: ${name}`
+            `Cannot perform action on workflow with undefined node param: ${name}`
           );
         }
         paramsPayload.push({
@@ -221,7 +257,9 @@ function RunWorkflowDialogContent({
     Object.values(secrets).forEach(({ node_ids, name, value, ...rest }) => {
       node_ids.forEach(nodeId => {
         if (value === null) {
-          throw Error(`Cannot submit workflow with null secret: ${name}`);
+          throw Error(
+            `Cannot perform action on workflow with null secret: ${name}`
+          );
         }
         secretsPayload.push({
           node_id: nodeId,
@@ -232,7 +270,7 @@ function RunWorkflowDialogContent({
     });
     NaaVREExternalService(
       'POST',
-      `${settings.workflowServiceUrl}/submit`,
+      `${settings.workflowServiceUrl}${getWorkflowActionRoute(action)}`,
       {},
       {
         virtual_lab: settings.virtualLab,
@@ -247,13 +285,28 @@ function RunWorkflowDialogContent({
           throw `${resp.status_code} ${resp.reason}`;
         }
         const data: SubmitWorkflowResponse = JSON.parse(resp.content);
-        setSubmittedWorkflow(data);
-        if (!isCron) {
-          runWorkflowNotification(data.run_url, settings);
+        if (action === 'run') {
+          setSubmittedWorkflow(data);
+          if (!isCron) {
+            runWorkflowNotification(data.run_url, settings);
+          }
+        } else if (action === 'export') {
+          const currentWidget = labShell?.currentWidget;
+          const context =
+            currentWidget && docManager?.contextForWidget(currentWidget);
+          const baseName = context
+            ? PathExt.basename(context.path, PathExt.extname(context.path))
+            : 'workflow';
+          const filename = `${baseName}.yaml`;
+          browserFactory?.tracker.currentWidget?.model
+            .upload(new File([stringify(data)], filename))
+            .then(() => {
+              setExportedWorkflow(filename);
+            });
         }
       })
       .catch(error => {
-        const msg = `Error running the workflow: ${error}`;
+        const msg = `Error performing workflow action: ${error}`;
         console.log(msg);
         alert(msg);
       });
@@ -268,7 +321,7 @@ function RunWorkflowDialogContent({
           flexDirection: 'column'
         }}
       >
-        {submittedWorkflow ? (
+        {submittedWorkflow || exportedWorkflow ? (
           <div>
             <div
               style={{
@@ -282,10 +335,12 @@ function RunWorkflowDialogContent({
                 fontSize="large"
                 sx={{ color: green[500] }}
               />
-              {isCron ? (
+              {submittedWorkflow && (
                 <>
                   <p style={{ fontSize: 'large' }}>
-                    Recurring workflow scheduled!
+                    {isCron
+                      ? 'Recurring workflow scheduled'
+                      : 'Workflow submitted'}
                   </p>
                   <p style={{ fontSize: 'medium' }}>
                     <a
@@ -300,8 +355,30 @@ function RunWorkflowDialogContent({
                     </a>
                   </p>
                 </>
-              ) : (
-                <p style={{ fontSize: 'large' }}>Workflow submitted!</p>
+              )}
+              {exportedWorkflow && (
+                <p style={{ fontSize: 'large' }}>
+                  Workflow exported
+                  {app && (
+                    <>
+                      {' as '}
+                      <a
+                        style={{
+                          textDecoration: 'underline',
+                          color: 'var(--jp-content-link-color)',
+                          cursor: 'pointer'
+                        }}
+                        onClick={() =>
+                          app.commands.execute('docmanager:open', {
+                            path: exportedWorkflow
+                          })
+                        }
+                      >
+                        {exportedWorkflow}
+                      </a>
+                    </>
+                  )}
+                </p>
               )}
             </div>
             <Stack
@@ -401,14 +478,14 @@ function RunWorkflowDialogContent({
               <Button
                 variant="contained"
                 className={'lw-panel-button'}
-                onClick={() => runWorkflow(params, secrets)}
+                onClick={() => doWorkflowAction(params, secrets)}
                 color="primary"
                 disabled={hasDraftCells || !allValuesFilled()}
                 style={{
                   float: 'right'
                 }}
               >
-                Run
+                {getWorkflowActionLabel(action)}
               </Button>
             </Stack>
           </div>
