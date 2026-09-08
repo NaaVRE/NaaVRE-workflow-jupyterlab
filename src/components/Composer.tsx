@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { createRef } from 'react';
 import { mapValues } from 'lodash';
-import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -13,7 +12,6 @@ import {
 } from '@mrblenny/react-flow-chart';
 
 import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { IChart, IChartParam, validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
@@ -22,19 +20,30 @@ import { nodeInnerCustomFactory } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
 import { LinkCustom } from './chart/LinkCustom';
 import { ChartElementEditor } from './chart/ChartElementEditor';
-import { RunWorkflowDialog } from './workflowRunDialog/RunWorkflowDialog';
+import {
+  WorkflowAction,
+  WorkflowActionDialog
+} from './workflowActionDialog/WorkflowActionDialog';
 import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
+import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 
-export interface IProps {}
+export interface IProps {
+  fileBrowserFactory: IFileBrowserFactory;
+}
+
+interface IWorkflowActionDialogState {
+  open: boolean;
+  action: WorkflowAction;
+}
 
 export interface IState {
   chart: IChart | null;
   selectedCellInList: ICell | null;
   selectedCellNode: HTMLDivElement | null;
   selectedChartParam: IChartParam | null;
-  runWorkflowDialogOpen: boolean;
+  workflowActionDialog: IWorkflowActionDialogState;
 }
 
 export const DefaultState: IState = {
@@ -42,7 +51,10 @@ export const DefaultState: IState = {
   selectedCellInList: null,
   selectedCellNode: null,
   selectedChartParam: null,
-  runWorkflowDialogOpen: false
+  workflowActionDialog: {
+    open: false,
+    action: 'run'
+  }
 };
 
 export class Composer extends React.Component<IProps, IState> {
@@ -104,34 +116,10 @@ export class Composer extends React.Component<IProps, IState> {
     });
   };
 
-  setRunWorkflowDialogOpen = (open: boolean) => {
-    this.setState({ runWorkflowDialogOpen: open });
-  };
-
-  exportWorkflow = async (browserFactory: IFileBrowserFactory) => {
-    if (this.state.chart === null) {
-      console.error('Export failed: workflow is null');
-      return;
-    }
-    NaaVREExternalService(
-      'POST',
-      `${this.context.workflowServiceUrl}/convert`,
-      {},
-      {
-        virtual_lab: this.context.virtualLab,
-        naavrewf2: this.state.chart
-      }
-    )
-      .then(resp => {
-        browserFactory.tracker.currentWidget?.model.upload(
-          new File([resp.content], 'workflow.yaml')
-        );
-      })
-      .catch(error => {
-        const msg = `Error exporting the workflow: ${String(error)}`;
-        console.log(msg);
-        alert(msg);
-      });
+  setWorkflowActionDialog = (
+    workflowActionDialog: IWorkflowActionDialogState
+  ) => {
+    this.setState({ workflowActionDialog: workflowActionDialog });
   };
 
   componentDidUpdate() {
@@ -165,9 +153,16 @@ export class Composer extends React.Component<IProps, IState> {
               maxHeight: '100vh'
             }}
           >
-            <RunWorkflowDialog
-              open={this.state.runWorkflowDialogOpen}
-              onClose={() => this.setRunWorkflowDialogOpen(false)}
+            <WorkflowActionDialog
+              open={this.state.workflowActionDialog.open}
+              onClose={() =>
+                this.setWorkflowActionDialog({
+                  ...this.state.workflowActionDialog,
+                  open: false
+                })
+              }
+              action={this.state.workflowActionDialog.action}
+              fileBrowserFactory={this.props.fileBrowserFactory}
               chart={this.state.chart}
               container={this.containerRef.current}
             />

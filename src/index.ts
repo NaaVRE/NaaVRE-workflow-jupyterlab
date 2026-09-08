@@ -86,7 +86,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       toolbarRegistry.registerFactory<WorkflowWidget>(
         FACTORY,
         'exportWorkflow',
-        widget => ToolbarItems.createExportButton(widget, browserFactory)
+        widget => ToolbarItems.createExportButton(widget)
       );
       toolbarRegistry.registerFactory<WorkflowWidget>(
         FACTORY,
@@ -156,13 +156,16 @@ const extension: JupyterFrontEndPlugin<void> = {
 
     // Creating the widget factory to register it so the document manager knows about
     // our new DocumentWidget
-    const widgetFactory = new WorkflowWidgetFactory({
-      name: FACTORY,
-      modelName: 'naavrewf-model',
-      fileTypes: ['naavrewf'],
-      defaultFor: ['naavrewf'],
-      toolbarFactory: toolbarFactory
-    });
+    const widgetFactory = new WorkflowWidgetFactory(
+      {
+        name: FACTORY,
+        modelName: 'naavrewf-model',
+        fileTypes: ['naavrewf'],
+        defaultFor: ['naavrewf'],
+        toolbarFactory: toolbarFactory
+      },
+      browserFactory
+    );
 
     // Add the widget to the tracker when it's created
     widgetFactory.widgetCreated.connect((sender, widget) => {
