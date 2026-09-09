@@ -2,6 +2,31 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.6.4
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.6.3...22becf3c130afacbafaebfd3b831a91a51a4eea6))
+
+### Bugs fixed
+
+- Fix #209 Workflow export fails with `Error submitting workflow: 'NoneType' object is not iterable` [#210](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/210) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump browserslist from 4.24.4 to 4.28.9 [#207](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/207) ([@gpelouze](https://github.com/gpelouze))
+- Bump postcss-selector-parser from 6.1.2 to 6.1.4 [#206](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/206) ([@gpelouze](https://github.com/gpelouze))
+- Bump the jupyterlab group across 1 directory with 6 updates [#203](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/203) ([@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-08-31&to=2026-09-09&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-08-31..2026-09-09&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.6.3
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.6.2...7b54fc4cf6d25ae13a4054e29384b4a2b93a2aef))
@@ -33,8 +58,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-07-01&to=2026-08-31&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-07-01..2026-08-31&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.6.2
 
