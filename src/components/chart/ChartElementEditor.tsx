@@ -83,6 +83,9 @@ export function ChartElementEditor({
         >
           Delete
         </Button>
+        <Button variant="outlined">
+            Edit draft
+        </Button>
       </div>
     </Paper>
   );
