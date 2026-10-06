@@ -2,6 +2,8 @@ import React, { CSSProperties, ForwardedRef } from 'react';
 import styled from 'styled-components';
 import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
 import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import Tooltip from '@mui/material/Tooltip';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
@@ -129,6 +131,34 @@ function NodeCustomElement(
               : 'rgb(229,252,233)'
         }
       />
+      <Tooltip title="Add input">
+          <IconButton
+            aria-label="Add input"
+            disabled
+            size="small"
+            sx={{
+              position: 'absolute',
+              bottom: '2px',
+              left: '5%',
+            }}
+          >
+            <AddIcon />
+          </IconButton>
+      </Tooltip>
+      <Tooltip title="Add output">
+          <IconButton
+            aria-label="Add output"
+            disabled
+            size="small"
+            sx={{
+              position: 'absolute',
+              bottom: '2px',
+              right: '5%',
+            }}
+          >
+            <AddIcon />
+          </IconButton>
+      </Tooltip>
       {children}
     </NodeContainer>
   );
