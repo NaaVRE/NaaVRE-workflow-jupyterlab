@@ -11,6 +11,7 @@ import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 import { INode } from '../../utils/chart';
+import { NodeIODirection } from './NodeIODialog';
 
 const NodeContainer = styled.div<{
   width?: string;
@@ -105,11 +106,13 @@ function getNodeHeight(node: INode) {
 function ButtonAddIO({
   ariaLabel,
   title,
-  style
+  style,
+  onClick
 }: {
   ariaLabel: string;
   title: string;
   style: Pick<CSSProperties, 'left' | 'right'>;
+  onClick: () => void;
 }) {
   return (
     <Tooltip title={title}>
@@ -121,7 +124,16 @@ function ButtonAddIO({
           ...style
         }}
       >
-        <IconButton aria-label={ariaLabel} size="small">
+        <IconButton
+          aria-label={ariaLabel}
+          size="small"
+          onClick={event => {
+            event.stopPropagation();
+            onClick();
+          }}
+          onMouseDown={event => event.stopPropagation()}
+          onMouseUp={event => event.stopPropagation()}
+        >
           <AddIcon />
         </IconButton>
       </span>
@@ -129,59 +141,56 @@ function ButtonAddIO({
   );
 }
 
-function NodeCustomElement(
-  { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
-  ref: ForwardedRef<HTMLDivElement>
+export function nodeCustomFactory(
+  onAddIO: (nodeId: string, direction: NodeIODirection) => void
 ) {
-  const isSpecialNode = node.type !== 'workflow-cell';
+  return React.forwardRef(
+    (
+      { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
+      ref: ForwardedRef<HTMLDivElement>
+    ) => {
+      const isSpecialNode = node.type !== 'workflow-cell';
+      const width = isSpecialNode ? '200px' : '250px';
+      const height = getNodeHeight(node);
 
-  getNodeHeight(node);
-  const width = isSpecialNode ? '200px' : '250px';
-  const height = getNodeHeight(node);
-
-  return (
-    <NodeContainer
-      width={width}
-      height={height}
-      isDraft={node.properties.cell.is_draft}
-      ref={ref}
-      {...otherProps}
-    >
-      <NodeTitle
-        cell={node.properties.cell}
-        isSpecialNode={isSpecialNode}
-        backgroundColor={
-          isSpecialNode
-            ? 'rgb(195, 235, 202)'
-            : node.properties.cell.is_draft
-              ? 'rgb(240,240,240)'
-              : 'rgb(229,252,233)'
-        }
-      />
-      {node.properties.cell.is_draft && (
-        <>
-          <ButtonAddIO
-            ariaLabel="Add input"
-            title="Add input"
-            style={{ left: '5%' }}
+      return (
+        <NodeContainer
+          width={width}
+          height={height}
+          isDraft={node.properties.cell.is_draft}
+          ref={ref}
+          {...otherProps}
+        >
+          <NodeTitle
+            cell={node.properties.cell}
+            isSpecialNode={isSpecialNode}
+            backgroundColor={
+              isSpecialNode
+                ? 'rgb(195, 235, 202)'
+                : node.properties.cell.is_draft
+                  ? 'rgb(240,240,240)'
+                  : 'rgb(229,252,233)'
+            }
           />
-          <ButtonAddIO
-            ariaLabel="Add output"
-            title="Add output"
-            style={{ right: '5%' }}
-          />
-        </>
-      )}
-      {children}
-    </NodeContainer>
+          {node.properties.cell.is_draft && (
+            <>
+              <ButtonAddIO
+                ariaLabel="Add input"
+                title="Add input"
+                style={{ left: '5%' }}
+                onClick={() => onAddIO(node.id, 'input')}
+              />
+              <ButtonAddIO
+                ariaLabel="Add output"
+                title="Add output"
+                style={{ right: '5%' }}
+                onClick={() => onAddIO(node.id, 'output')}
+              />
+            </>
+          )}
+          {children}
+        </NodeContainer>
+      );
+    }
   );
 }
-
-export const NodeCustom = React.forwardRef(
-  (
-    { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
-    return NodeCustomElement({ node, children, ...otherProps }, ref);
-  }
-);
