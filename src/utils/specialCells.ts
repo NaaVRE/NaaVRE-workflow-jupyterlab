@@ -72,6 +72,7 @@ export const specialCells: Array<ISpecialCell> = [
     title: 'Draft component',
     description:
       'Draft component to design a workflow.',
+    type: 'workflow-cell',
     created: undefined,
     modified: undefined,
     owner: undefined,
