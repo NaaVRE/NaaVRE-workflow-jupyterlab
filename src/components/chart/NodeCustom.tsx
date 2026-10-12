@@ -132,32 +132,36 @@ function NodeCustomElement(
         }
       />
       <Tooltip title="Add input">
+        <span
+          style={{
+            position: 'absolute',
+            bottom: '2px',
+            left: '5%',
+            display: 'inline-flex'
+          }}
+        >
           <IconButton
             aria-label="Add input"
             disabled
             size="small"
-            sx={{
-              position: 'absolute',
-              bottom: '2px',
-              left: '5%',
-            }}
           >
             <AddIcon />
           </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title="Add output">
-          <IconButton
-            aria-label="Add output"
-            disabled
-            size="small"
-            sx={{
-              position: 'absolute',
-              bottom: '2px',
-              right: '5%',
-            }}
-          >
+        <span
+          style={{
+            position: 'absolute',
+            bottom: '2px',
+            right: '5%',
+            display: 'inline-flex'
+          }}
+        >
+          <IconButton aria-label="Add output" disabled size="small">
             <AddIcon />
           </IconButton>
+        </span>
       </Tooltip>
       {children}
     </NodeContainer>
