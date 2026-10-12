@@ -102,6 +102,33 @@ function getNodeHeight(node: INode) {
   return `${heightPx}px`;
 }
 
+function ButtonAddIO({
+  ariaLabel,
+  title,
+  style
+}: {
+  ariaLabel: string;
+  title: string;
+  style: Pick<CSSProperties, 'left' | 'right'>;
+}) {
+  return (
+    <Tooltip title={title}>
+      <span
+        style={{
+          position: 'absolute',
+          bottom: '2px',
+          display: 'inline-flex',
+          ...style
+        }}
+      >
+        <IconButton aria-label={ariaLabel} disabled size="small">
+          <AddIcon />
+        </IconButton>
+      </span>
+    </Tooltip>
+  );
+}
+
 function NodeCustomElement(
   { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
   ref: ForwardedRef<HTMLDivElement>
@@ -132,36 +159,18 @@ function NodeCustomElement(
         }
       />
       {node.properties.cell.is_draft && (
-        <Tooltip title="Add input">
-          <span
-            style={{
-              position: 'absolute',
-              bottom: '2px',
-              left: '5%',
-              display: 'inline-flex'
-            }}
-          >
-            <IconButton aria-label="Add input" disabled size="small">
-              <AddIcon />
-            </IconButton>
-          </span>
-        </Tooltip>
-      )}
-      {node.properties.cell.is_draft && (
-        <Tooltip title="Add output">
-          <span
-            style={{
-              position: 'absolute',
-              bottom: '2px',
-              right: '5%',
-              display: 'inline-flex'
-            }}
-          >
-            <IconButton aria-label="Add output" disabled size="small">
-              <AddIcon />
-            </IconButton>
-          </span>
-        </Tooltip>
+        <>
+          <ButtonAddIO
+            ariaLabel="Add input"
+            title="Add input"
+            style={{ left: '5%' }}
+          />
+          <ButtonAddIO
+            ariaLabel="Add output"
+            title="Add output"
+            style={{ right: '5%' }}
+          />
+        </>
       )}
       {children}
     </NodeContainer>
