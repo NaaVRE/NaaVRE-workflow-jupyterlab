@@ -121,7 +121,7 @@ function ButtonAddIO({
           ...style
         }}
       >
-        <IconButton aria-label={ariaLabel} disabled size="small">
+        <IconButton aria-label={ariaLabel} size="small">
           <AddIcon />
         </IconButton>
       </span>
