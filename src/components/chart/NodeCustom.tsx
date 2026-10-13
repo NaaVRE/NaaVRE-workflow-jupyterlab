@@ -11,7 +11,7 @@ import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 import { INode } from '../../utils/chart';
 import { NodeIODirection } from './NodeIODialog';
 import { ButtonAddIO } from './ButtonAddIO';
-import { ModifyTitle } from './modifyTitle';
+import { ModifyTitle } from './ModifyTitle';
 
 const NodeContainer = styled.div<{
   width?: string;
