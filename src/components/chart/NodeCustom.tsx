@@ -160,18 +160,11 @@ export function nodeCustomFactory(
       const isSpecialNode = node.type !== 'workflow-cell';
       const width = isSpecialNode ? '200px' : '250px';
       const height = getNodeHeight(node);
-
-      const bottomLeftPortPosition = getBottomPortPosition(node, 'left');
-      const bottomRightPortPosition = getBottomPortPosition(node, 'right');
-      const yCorrection = 5;
-      let addInputButtonY = yCorrection;
-      let addOutputButtonY = yCorrection;
-      if (node.properties.cell.is_draft && bottomLeftPortPosition) {
-          addInputButtonY = bottomLeftPortPosition.y + yCorrection
-          }
-      if (node.properties.cell.is_draft && bottomRightPortPosition) {
-          addOutputButtonY = bottomRightPortPosition.y + yCorrection;
-          }
+      const yStandard = 5;
+      const leftPortY = getBottomPortPosition(node, 'left')?.y;
+      const insertInputButtonY = leftPortY === undefined ? yStandard : leftPortY + yStandard;
+      const rightPortY = getBottomPortPosition(node, 'right')?.y;
+      const insertOutputButtonY = rightPortY === undefined ? yStandard : rightPortY + yStandard;
       const xCorrection = '5%';
 
       return (
@@ -200,7 +193,7 @@ export function nodeCustomFactory(
                   title="Add input"
                   style={{
                     left: xCorrection,
-                    top: addInputButtonY
+                    top: insertInputButtonY
                   }}
                   onClick={() => onAddIO(node.id, 'input')}
                 />
@@ -209,7 +202,7 @@ export function nodeCustomFactory(
                   title="Add output"
                   style={{
                     right: xCorrection,
-                    top: addOutputButtonY
+                    top: insertOutputButtonY
                   }}
                   onClick={() => onAddIO(node.id, 'output')}
                 />
