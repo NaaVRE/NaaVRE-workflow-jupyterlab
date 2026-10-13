@@ -99,8 +99,17 @@ function getNodeHeight(node: INode) {
     Object.values(node.ports).filter(p => p.type === 'right').length
   );
   const portHeightPx = 26;
-  const heightPx = maxPortsCount * (portHeightPx || 1);
+  let additionalHeight = 0;
+  {node.properties.cell.is_draft && (additionalHeight = 2)}
+  const heightPx = (maxPortsCount + additionalHeight) * portHeightPx;
   return `${heightPx}px`;
+}
+
+function getBottomPortPosition(node: INode, side: 'left' | 'right') {
+  return Object.values(node.ports)
+    .filter(port => port.type === side && port.position !== undefined)
+    .sort((a, b) => (b.position?.y ?? 0) - (a.position?.y ?? 0))[0]
+    ?.position;
 }
 
 function ButtonAddIO({
@@ -111,7 +120,7 @@ function ButtonAddIO({
 }: {
   ariaLabel: string;
   title: string;
-  style: Pick<CSSProperties, 'left' | 'right'>;
+  style: Pick<CSSProperties, 'left' | 'top' | 'right'>;
   onClick: () => void;
 }) {
   return (
@@ -119,7 +128,6 @@ function ButtonAddIO({
       <span
         style={{
           position: 'absolute',
-          bottom: '2px',
           display: 'inline-flex',
           ...style
         }}
@@ -153,6 +161,19 @@ export function nodeCustomFactory(
       const width = isSpecialNode ? '200px' : '250px';
       const height = getNodeHeight(node);
 
+      const bottomLeftPortPosition = getBottomPortPosition(node, 'left');
+      const bottomRightPortPosition = getBottomPortPosition(node, 'right');
+      const yCorrection = 5;
+      let addInputButtonY = yCorrection;
+      let addOutputButtonY = yCorrection;
+      if (node.properties.cell.is_draft && bottomLeftPortPosition) {
+          addInputButtonY = bottomLeftPortPosition.y + yCorrection
+          }
+      if (node.properties.cell.is_draft && bottomRightPortPosition) {
+          addOutputButtonY = bottomRightPortPosition.y + yCorrection;
+          }
+      const xCorrection = '5%';
+
       return (
         <NodeContainer
           width={width}
@@ -174,18 +195,24 @@ export function nodeCustomFactory(
           />
           {node.properties.cell.is_draft && (
             <>
-              <ButtonAddIO
-                ariaLabel="Add input"
-                title="Add input"
-                style={{ left: '5%' }}
-                onClick={() => onAddIO(node.id, 'input')}
-              />
-              <ButtonAddIO
-                ariaLabel="Add output"
-                title="Add output"
-                style={{ right: '5%' }}
-                onClick={() => onAddIO(node.id, 'output')}
-              />
+                <ButtonAddIO
+                  ariaLabel="Add input"
+                  title="Add input"
+                  style={{
+                    left: xCorrection,
+                    top: addInputButtonY
+                  }}
+                  onClick={() => onAddIO(node.id, 'input')}
+                />
+                <ButtonAddIO
+                  ariaLabel="Add output"
+                  title="Add output"
+                  style={{
+                    right: xCorrection,
+                    top: addOutputButtonY
+                  }}
+                  onClick={() => onAddIO(node.id, 'output')}
+                />
             </>
           )}
           {children}
