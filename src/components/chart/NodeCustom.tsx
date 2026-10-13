@@ -1,9 +1,6 @@
 import React, { CSSProperties, ForwardedRef } from 'react';
 import styled from 'styled-components';
 import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import Tooltip from '@mui/material/Tooltip';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
@@ -12,6 +9,7 @@ import { Typography } from '@mui/material';
 import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 import { INode } from '../../utils/chart';
 import { NodeIODirection } from './NodeIODialog';
+import { ButtonAddIO } from './ButtonAddIO';
 
 const NodeContainer = styled.div<{
   width?: string;
@@ -112,43 +110,6 @@ function getBottomPortPosition(node: INode, side: 'left' | 'right') {
     ?.position;
 }
 
-function ButtonAddIO({
-  ariaLabel,
-  title,
-  style,
-  onClick
-}: {
-  ariaLabel: string;
-  title: string;
-  style: Pick<CSSProperties, 'left' | 'top' | 'right'>;
-  onClick: () => void;
-}) {
-  return (
-    <Tooltip title={title}>
-      <span
-        style={{
-          position: 'absolute',
-          display: 'inline-flex',
-          ...style
-        }}
-      >
-        <IconButton
-          aria-label={ariaLabel}
-          size="small"
-          onClick={event => {
-            event.stopPropagation();
-            onClick();
-          }}
-          onMouseDown={event => event.stopPropagation()}
-          onMouseUp={event => event.stopPropagation()}
-        >
-          <AddIcon />
-        </IconButton>
-      </span>
-    </Tooltip>
-  );
-}
-
 export function nodeCustomFactory(
   onAddIO: (nodeId: string, direction: NodeIODirection) => void
 ) {
@@ -188,24 +149,24 @@ export function nodeCustomFactory(
           />
           {node.properties.cell.is_draft && (
             <>
-                <ButtonAddIO
-                  ariaLabel="Add input"
-                  title="Add input"
-                  style={{
-                    left: xCorrection,
-                    top: insertInputButtonY
-                  }}
-                  onClick={() => onAddIO(node.id, 'input')}
-                />
-                <ButtonAddIO
-                  ariaLabel="Add output"
-                  title="Add output"
-                  style={{
-                    right: xCorrection,
-                    top: insertOutputButtonY
-                  }}
-                  onClick={() => onAddIO(node.id, 'output')}
-                />
+              <ButtonAddIO
+                ariaLabel="Add input"
+                title="Add input"
+                style={{
+                  left: xCorrection,
+                  top: insertInputButtonY
+                }}
+                onClick={() => onAddIO(node.id, 'input')}
+              />
+              <ButtonAddIO
+                ariaLabel="Add output"
+                title="Add output"
+                style={{
+                  right: xCorrection,
+                  top: insertOutputButtonY
+                }}
+                onClick={() => onAddIO(node.id, 'output')}
+              />
             </>
           )}
           {children}
