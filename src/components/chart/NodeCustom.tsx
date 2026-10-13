@@ -1,6 +1,7 @@
 import React, { CSSProperties, ForwardedRef } from 'react';
 import styled from 'styled-components';
 import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
+import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
@@ -10,6 +11,7 @@ import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 import { INode } from '../../utils/chart';
 import { NodeIODirection } from './NodeIODialog';
 import { ButtonAddIO } from './ButtonAddIO';
+import { ModifyTitle } from './modifyTitle';
 
 const NodeContainer = styled.div<{
   width?: string;
@@ -71,6 +73,7 @@ function NodeTitle({
         }}
       >
         <TooltipOverflowLabel variant="subtitle2" label={title} />
+        {cell.is_draft && <ModifyTitle />}
         {cell.is_draft && (
           <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
             draft
@@ -98,7 +101,9 @@ function getNodeHeight(node: INode) {
   );
   const portHeightPx = 26;
   let additionalHeight = 0;
-  {node.properties.cell.is_draft && (additionalHeight = 2)}
+  {
+    node.properties.cell.is_draft && (additionalHeight = 2);
+  }
   const heightPx = (maxPortsCount + additionalHeight) * portHeightPx;
   return `${heightPx}px`;
 }
@@ -106,8 +111,7 @@ function getNodeHeight(node: INode) {
 function getBottomPortPosition(node: INode, side: 'left' | 'right') {
   return Object.values(node.ports)
     .filter(port => port.type === side && port.position !== undefined)
-    .sort((a, b) => (b.position?.y ?? 0) - (a.position?.y ?? 0))[0]
-    ?.position;
+    .sort((a, b) => (b.position?.y ?? 0) - (a.position?.y ?? 0))[0]?.position;
 }
 
 export function nodeCustomFactory(
@@ -123,9 +127,11 @@ export function nodeCustomFactory(
       const height = getNodeHeight(node);
       const yStandard = 5;
       const leftPortY = getBottomPortPosition(node, 'left')?.y;
-      const insertInputButtonY = leftPortY === undefined ? yStandard : leftPortY + yStandard;
+      const insertInputButtonY =
+        leftPortY === undefined ? yStandard : leftPortY + yStandard;
       const rightPortY = getBottomPortPosition(node, 'right')?.y;
-      const insertOutputButtonY = rightPortY === undefined ? yStandard : rightPortY + yStandard;
+      const insertOutputButtonY =
+        rightPortY === undefined ? yStandard : rightPortY + yStandard;
       const xCorrection = '5%';
 
       return (
