@@ -128,7 +128,7 @@ export function nodeCustomFactory(
       ref: ForwardedRef<HTMLDivElement>
     ) => {
       const isSpecialNode = node.type !== 'workflow-cell';
-      const width = isSpecialNode ? '200px' : '250px';
+      const width = isSpecialNode ? '200px' : '325px';
       const height = getNodeHeight(node);
       const yStandard = 5;
       const leftPortY = getBottomPortPosition(node, 'left')?.y;
