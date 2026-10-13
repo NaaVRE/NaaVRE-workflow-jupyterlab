@@ -19,6 +19,7 @@ import {
   validateLink
 } from '../../utils/chart';
 import { NodeIODialog, NodeIODirection } from './NodeIODialog';
+import { NodeTitleDialog } from './NodeTitleDialog';
 import { VariableType } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 
 function FlowChartStory() {
@@ -27,11 +28,15 @@ function FlowChartStory() {
     nodeId: string;
     direction: NodeIODirection;
   } | null>(null);
+  const [selectedNodeTitle, setSelectedNodeTitle] = useState<string | null>(
+    null
+  );
   const setSelectedChartParam = (chartParam: IChartParam) => {};
   const Node = useMemo(
     () =>
-      nodeCustomFactory((nodeId, direction) =>
-        setSelectedNodeIO({ nodeId, direction })
+      nodeCustomFactory(
+        (nodeId, direction) => setSelectedNodeIO({ nodeId, direction }),
+        nodeId => setSelectedNodeTitle(nodeId)
       ),
     []
   );
@@ -101,6 +106,37 @@ function FlowChartStory() {
   const selectedNode = selectedNodeIO
     ? chart?.nodes[selectedNodeIO.nodeId]
     : undefined;
+  const saveNodeTitle = useCallback(
+    (title: string) => {
+      if (selectedNodeTitle === null) {
+        return;
+      }
+      setChart(currentChart => {
+        const node = currentChart?.nodes[selectedNodeTitle];
+        if (currentChart === null || node === undefined) {
+          return currentChart;
+        }
+        return {
+          ...currentChart,
+          nodes: {
+            ...currentChart.nodes,
+            [node.id]: {
+              ...node,
+              properties: {
+                ...node.properties,
+                cell: {
+                  ...node.properties.cell,
+                  title
+                }
+              }
+            }
+          }
+        };
+      });
+      setSelectedNodeTitle(null);
+    },
+    [selectedNodeTitle]
+  );
   return (
     <>
       <FlowChart
@@ -123,6 +159,16 @@ function FlowChartStory() {
         existingNames={Object.keys(selectedNode?.ports ?? {})}
         onClose={() => setSelectedNodeIO(null)}
         onSave={saveNodeIO}
+      />
+      <NodeTitleDialog
+        open={selectedNodeTitle !== null}
+        title={
+          selectedNodeTitle
+            ? (chart?.nodes[selectedNodeTitle]?.properties.cell.title ?? '')
+            : ''
+        }
+        onClose={() => setSelectedNodeTitle(null)}
+        onSave={saveNodeTitle}
       />
     </>
   );

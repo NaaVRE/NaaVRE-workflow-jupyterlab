@@ -36,10 +36,15 @@ import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
 import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
+import { NodeTitleDialog } from './chart/NodeTitleDialog';
 
 interface ISelectedNodeIO {
   nodeId: string;
   direction: NodeIODirection;
+}
+
+interface ISelectedNodeTitle {
+  nodeId: string;
 }
 
 export interface IProps {}
@@ -55,6 +60,7 @@ export interface IState {
   selectedCellNode: HTMLDivElement | null;
   selectedChartParam: IChartParam | null;
   selectedNodeIO: ISelectedNodeIO | null;
+  selectedNodeTitle: ISelectedNodeTitle | null;
   workflowActionDialog: IWorkflowActionDialogState;
 }
 
@@ -64,6 +70,7 @@ export const DefaultState: IState = {
   selectedCellNode: null,
   selectedChartParam: null,
   selectedNodeIO: null,
+  selectedNodeTitle: null,
   workflowActionDialog: {
     open: false,
     action: 'run'
@@ -80,7 +87,10 @@ export class Composer extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.containerRef = createRef();
-    this.NodeCustom = nodeCustomFactory(this.setSelectedNodeIO);
+    this.NodeCustom = nodeCustomFactory(
+      this.setSelectedNodeIO,
+      this.setSelectedNodeTitle
+    );
   }
 
   chartStateActions = mapValues(
@@ -135,6 +145,10 @@ export class Composer extends React.Component<IProps, IState> {
     this.setState({ selectedNodeIO: { nodeId, direction } });
   };
 
+  setSelectedNodeTitle = (nodeId: string) => {
+    this.setState({ selectedNodeTitle: { nodeId } });
+  };
+
   saveNodeIO = (name: string, type: VariableType) => {
     const selectedNodeIO = this.state.selectedNodeIO;
     if (selectedNodeIO === null) {
@@ -148,7 +162,9 @@ export class Composer extends React.Component<IProps, IState> {
 
       const node = chart.nodes[selectedNodeIO.nodeId];
       if (node === undefined) {
-        console.error(`Cannot add variable to missing node: ${selectedNodeIO.nodeId}`);
+        console.error(
+          `Cannot add variable to missing node: ${selectedNodeIO.nodeId}`
+        );
         return chart;
       }
       if (name in node.ports) {
@@ -196,6 +212,45 @@ export class Composer extends React.Component<IProps, IState> {
       };
     });
     this.setState({ selectedNodeIO: null });
+  };
+
+  saveNodeTitle = (title: string) => {
+    const selectedNodeTitle = this.state.selectedNodeTitle;
+    if (selectedNodeTitle === null) {
+      return;
+    }
+
+    this.setChart(chart => {
+      if (chart === null) {
+        return chart;
+      }
+
+      const node = chart.nodes[selectedNodeTitle.nodeId];
+      if (node === undefined || node.properties.cell.is_draft !== true) {
+        console.error(
+          `Cannot modify title for missing or non-draft node: ${selectedNodeTitle.nodeId}`
+        );
+        return chart;
+      }
+
+      return {
+        ...chart,
+        nodes: {
+          ...chart.nodes,
+          [node.id]: {
+            ...node,
+            properties: {
+              ...node.properties,
+              cell: {
+                ...node.properties.cell,
+                title
+              }
+            }
+          }
+        }
+      };
+    });
+    this.setState({ selectedNodeTitle: null });
   };
 
   setWorkflowActionDialog = (
@@ -260,7 +315,8 @@ export class Composer extends React.Component<IProps, IState> {
                 callbacks={this.chartStateActions}
                 config={this.chartConfig}
                 Components={{
-                  Node: this.NodeCustom as React.FunctionComponent<INodeDefaultProps>,
+                  Node: this
+                    .NodeCustom as React.FunctionComponent<INodeDefaultProps>,
                   NodeInner: nodeInnerCustomFactory(
                     this.state.chart,
                     this.setSelectedChartParam
@@ -289,14 +345,25 @@ export class Composer extends React.Component<IProps, IState> {
                 existingNames={
                   this.state.selectedNodeIO
                     ? Object.keys(
-                        this.state.chart.nodes[
-                          this.state.selectedNodeIO.nodeId
-                        ]?.ports ?? {}
+                        this.state.chart.nodes[this.state.selectedNodeIO.nodeId]
+                          ?.ports ?? {}
                       )
                     : []
                 }
                 onClose={() => this.setState({ selectedNodeIO: null })}
                 onSave={this.saveNodeIO}
+              />
+              <NodeTitleDialog
+                open={this.state.selectedNodeTitle !== null}
+                title={
+                  this.state.selectedNodeTitle
+                    ? (this.state.chart.nodes[
+                        this.state.selectedNodeTitle.nodeId
+                      ]?.properties.cell.title ?? '')
+                    : ''
+                }
+                onClose={() => this.setState({ selectedNodeTitle: null })}
+                onSave={this.saveNodeTitle}
               />
               {this.state.selectedCellInList && (
                 <CellPopup

@@ -34,11 +34,15 @@ const NodeContainer = styled.div<{
 function NodeTitle({
   cell,
   isSpecialNode,
-  backgroundColor
+  backgroundColor,
+  nodeId,
+  onModifyTitle
 }: {
   cell: ICell;
   isSpecialNode: boolean;
   backgroundColor: CSSProperties['color'];
+  nodeId: string;
+  onModifyTitle: (nodeId: string) => void;
 }) {
   const regex = new RegExp(`-${cell.owner}$`);
   const title = cell.title.replace(regex, '');
@@ -73,7 +77,7 @@ function NodeTitle({
         }}
       >
         <TooltipOverflowLabel variant="subtitle2" label={title} />
-        {cell.is_draft && <ModifyTitle />}
+        {cell.is_draft && <ModifyTitle onClick={() => onModifyTitle(nodeId)} />}
         {cell.is_draft && (
           <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
             draft
@@ -115,7 +119,8 @@ function getBottomPortPosition(node: INode, side: 'left' | 'right') {
 }
 
 export function nodeCustomFactory(
-  onAddIO: (nodeId: string, direction: NodeIODirection) => void
+  onAddIO: (nodeId: string, direction: NodeIODirection) => void,
+  onModifyTitle: (nodeId: string) => void
 ) {
   return React.forwardRef(
     (
@@ -145,6 +150,8 @@ export function nodeCustomFactory(
           <NodeTitle
             cell={node.properties.cell}
             isSpecialNode={isSpecialNode}
+            nodeId={node.id}
+            onModifyTitle={onModifyTitle}
             backgroundColor={
               isSpecialNode
                 ? 'rgb(195, 235, 202)'
