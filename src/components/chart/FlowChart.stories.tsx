@@ -8,7 +8,7 @@ import {
 } from '@mrblenny/react-flow-chart';
 
 import { chart as mockChart } from '../../mocks/chart';
-import { nodeCustomFactory } from './NodeCustom';
+import { nodeCustomFactory } from './DraftNode';
 import { nodeInnerCustomFactory } from './NodeInnerCustom';
 import { PortCustom } from './PortCustom';
 import { LinkCustom } from './LinkCustom';

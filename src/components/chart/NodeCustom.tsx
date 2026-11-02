@@ -1,15 +1,13 @@
 import React, { CSSProperties, ForwardedRef } from 'react';
 import styled from 'styled-components';
-import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
+import { INode, INodeDefaultProps } from '@mrblenny/react-flow-chart';
+import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { ICell } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
-import { INode } from '../../utils/chart';
-import { NodeIODirection } from './NodeIODialog';
-import { ButtonAddIO } from './ButtonAddIO';
 
 const NodeContainer = styled.div<{
   width?: string;
@@ -52,7 +50,7 @@ function NodeTitle({
         borderTopRightRadius: '5px',
         border: cell.is_draft ? '1px dashed darkgray' : '1px solid lightgray',
         borderBottomWidth: 0,
-        backgroundColor: backgroundColor,
+        backgroundColor,
         display: 'flex',
         justifyContent: 'space-between'
       }}
@@ -93,85 +91,47 @@ function NodeTitle({
 
 function getNodeHeight(node: INode) {
   const maxPortsCount = Math.max(
-    Object.values(node.ports).filter(p => p.type === 'left').length,
-    Object.values(node.ports).filter(p => p.type === 'right').length
+    Object.values(node.ports).filter(port => port.type === 'left').length,
+    Object.values(node.ports).filter(port => port.type === 'right').length
   );
   const portHeightPx = 26;
-  let additionalHeight = 0;
-  {node.properties.cell.is_draft && (additionalHeight = 2)}
-  const heightPx = (maxPortsCount + additionalHeight) * portHeightPx;
-  return `${heightPx}px`;
+  return `${maxPortsCount * (portHeightPx || 1)}px`;
 }
 
-function getBottomPortPosition(node: INode, side: 'left' | 'right') {
-  return Object.values(node.ports)
-    .filter(port => port.type === side && port.position !== undefined)
-    .sort((a, b) => (b.position?.y ?? 0) - (a.position?.y ?? 0))[0]
-    ?.position;
-}
-
-export function nodeCustomFactory(
-  onAddIO: (nodeId: string, direction: NodeIODirection) => void
+function NodeCustomElement(
+  { node, children, ...otherProps }: INodeDefaultProps,
+  ref: ForwardedRef<HTMLDivElement>
 ) {
-  return React.forwardRef(
-    (
-      { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
-      ref: ForwardedRef<HTMLDivElement>
-    ) => {
-      const isSpecialNode = node.type !== 'workflow-cell';
-      const width = isSpecialNode ? '200px' : '250px';
-      const height = getNodeHeight(node);
-      const yStandard = 5;
-      const leftPortY = getBottomPortPosition(node, 'left')?.y;
-      const insertInputButtonY = leftPortY === undefined ? yStandard : leftPortY + yStandard;
-      const rightPortY = getBottomPortPosition(node, 'right')?.y;
-      const insertOutputButtonY = rightPortY === undefined ? yStandard : rightPortY + yStandard;
-      const xCorrection = '5%';
+  const isSpecialNode = node.type !== 'workflow-cell';
+  const width = isSpecialNode ? '200px' : '250px';
 
-      return (
-        <NodeContainer
-          width={width}
-          height={height}
-          isDraft={node.properties.cell.is_draft}
-          ref={ref}
-          {...otherProps}
-        >
-          <NodeTitle
-            cell={node.properties.cell}
-            isSpecialNode={isSpecialNode}
-            backgroundColor={
-              isSpecialNode
-                ? 'rgb(195, 235, 202)'
-                : node.properties.cell.is_draft
-                  ? 'rgb(240,240,240)'
-                  : 'rgb(229,252,233)'
-            }
-          />
-          {node.properties.cell.is_draft && (
-            <>
-              <ButtonAddIO
-                ariaLabel="Add input"
-                title="Add input"
-                style={{
-                  left: xCorrection,
-                  top: insertInputButtonY
-                }}
-                onClick={() => onAddIO(node.id, 'input')}
-              />
-              <ButtonAddIO
-                ariaLabel="Add output"
-                title="Add output"
-                style={{
-                  right: xCorrection,
-                  top: insertOutputButtonY
-                }}
-                onClick={() => onAddIO(node.id, 'output')}
-              />
-            </>
-          )}
-          {children}
-        </NodeContainer>
-      );
-    }
+  return (
+    <NodeContainer
+      width={width}
+      height={getNodeHeight(node)}
+      isDraft={node.properties.cell.is_draft}
+      ref={ref}
+      {...otherProps}
+    >
+      <NodeTitle
+        cell={node.properties.cell}
+        isSpecialNode={isSpecialNode}
+        backgroundColor={
+          isSpecialNode
+            ? 'rgb(195, 235, 202)'
+            : node.properties.cell.is_draft
+              ? 'rgb(240,240,240)'
+              : 'rgb(229,252,233)'
+        }
+      />
+      {children}
+    </NodeContainer>
   );
 }
+
+export const NodeCustom = React.forwardRef(
+  (
+    { node, children, ...otherProps }: INodeDefaultProps,
+    ref: ForwardedRef<HTMLDivElement>
+  ) => NodeCustomElement({ node, children, ...otherProps }, ref)
+);

@@ -23,7 +23,7 @@ import {
 } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
-import { nodeCustomFactory } from './chart/NodeCustom';
+import { nodeCustomFactory } from './chart/DraftNode';
 import { nodeInnerCustomFactory } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
 import { LinkCustom } from './chart/LinkCustom';
@@ -148,7 +148,9 @@ export class Composer extends React.Component<IProps, IState> {
 
       const node = chart.nodes[selectedNodeIO.nodeId];
       if (node === undefined) {
-        console.error(`Cannot add variable to missing node: ${selectedNodeIO.nodeId}`);
+        console.error(
+          `Cannot add variable to missing node: ${selectedNodeIO.nodeId}`
+        );
         return chart;
       }
       if (name in node.ports) {
@@ -260,7 +262,8 @@ export class Composer extends React.Component<IProps, IState> {
                 callbacks={this.chartStateActions}
                 config={this.chartConfig}
                 Components={{
-                  Node: this.NodeCustom as React.FunctionComponent<INodeDefaultProps>,
+                  Node: this
+                    .NodeCustom as React.FunctionComponent<INodeDefaultProps>,
                   NodeInner: nodeInnerCustomFactory(
                     this.state.chart,
                     this.setSelectedChartParam
@@ -289,9 +292,8 @@ export class Composer extends React.Component<IProps, IState> {
                 existingNames={
                   this.state.selectedNodeIO
                     ? Object.keys(
-                        this.state.chart.nodes[
-                          this.state.selectedNodeIO.nodeId
-                        ]?.ports ?? {}
+                        this.state.chart.nodes[this.state.selectedNodeIO.nodeId]
+                          ?.ports ?? {}
                       )
                     : []
                 }
