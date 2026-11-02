@@ -15,12 +15,7 @@ import {
   ICell,
   VariableType
 } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import {
-  getVariableColor,
-  IChart,
-  IChartParam,
-  validateLink
-} from '../utils/chart';
+import { IChart, IChartParam, validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
 import { nodeCustomFactory } from './chart/DraftNode';
@@ -36,11 +31,7 @@ import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
 import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
-
-interface ISelectedNodeIO {
-  nodeId: string;
-  direction: NodeIODirection;
-}
+import { ISelectedNodeIO, saveNodeIO } from './chart/NodeIO';
 
 export interface IProps {}
 
@@ -141,62 +132,7 @@ export class Composer extends React.Component<IProps, IState> {
       return;
     }
 
-    this.setChart(chart => {
-      if (chart === null) {
-        return chart;
-      }
-
-      const node = chart.nodes[selectedNodeIO.nodeId];
-      if (node === undefined) {
-        console.error(
-          `Cannot add variable to missing node: ${selectedNodeIO.nodeId}`
-        );
-        return chart;
-      }
-      if (name in node.ports) {
-        console.error(`Cannot add duplicate variable name: ${name}`);
-        return chart;
-      }
-
-      const cell = node.properties.cell;
-      const variable = { name, type };
-      const updatedNode = {
-        ...node,
-        properties: {
-          ...node.properties,
-          cell: {
-            ...cell,
-            inputs:
-              selectedNodeIO.direction === 'input'
-                ? [...cell.inputs, variable]
-                : cell.inputs,
-            outputs:
-              selectedNodeIO.direction === 'output'
-                ? [...cell.outputs, variable]
-                : cell.outputs
-          }
-        },
-        ports: {
-          ...node.ports,
-          [name]: {
-            id: name,
-            type: selectedNodeIO.direction === 'input' ? 'left' : 'right',
-            properties: {
-              color: getVariableColor(name),
-              parentNodeType: node.type,
-              parentNodeIsDraft: cell.is_draft === true
-            }
-          }
-        }
-      };
-      return {
-        ...chart,
-        nodes: {
-          ...chart.nodes,
-          [node.id]: updatedNode
-        }
-      };
-    });
+    this.setChart(chart => saveNodeIO(chart, selectedNodeIO, name, type));
     this.setState({ selectedNodeIO: null });
   };
 
