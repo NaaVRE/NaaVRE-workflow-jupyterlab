@@ -4,6 +4,7 @@ import { mapValues } from 'lodash';
 import { ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
 import {
   FlowChart,
@@ -15,12 +16,7 @@ import {
   ICell,
   VariableType
 } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import {
-  getVariableColor,
-  IChart,
-  IChartParam,
-  validateLink
-} from '../utils/chart';
+import { IChart, IChartParam, validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
 import { nodeCustomFactory } from './chart/DraftNode';
@@ -37,11 +33,8 @@ import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
 import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
 import { NodeTitleDialog } from './chart/NodeTitleDialog';
+import { postDraftCellToCatalogue } from '../utils/catalog';
 
-interface ISelectedNodeIO {
-  nodeId: string;
-  direction: NodeIODirection;
-}
 import { ISelectedNodeIO, saveNodeIO } from './chart/NodeIO';
 
 interface ISelectedNodeTitle {
@@ -63,6 +56,7 @@ export interface IState {
   selectedNodeIO: ISelectedNodeIO | null;
   selectedNodeTitle: ISelectedNodeTitle | null;
   workflowActionDialog: IWorkflowActionDialogState;
+  draftCellSaveError: string | null;
 }
 
 export const DefaultState: IState = {
@@ -75,7 +69,8 @@ export const DefaultState: IState = {
   workflowActionDialog: {
     open: false,
     action: 'run'
-  }
+  },
+  draftCellSaveError: null
 };
 
 export class Composer extends React.Component<IProps, IState> {
@@ -88,7 +83,10 @@ export class Composer extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.containerRef = createRef();
-    this.NodeCustom = nodeCustomFactory(this.setSelectedNodeIO);
+    this.NodeCustom = nodeCustomFactory(
+      this.setSelectedNodeIO,
+      this.setSelectedNodeTitle
+    );
   }
 
   chartStateActions = mapValues(
@@ -153,64 +151,34 @@ export class Composer extends React.Component<IProps, IState> {
       return;
     }
 
-    this.setChart(chart => saveNodeIO(chart, selectedNodeIO, name, type));
-    this.setChart(chart => {
-      if (chart === null) {
-        return chart;
+    const updatedChart = saveNodeIO(
+      this.state.chart,
+      selectedNodeIO,
+      name,
+      type
+    );
+    if (updatedChart !== null && updatedChart !== this.state.chart) {
+      this.setChart(updatedChart);
+      const updatedCell =
+        updatedChart.nodes[selectedNodeIO.nodeId]?.properties.cell;
+      if (updatedCell?.is_draft === true) {
+        void this.saveDraftCellToCatalogue(updatedCell);
       }
-
-      const node = chart.nodes[selectedNodeIO.nodeId];
-      if (node === undefined) {
-        console.error(
-          `Cannot add variable to missing node: ${selectedNodeIO.nodeId}`
-        );
-        return chart;
-      }
-      if (name in node.ports) {
-        console.error(`Cannot add duplicate variable name: ${name}`);
-        return chart;
-      }
-
-      const cell = node.properties.cell;
-      const variable = { name, type };
-      const updatedNode = {
-        ...node,
-        properties: {
-          ...node.properties,
-          cell: {
-            ...cell,
-            inputs:
-              selectedNodeIO.direction === 'input'
-                ? [...cell.inputs, variable]
-                : cell.inputs,
-            outputs:
-              selectedNodeIO.direction === 'output'
-                ? [...cell.outputs, variable]
-                : cell.outputs
-          }
-        },
-        ports: {
-          ...node.ports,
-          [name]: {
-            id: name,
-            type: selectedNodeIO.direction === 'input' ? 'left' : 'right',
-            properties: {
-              color: getVariableColor(name),
-              parentNodeType: node.type,
-              parentNodeIsDraft: cell.is_draft === true
-            }
-          }
-        }
-      };
-      return {
-        ...chart,
-        nodes: {
-          ...chart.nodes,
-          [node.id]: updatedNode
-        }
-      };
-    });
+    }
     this.setState({ selectedNodeIO: null });
+  };
+
+  saveDraftCellToCatalogue = async (cell: ICell) => {
+    try {
+      await postDraftCellToCatalogue(cell, this.context);
+      this.setState({ draftCellSaveError: null });
+    } catch (error) {
+      console.error('Failed to save draft cell to catalogue', error);
+      this.setState({
+        draftCellSaveError:
+          error instanceof Error ? error.message : String(error)
+      });
+    }
   };
 
   saveNodeTitle = (title: string) => {
@@ -219,36 +187,40 @@ export class Composer extends React.Component<IProps, IState> {
       return;
     }
 
-    this.setChart(chart => {
-      if (chart === null) {
-        return chart;
-      }
+    const chart = this.state.chart;
+    const node = chart?.nodes[selectedNodeTitle.nodeId];
+    if (
+      chart === null ||
+      node === undefined ||
+      node.properties.cell.is_draft !== true
+    ) {
+      console.error(
+        `Cannot modify title for missing or non-draft node: ${selectedNodeTitle.nodeId}`
+      );
+      this.setState({ selectedNodeTitle: null });
+      return;
+    }
 
-      const node = chart.nodes[selectedNodeTitle.nodeId];
-      if (node === undefined || node.properties.cell.is_draft !== true) {
-        console.error(
-          `Cannot modify title for missing or non-draft node: ${selectedNodeTitle.nodeId}`
-        );
-        return chart;
-      }
+    if (node.properties.cell.title === title) {
+      this.setState({ selectedNodeTitle: null });
+      return;
+    }
 
-      return {
-        ...chart,
-        nodes: {
-          ...chart.nodes,
-          [node.id]: {
-            ...node,
-            properties: {
-              ...node.properties,
-              cell: {
-                ...node.properties.cell,
-                title
-              }
-            }
+    const updatedCell = { ...node.properties.cell, title };
+    this.setChart({
+      ...chart,
+      nodes: {
+        ...chart.nodes,
+        [node.id]: {
+          ...node,
+          properties: {
+            ...node.properties,
+            cell: updatedCell
           }
         }
-      };
+      }
     });
+    void this.saveDraftCellToCatalogue(updatedCell);
     this.setState({ selectedNodeTitle: null });
   };
 
@@ -301,6 +273,19 @@ export class Composer extends React.Component<IProps, IState> {
               chart={this.state.chart}
               container={this.containerRef.current}
             />
+            {this.state.draftCellSaveError && (
+              <Alert
+                severity="error"
+                sx={{
+                  position: 'absolute',
+                  bottom: 16,
+                  left: 16,
+                  zIndex: 1
+                }}
+              >
+                Failed to save draft cell: {this.state.draftCellSaveError}
+              </Alert>
+            )}
             <div
               style={{
                 display: 'flex',

@@ -1,5 +1,7 @@
 import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { ceil } from 'lodash';
+import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { ISettings } from '../settings';
 
 export interface ICatalogueListResponse<T> {
   count: number;
@@ -83,4 +85,31 @@ export async function fetchListFromCatalogue<T>(
     }
     return content;
   }
+}
+
+export async function postDraftCellToCatalogue(
+  cell: ICell,
+  settings: ISettings
+): Promise<ICell> {
+  if (!settings.catalogueServiceUrl) {
+    throw Error('Catalogue service URL is not configured');
+  }
+
+  const payload = { ...cell };
+  delete payload.version;
+  delete payload.versions;
+  const resp = await NaaVREExternalService(
+    'POST',
+    `${settings.catalogueServiceUrl}/workflow-cells/`,
+    {},
+    {
+      ...payload,
+      description: cell.title,
+      virtual_lab: settings.virtualLab || undefined
+    }
+  );
+  if (resp.status_code !== 201) {
+    throw `${resp.status_code} ${resp.reason}`;
+  }
+  return JSON.parse(resp.content);
 }

@@ -1,6 +1,10 @@
 import { delay, http, HttpResponse, matchRequestUrl } from 'msw';
 import { INaaVREExternalServiceResponse } from '@naavre/communicator-jupyterlab';
-import { getCellsList, patchCell } from './catalogue-service/workflow-cells';
+import {
+  getCellsList,
+  patchCell,
+  postCell
+} from './catalogue-service/workflow-cells';
 import { getSharingScopesList } from './catalogue-service/sharing-scopes';
 import { getUsersList } from './catalogue-service/users';
 
@@ -60,6 +64,15 @@ export const externalServiceHandlers = [
       'http://localhost:8000',
       '/workflow-cells/',
       getCellsList
+    )
+  ),
+  http.post(
+    '/naavre-communicator/external-service',
+    getExternalServiceHandler(
+      'POST',
+      'http://localhost:8000',
+      '/workflow-cells/',
+      postCell
     )
   ),
   http.post(

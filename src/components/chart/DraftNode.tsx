@@ -2,7 +2,7 @@ import React, { ForwardedRef } from 'react';
 import styled from 'styled-components';
 import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
 import IconButton from '@mui/material/IconButton';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 
@@ -26,7 +26,13 @@ const DraftNodeContainer = styled.div<{ width: string; height: string }>`
   box-shadow: rgba(0, 0, 0, 0.1) 0 7px 10px 0;
 `;
 
-function DraftNodeTitle({ cell }: { cell: ICell }) {
+function DraftNodeTitle({
+  cell,
+  onEditTitle
+}: {
+  cell: ICell;
+  onEditTitle: () => void;
+}) {
   const regex = new RegExp(`-${cell.owner}$`);
   const title = cell.title.replace(regex, '');
 
@@ -65,11 +71,12 @@ function DraftNodeTitle({ cell }: { cell: ICell }) {
         </Typography>
       </Stack>
       <IconButton
-        aria-label="Info"
+        aria-label="Edit title"
         style={{ borderRadius: '100%' }}
         sx={{ width: '40px', marginLeft: '-8px' }}
+        onClick={onEditTitle}
       >
-        <InfoOutlinedIcon />
+        <EditOutlinedIcon />
       </IconButton>
     </div>
   );
@@ -96,10 +103,12 @@ export const DraftNode = React.forwardRef(
       node,
       children,
       onAddIO,
+      onEditTitle,
       ...otherProps
     }: INodeDefaultProps & {
       node: INode;
       onAddIO: (nodeId: string, direction: NodeIODirection) => void;
+      onEditTitle: (nodeId: string) => void;
     },
     ref: ForwardedRef<HTMLDivElement>
   ) => {
@@ -124,7 +133,10 @@ export const DraftNode = React.forwardRef(
         ref={ref}
         {...otherProps}
       >
-        <DraftNodeTitle cell={node.properties.cell} />
+        <DraftNodeTitle
+          cell={node.properties.cell}
+          onEditTitle={() => onEditTitle(node.id)}
+        />
         <ButtonAddIO
           ariaLabel="Add input"
           title="Add input"
@@ -144,14 +156,21 @@ export const DraftNode = React.forwardRef(
 );
 
 export function nodeCustomFactory(
-  onAddIO: (nodeId: string, direction: NodeIODirection) => void
+  onAddIO: (nodeId: string, direction: NodeIODirection) => void,
+  onEditTitle: (nodeId: string) => void
 ) {
   return React.forwardRef(
     (
       { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
       ref: ForwardedRef<HTMLDivElement>
     ) => (
-      <DraftNode node={node} onAddIO={onAddIO} ref={ref} {...otherProps}>
+      <DraftNode
+        node={node}
+        onAddIO={onAddIO}
+        onEditTitle={onEditTitle}
+        ref={ref}
+        {...otherProps}
+      >
         {children}
       </DraftNode>
     )
