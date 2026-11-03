@@ -50,7 +50,7 @@ function NodeTitle({
         borderTopRightRadius: '5px',
         border: cell.is_draft ? '1px dashed darkgray' : '1px solid lightgray',
         borderBottomWidth: 0,
-        backgroundColor,
+        backgroundColor: backgroundColor,
         display: 'flex',
         justifyContent: 'space-between'
       }}
@@ -91,8 +91,8 @@ function NodeTitle({
 
 function getNodeHeight(node: INode) {
   const maxPortsCount = Math.max(
-    Object.values(node.ports).filter(port => port.type === 'left').length,
-    Object.values(node.ports).filter(port => port.type === 'right').length
+    Object.values(node.ports).filter(p => p.type === 'left').length,
+    Object.values(node.ports).filter(p => p.type === 'right').length
   );
   const portHeightPx = 26;
   return `${maxPortsCount * (portHeightPx || 1)}px`;

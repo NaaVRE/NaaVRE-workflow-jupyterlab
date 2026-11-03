@@ -15,7 +15,12 @@ import {
   ICell,
   VariableType
 } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { IChart, IChartParam, validateLink } from '../utils/chart';
+import {
+  getVariableColor,
+  IChart,
+  IChartParam,
+  validateLink
+} from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
 import { nodeCustomFactory } from './chart/DraftNode';
@@ -31,7 +36,17 @@ import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
 import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
+import { NodeTitleDialog } from './chart/NodeTitleDialog';
+
+interface ISelectedNodeIO {
+  nodeId: string;
+  direction: NodeIODirection;
+}
 import { ISelectedNodeIO, saveNodeIO } from './chart/NodeIO';
+
+interface ISelectedNodeTitle {
+  nodeId: string;
+}
 
 export interface IProps {}
 
@@ -46,6 +61,7 @@ export interface IState {
   selectedCellNode: HTMLDivElement | null;
   selectedChartParam: IChartParam | null;
   selectedNodeIO: ISelectedNodeIO | null;
+  selectedNodeTitle: ISelectedNodeTitle | null;
   workflowActionDialog: IWorkflowActionDialogState;
 }
 
@@ -55,6 +71,7 @@ export const DefaultState: IState = {
   selectedCellNode: null,
   selectedChartParam: null,
   selectedNodeIO: null,
+  selectedNodeTitle: null,
   workflowActionDialog: {
     open: false,
     action: 'run'
@@ -126,6 +143,10 @@ export class Composer extends React.Component<IProps, IState> {
     this.setState({ selectedNodeIO: { nodeId, direction } });
   };
 
+  setSelectedNodeTitle = (nodeId: string) => {
+    this.setState({ selectedNodeTitle: { nodeId } });
+  };
+
   saveNodeIO = (name: string, type: VariableType) => {
     const selectedNodeIO = this.state.selectedNodeIO;
     if (selectedNodeIO === null) {
@@ -133,7 +154,102 @@ export class Composer extends React.Component<IProps, IState> {
     }
 
     this.setChart(chart => saveNodeIO(chart, selectedNodeIO, name, type));
+    this.setChart(chart => {
+      if (chart === null) {
+        return chart;
+      }
+
+      const node = chart.nodes[selectedNodeIO.nodeId];
+      if (node === undefined) {
+        console.error(
+          `Cannot add variable to missing node: ${selectedNodeIO.nodeId}`
+        );
+        return chart;
+      }
+      if (name in node.ports) {
+        console.error(`Cannot add duplicate variable name: ${name}`);
+        return chart;
+      }
+
+      const cell = node.properties.cell;
+      const variable = { name, type };
+      const updatedNode = {
+        ...node,
+        properties: {
+          ...node.properties,
+          cell: {
+            ...cell,
+            inputs:
+              selectedNodeIO.direction === 'input'
+                ? [...cell.inputs, variable]
+                : cell.inputs,
+            outputs:
+              selectedNodeIO.direction === 'output'
+                ? [...cell.outputs, variable]
+                : cell.outputs
+          }
+        },
+        ports: {
+          ...node.ports,
+          [name]: {
+            id: name,
+            type: selectedNodeIO.direction === 'input' ? 'left' : 'right',
+            properties: {
+              color: getVariableColor(name),
+              parentNodeType: node.type,
+              parentNodeIsDraft: cell.is_draft === true
+            }
+          }
+        }
+      };
+      return {
+        ...chart,
+        nodes: {
+          ...chart.nodes,
+          [node.id]: updatedNode
+        }
+      };
+    });
     this.setState({ selectedNodeIO: null });
+  };
+
+  saveNodeTitle = (title: string) => {
+    const selectedNodeTitle = this.state.selectedNodeTitle;
+    if (selectedNodeTitle === null) {
+      return;
+    }
+
+    this.setChart(chart => {
+      if (chart === null) {
+        return chart;
+      }
+
+      const node = chart.nodes[selectedNodeTitle.nodeId];
+      if (node === undefined || node.properties.cell.is_draft !== true) {
+        console.error(
+          `Cannot modify title for missing or non-draft node: ${selectedNodeTitle.nodeId}`
+        );
+        return chart;
+      }
+
+      return {
+        ...chart,
+        nodes: {
+          ...chart.nodes,
+          [node.id]: {
+            ...node,
+            properties: {
+              ...node.properties,
+              cell: {
+                ...node.properties.cell,
+                title
+              }
+            }
+          }
+        }
+      };
+    });
+    this.setState({ selectedNodeTitle: null });
   };
 
   setWorkflowActionDialog = (
@@ -235,6 +351,18 @@ export class Composer extends React.Component<IProps, IState> {
                 }
                 onClose={() => this.setState({ selectedNodeIO: null })}
                 onSave={this.saveNodeIO}
+              />
+              <NodeTitleDialog
+                open={this.state.selectedNodeTitle !== null}
+                title={
+                  this.state.selectedNodeTitle
+                    ? (this.state.chart.nodes[
+                        this.state.selectedNodeTitle.nodeId
+                      ]?.properties.cell.title ?? '')
+                    : ''
+                }
+                onClose={() => this.setState({ selectedNodeTitle: null })}
+                onSave={this.saveNodeTitle}
               />
               {this.state.selectedCellInList && (
                 <CellPopup
