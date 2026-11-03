@@ -12,6 +12,7 @@ import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 import { ButtonAddIO } from './ButtonAddIO';
 import { NodeIODirection } from './NodeIODialog';
 import { NodeCustom } from './NodeCustom';
+import { Tooltip } from '@mui/material';
 
 const DraftNodeContainer = styled.div<{ width: string; height: string }>`
   position: absolute;
@@ -70,14 +71,16 @@ function DraftNodeTitle({
           draft
         </Typography>
       </Stack>
-      <IconButton
-        aria-label="Edit title"
-        style={{ borderRadius: '100%' }}
-        sx={{ width: '40px', marginLeft: '-8px' }}
-        onClick={onEditTitle}
-      >
-        <EditOutlinedIcon />
-      </IconButton>
+      <Tooltip title="Edit title">
+        <IconButton
+          aria-label="Edit title"
+          style={{ borderRadius: '100%' }}
+          sx={{ width: '40px', marginLeft: '-8px' }}
+          onClick={onEditTitle}
+        >
+          <EditOutlinedIcon />
+        </IconButton>
+      </Tooltip>
     </div>
   );
 }
