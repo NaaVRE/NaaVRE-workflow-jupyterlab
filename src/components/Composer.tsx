@@ -103,8 +103,18 @@ export class Composer extends React.Component<IProps, IState> {
             );
           }
         }
+        const droppedNodeId =
+          actionKey === 'onCanvasDrop' ? args[0].id : undefined;
+        const droppedNode =
+          droppedNodeId === undefined
+            ? undefined
+            : newChart.nodes[droppedNodeId];
         this.setState({
-          chart: { ...this.state.chart, ...newChart }
+          chart: { ...this.state.chart, ...newChart },
+          selectedNodeTitle:
+            droppedNode?.properties.cell.is_draft === true
+              ? { nodeId: droppedNode.id }
+              : this.state.selectedNodeTitle
         });
       }
   ) as typeof actions;
