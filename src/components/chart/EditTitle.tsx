@@ -3,11 +3,11 @@ import Edit from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
-export function ModifyTitle({ onClick }: { onClick: () => void }) {
+export function EditTitle({ onClick }: { onClick: () => void }) {
   return (
-    <Tooltip title="Modify the title">
+    <Tooltip title="Edit title">
       <IconButton
-        aria-label="Modify the title"
+        aria-label="Edit title"
         size="small"
         onClick={event => {
           event.stopPropagation();

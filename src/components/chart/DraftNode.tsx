@@ -1,8 +1,6 @@
 import React, { ForwardedRef } from 'react';
 import styled from 'styled-components';
 import { INodeDefaultProps } from '@mrblenny/react-flow-chart';
-import IconButton from '@mui/material/IconButton';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 
@@ -12,7 +10,7 @@ import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 import { ButtonAddIO } from './ButtonAddIO';
 import { NodeIODirection } from './NodeIODialog';
 import { NodeCustom } from './NodeCustom';
-import { Tooltip } from '@mui/material';
+import { EditTitle } from './EditTitle';
 
 const DraftNodeContainer = styled.div<{ width: string; height: string }>`
   position: absolute;
@@ -70,17 +68,8 @@ function DraftNodeTitle({
         <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
           draft
         </Typography>
+        <EditTitle onClick={onEditTitle} />
       </Stack>
-      <Tooltip title="Edit title">
-        <IconButton
-          aria-label="Edit title"
-          style={{ borderRadius: '100%' }}
-          sx={{ width: '40px', marginLeft: '-8px' }}
-          onClick={onEditTitle}
-        >
-          <EditOutlinedIcon />
-        </IconButton>
-      </Tooltip>
     </div>
   );
 }
