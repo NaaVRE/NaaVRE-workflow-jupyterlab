@@ -36,7 +36,7 @@ export function NodeTitleDialog({
       fullWidth
       maxWidth="xs"
     >
-      <DialogTitle id="node-title-dialog-title">Modify title</DialogTitle>
+      <DialogTitle id="node-title-dialog-title">Edit title</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           <TextField
