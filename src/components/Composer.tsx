@@ -11,11 +11,14 @@ import {
   INodeDefaultProps
 } from '@mrblenny/react-flow-chart';
 
-import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import {
+  ICell,
+  VariableType
+} from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 import { IChart, IChartParam, validateLink } from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
-import { NodeCustom } from './chart/NodeCustom';
+import { nodeCustomFactory } from './chart/DraftNode';
 import { nodeInnerCustomFactory } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
 import { LinkCustom } from './chart/LinkCustom';
@@ -27,6 +30,14 @@ import {
 import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
+import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
+import { NodeTitleDialog } from './chart/NodeTitleDialog';
+
+import { ISelectedNodeIO, saveNodeIO } from './chart/NodeIO';
+
+interface ISelectedNodeTitle {
+  nodeId: string;
+}
 
 export interface IProps {}
 
@@ -40,6 +51,8 @@ export interface IState {
   selectedCellInList: ICell | null;
   selectedCellNode: HTMLDivElement | null;
   selectedChartParam: IChartParam | null;
+  selectedNodeIO: ISelectedNodeIO | null;
+  selectedNodeTitle: ISelectedNodeTitle | null;
   workflowActionDialog: IWorkflowActionDialogState;
 }
 
@@ -48,6 +61,8 @@ export const DefaultState: IState = {
   selectedCellInList: null,
   selectedCellNode: null,
   selectedChartParam: null,
+  selectedNodeIO: null,
+  selectedNodeTitle: null,
   workflowActionDialog: {
     open: false,
     action: 'run'
@@ -57,12 +72,18 @@ export const DefaultState: IState = {
 export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
   containerRef: React.RefObject<HTMLDivElement>;
+  NodeCustom: ReturnType<typeof nodeCustomFactory>;
+  fetchCellsListResponse: (() => void) | null = null;
   static contextType = SettingsContext;
   declare context: React.ContextType<typeof SettingsContext>;
 
   constructor(props: IProps) {
     super(props);
     this.containerRef = createRef();
+    this.NodeCustom = nodeCustomFactory(
+      this.setSelectedNodeIO,
+      this.setSelectedNodeTitle
+    );
   }
 
   chartStateActions = mapValues(
@@ -79,8 +100,18 @@ export class Composer extends React.Component<IProps, IState> {
             );
           }
         }
+        const droppedNodeId =
+          actionKey === 'onCanvasDrop' ? args[0].id : undefined;
+        const droppedNode =
+          droppedNodeId === undefined
+            ? undefined
+            : newChart.nodes[droppedNodeId];
         this.setState({
-          chart: { ...this.state.chart, ...newChart }
+          chart: { ...this.state.chart, ...newChart },
+          selectedNodeTitle:
+            droppedNode?.properties.cell.is_draft === true
+              ? { nodeId: droppedNode.id }
+              : this.state.selectedNodeTitle
         });
       }
   ) as typeof actions;
@@ -99,6 +130,14 @@ export class Composer extends React.Component<IProps, IState> {
     });
   };
 
+  setFetchCellsListResponse = (fetchResponse: () => void) => {
+    this.fetchCellsListResponse = fetchResponse;
+  };
+
+  refreshCellsList = () => {
+    this.fetchCellsListResponse?.();
+  };
+
   setChart = (nextChart: IChart | ((prev: IChart | null) => IChart | null)) => {
     if (typeof nextChart === 'function') {
       this.setState(prevState => ({ chart: nextChart(prevState.chart) }));
@@ -111,6 +150,74 @@ export class Composer extends React.Component<IProps, IState> {
     this.setState({
       selectedChartParam: selectedChartParam
     });
+  };
+
+  setSelectedNodeIO = (nodeId: string, direction: NodeIODirection) => {
+    this.setState({ selectedNodeIO: { nodeId, direction } });
+  };
+
+  setSelectedNodeTitle = (nodeId: string) => {
+    this.setState({ selectedNodeTitle: { nodeId } });
+  };
+
+  saveNodeIO = (name: string, type: VariableType) => {
+    const selectedNodeIO = this.state.selectedNodeIO;
+    if (selectedNodeIO === null) {
+      return;
+    }
+
+    const updatedChart = saveNodeIO(
+      this.state.chart,
+      selectedNodeIO,
+      name,
+      type
+    );
+    if (updatedChart !== null && updatedChart !== this.state.chart) {
+      this.setChart(updatedChart);
+    }
+    this.setState({ selectedNodeIO: null });
+  };
+
+  saveNodeTitle = (title: string) => {
+    const selectedNodeTitle = this.state.selectedNodeTitle;
+    if (selectedNodeTitle === null) {
+      return;
+    }
+
+    const chart = this.state.chart;
+    const node = chart?.nodes[selectedNodeTitle.nodeId];
+    if (
+      chart === null ||
+      node === undefined ||
+      node.properties.cell.is_draft !== true
+    ) {
+      console.error(
+        `Cannot modify title for missing or non-draft node: ${selectedNodeTitle.nodeId}`
+      );
+      this.setState({ selectedNodeTitle: null });
+      return;
+    }
+
+    if (node.properties.cell.title === title) {
+      this.setState({ selectedNodeTitle: null });
+      return;
+    }
+
+    const updatedCell = { ...node.properties.cell, title };
+    this.setChart({
+      ...chart,
+      nodes: {
+        ...chart.nodes,
+        [node.id]: {
+          ...node,
+          properties: {
+            ...node.properties,
+            cell: updatedCell
+          }
+        }
+      }
+    });
+    this.setState({ selectedNodeTitle: null });
   };
 
   setWorkflowActionDialog = (
@@ -175,7 +282,8 @@ export class Composer extends React.Component<IProps, IState> {
                 callbacks={this.chartStateActions}
                 config={this.chartConfig}
                 Components={{
-                  Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
+                  Node: this
+                    .NodeCustom as React.FunctionComponent<INodeDefaultProps>,
                   NodeInner: nodeInnerCustomFactory(
                     this.state.chart,
                     this.setSelectedChartParam
@@ -190,6 +298,7 @@ export class Composer extends React.Component<IProps, IState> {
                   setChart={this.setChart}
                   callbacks={this.chartStateActions}
                   config={this.chartConfig}
+                  onCellSaved={this.refreshCellsList}
                 />
               )}
               <NodeParamValueDialog
@@ -197,6 +306,32 @@ export class Composer extends React.Component<IProps, IState> {
                 setChart={this.setChart}
                 chartParam={this.state.selectedChartParam}
                 setSelectedChartParam={this.setSelectedChartParam}
+              />
+              <NodeIODialog
+                open={this.state.selectedNodeIO !== null}
+                direction={this.state.selectedNodeIO?.direction ?? null}
+                existingNames={
+                  this.state.selectedNodeIO
+                    ? Object.keys(
+                        this.state.chart.nodes[this.state.selectedNodeIO.nodeId]
+                          ?.ports ?? {}
+                      )
+                    : []
+                }
+                onClose={() => this.setState({ selectedNodeIO: null })}
+                onSave={this.saveNodeIO}
+              />
+              <NodeTitleDialog
+                open={this.state.selectedNodeTitle !== null}
+                title={
+                  this.state.selectedNodeTitle
+                    ? (this.state.chart.nodes[
+                        this.state.selectedNodeTitle.nodeId
+                      ]?.properties.cell.title ?? '')
+                    : ''
+                }
+                onClose={() => this.setState({ selectedNodeTitle: null })}
+                onSave={this.saveNodeTitle}
               />
               {this.state.selectedCellInList && (
                 <CellPopup
@@ -208,6 +343,7 @@ export class Composer extends React.Component<IProps, IState> {
               <CellsSideBar
                 selectedCellInList={this.state.selectedCellInList}
                 setSelectedCell={this.setSelectedCell}
+                setFetchCellsListResponse={this.setFetchCellsListResponse}
               />
             </div>
           </div>

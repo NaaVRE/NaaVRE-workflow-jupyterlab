@@ -1,5 +1,38 @@
 import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import { ceil } from 'lodash';
+import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { ISettings } from '../settings';
+
+type CataloguePayloadCreateCell = ICell & {
+  previous_version?: string;
+};
+
+export declare type ICatalogCell = {
+  url: string;
+} & ICell;
+declare type CatalogueResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: ICatalogCell[];
+};
+
+async function findCellsInCatalogue({
+  searchParams,
+  settings
+}: {
+  searchParams: URLSearchParams;
+  settings: ISettings;
+}): Promise<CatalogueResponse> {
+  const resp = await NaaVREExternalService(
+    'GET',
+    `${settings.catalogueServiceUrl}/workflow-cells/?${searchParams}`
+  );
+  if (resp.status_code !== 200) {
+    throw `${resp.status_code} ${resp.reason}`;
+  }
+  return JSON.parse(resp.content);
+}
 
 export interface ICatalogueListResponse<T> {
   count: number;
@@ -83,4 +116,83 @@ export async function fetchListFromCatalogue<T>(
     }
     return content;
   }
+}
+
+async function getLatestCellVersionFromCatalogue({
+  cell,
+  settings
+}: {
+  cell: ICell;
+  settings: ISettings;
+}): Promise<ICatalogCell | null> {
+  const virtualLab = settings.virtualLab;
+  if (!virtualLab) {
+    throw new Error(
+      'Virtual lab is not configured in @naavre/workflow-jupyterlab settings'
+    );
+  }
+  const searchParams = new URLSearchParams();
+  searchParams.set('title', cell.title);
+  searchParams.set('virtual_lab', virtualLab);
+  searchParams.set('ordering', '-created');
+
+  const res = await findCellsInCatalogue({
+    searchParams,
+    settings
+  });
+  if (res.count === 0) {
+    return null;
+  }
+  return res.results.reduce((max, item) =>
+    (item.version ?? -Infinity) > (max.version ?? -Infinity) ? item : max
+  );
+}
+
+async function addCellToCatalogue({
+  cell,
+  settings
+}: {
+  cell: CataloguePayloadCreateCell;
+  settings: ISettings;
+}): Promise<ICell> {
+  if (!settings.catalogueServiceUrl) {
+    throw Error('Catalogue service URL is not configured');
+  }
+
+  const payload = {
+    ...cell,
+    description: cell.title,
+    virtual_lab: settings.virtualLab || undefined
+  };
+  delete payload.version;
+  delete payload.versions;
+
+  const resp = await NaaVREExternalService(
+    'POST',
+    `${settings.catalogueServiceUrl}/workflow-cells/`,
+    {},
+    payload
+  );
+  if (resp.status_code !== 201) {
+    throw `${resp.status_code} ${resp.reason}`;
+  }
+  return JSON.parse(resp.content);
+}
+
+export async function addCellToCatalogueAndLinkPreviousVersion(
+  cell: ICell,
+  settings: ISettings
+): Promise<ICell> {
+  const previousVersion = await getLatestCellVersionFromCatalogue({
+    cell: cell,
+    settings: settings
+  });
+
+  return await addCellToCatalogue({
+    cell: {
+      ...cell,
+      previous_version: previousVersion?.url
+    },
+    settings: settings
+  });
 }
