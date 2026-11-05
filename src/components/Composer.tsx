@@ -4,7 +4,6 @@ import { mapValues } from 'lodash';
 import { ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import Alert from '@mui/material/Alert';
 import * as actions from '@mrblenny/react-flow-chart/src/container/actions';
 import {
   FlowChart,
@@ -33,7 +32,6 @@ import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
 import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
 import { NodeTitleDialog } from './chart/NodeTitleDialog';
-import { postDraftCellToCatalogue } from '../utils/catalog';
 
 import { ISelectedNodeIO, saveNodeIO } from './chart/NodeIO';
 
@@ -56,7 +54,6 @@ export interface IState {
   selectedNodeIO: ISelectedNodeIO | null;
   selectedNodeTitle: ISelectedNodeTitle | null;
   workflowActionDialog: IWorkflowActionDialogState;
-  draftCellSaveError: string | null;
 }
 
 export const DefaultState: IState = {
@@ -69,8 +66,7 @@ export const DefaultState: IState = {
   workflowActionDialog: {
     open: false,
     action: 'run'
-  },
-  draftCellSaveError: null
+  }
 };
 
 export class Composer extends React.Component<IProps, IState> {
@@ -169,26 +165,8 @@ export class Composer extends React.Component<IProps, IState> {
     );
     if (updatedChart !== null && updatedChart !== this.state.chart) {
       this.setChart(updatedChart);
-      const updatedCell =
-        updatedChart.nodes[selectedNodeIO.nodeId]?.properties.cell;
-      if (updatedCell?.is_draft === true) {
-        void this.saveDraftCellToCatalogue(updatedCell);
-      }
     }
     this.setState({ selectedNodeIO: null });
-  };
-
-  saveDraftCellToCatalogue = async (cell: ICell) => {
-    try {
-      await postDraftCellToCatalogue(cell, this.context);
-      this.setState({ draftCellSaveError: null });
-    } catch (error) {
-      console.error('Failed to save draft cell to catalogue', error);
-      this.setState({
-        draftCellSaveError:
-          error instanceof Error ? error.message : String(error)
-      });
-    }
   };
 
   saveNodeTitle = (title: string) => {
@@ -230,7 +208,6 @@ export class Composer extends React.Component<IProps, IState> {
         }
       }
     });
-    void this.saveDraftCellToCatalogue(updatedCell);
     this.setState({ selectedNodeTitle: null });
   };
 
@@ -283,19 +260,6 @@ export class Composer extends React.Component<IProps, IState> {
               chart={this.state.chart}
               container={this.containerRef.current}
             />
-            {this.state.draftCellSaveError && (
-              <Alert
-                severity="error"
-                sx={{
-                  position: 'absolute',
-                  bottom: 16,
-                  left: 16,
-                  zIndex: 1
-                }}
-              >
-                Failed to save draft cell: {this.state.draftCellSaveError}
-              </Alert>
-            )}
             <div
               style={{
                 display: 'flex',
