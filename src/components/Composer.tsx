@@ -73,6 +73,7 @@ export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
   containerRef: React.RefObject<HTMLDivElement>;
   NodeCustom: ReturnType<typeof nodeCustomFactory>;
+  fetchCellsListResponse: (() => void) | null = null;
   static contextType = SettingsContext;
   declare context: React.ContextType<typeof SettingsContext>;
 
@@ -127,6 +128,14 @@ export class Composer extends React.Component<IProps, IState> {
       selectedCellInList: cell,
       selectedCellNode: cellNode
     });
+  };
+
+  setFetchCellsListResponse = (fetchResponse: () => void) => {
+    this.fetchCellsListResponse = fetchResponse;
+  };
+
+  refreshCellsList = () => {
+    this.fetchCellsListResponse?.();
   };
 
   setChart = (nextChart: IChart | ((prev: IChart | null) => IChart | null)) => {
@@ -289,6 +298,7 @@ export class Composer extends React.Component<IProps, IState> {
                   setChart={this.setChart}
                   callbacks={this.chartStateActions}
                   config={this.chartConfig}
+                  onCellSaved={this.refreshCellsList}
                 />
               )}
               <NodeParamValueDialog
@@ -333,6 +343,7 @@ export class Composer extends React.Component<IProps, IState> {
               <CellsSideBar
                 selectedCellInList={this.state.selectedCellInList}
                 setSelectedCell={this.setSelectedCell}
+                setFetchCellsListResponse={this.setFetchCellsListResponse}
               />
             </div>
           </div>

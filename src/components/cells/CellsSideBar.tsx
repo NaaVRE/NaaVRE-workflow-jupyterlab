@@ -18,10 +18,12 @@ import { UserInfoContext } from './UserInfoContext';
 
 export function CellsSideBar({
   selectedCellInList,
-  setSelectedCell
+  setSelectedCell,
+  setFetchCellsListResponse
 }: {
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
+  setFetchCellsListResponse: (fetchResponse: () => void) => void;
 }) {
   const settings = useContext(SettingsContext);
   const {
@@ -34,6 +36,10 @@ export function CellsSideBar({
     settings,
     initialPath: 'workflow-cells/?ordering=-created'
   });
+
+  React.useEffect(() => {
+    setFetchCellsListResponse(fetchCellsListResponse);
+  }, [fetchCellsListResponse, setFetchCellsListResponse]);
 
   const { response: sharingScopesResponse } = useCatalogueList<ISharingScope>({
     settings,

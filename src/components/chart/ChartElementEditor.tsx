@@ -33,12 +33,14 @@ export function ChartElementEditor({
   chart,
   setChart,
   callbacks,
-  config
+  config,
+  onCellSaved
 }: {
   chart: IChart;
   setChart: (chart: IChart) => void;
   callbacks: IFlowChartCallbacks;
   config: IConfig;
+  onCellSaved: () => void;
 }) {
   const settings = React.useContext(SettingsContext);
   const [draftCellSaveError, setDraftCellSaveError] = React.useState<
@@ -79,6 +81,7 @@ export function ChartElementEditor({
         selectedDraftCell,
         settings
       );
+      onCellSaved();
     } catch (error) {
       console.error('Failed to save draft cell to catalogue', error);
       setDraftCellSaveError(
