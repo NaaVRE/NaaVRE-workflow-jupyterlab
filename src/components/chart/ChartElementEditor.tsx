@@ -2,6 +2,7 @@ import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import SaveIcon from '@mui/icons-material/Save';
 import {
   IConfig,
   IFlowChartCallbacks,
@@ -135,6 +136,7 @@ export function ChartElementEditor({
           <Button
             variant="outlined"
             disabled={isSavingDraftCell}
+            startIcon={<SaveIcon />}
             onClick={() => void saveDraftCellToCatalogue()}
           >
             {isSavingDraftCell ? 'Saving…' : 'Save to catalogue'}
