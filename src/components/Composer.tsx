@@ -11,11 +11,19 @@ import {
   INodeDefaultProps
 } from '@mrblenny/react-flow-chart';
 
-import { ICell } from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
-import { IChart, IChartParam, validateLink } from '../utils/chart';
+import {
+  ICell,
+  VariableType
+} from '../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import {
+  getVariableColor,
+  IChart,
+  IChartParam,
+  validateLink
+} from '../utils/chart';
 import { theme } from '../Theme';
 import { SettingsContext } from '../settings';
-import { NodeCustom } from './chart/NodeCustom';
+import { nodeCustomFactory } from './chart/NodeCustom';
 import { nodeInnerCustomFactory } from './chart/NodeInnerCustom';
 import { PortCustom } from './chart/PortCustom';
 import { LinkCustom } from './chart/LinkCustom';
@@ -27,6 +35,17 @@ import {
 import { CellsSideBar } from './cells/CellsSideBar';
 import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
+import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
+import { NodeTitleDialog } from './chart/NodeTitleDialog';
+
+interface ISelectedNodeIO {
+  nodeId: string;
+  direction: NodeIODirection;
+}
+
+interface ISelectedNodeTitle {
+  nodeId: string;
+}
 
 export interface IProps {}
 
@@ -40,6 +59,8 @@ export interface IState {
   selectedCellInList: ICell | null;
   selectedCellNode: HTMLDivElement | null;
   selectedChartParam: IChartParam | null;
+  selectedNodeIO: ISelectedNodeIO | null;
+  selectedNodeTitle: ISelectedNodeTitle | null;
   workflowActionDialog: IWorkflowActionDialogState;
 }
 
@@ -48,6 +69,8 @@ export const DefaultState: IState = {
   selectedCellInList: null,
   selectedCellNode: null,
   selectedChartParam: null,
+  selectedNodeIO: null,
+  selectedNodeTitle: null,
   workflowActionDialog: {
     open: false,
     action: 'run'
@@ -57,12 +80,17 @@ export const DefaultState: IState = {
 export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
   containerRef: React.RefObject<HTMLDivElement>;
+  NodeCustom: ReturnType<typeof nodeCustomFactory>;
   static contextType = SettingsContext;
   declare context: React.ContextType<typeof SettingsContext>;
 
   constructor(props: IProps) {
     super(props);
     this.containerRef = createRef();
+    this.NodeCustom = nodeCustomFactory(
+      this.setSelectedNodeIO,
+      this.setSelectedNodeTitle
+    );
   }
 
   chartStateActions = mapValues(
@@ -111,6 +139,118 @@ export class Composer extends React.Component<IProps, IState> {
     this.setState({
       selectedChartParam: selectedChartParam
     });
+  };
+
+  setSelectedNodeIO = (nodeId: string, direction: NodeIODirection) => {
+    this.setState({ selectedNodeIO: { nodeId, direction } });
+  };
+
+  setSelectedNodeTitle = (nodeId: string) => {
+    this.setState({ selectedNodeTitle: { nodeId } });
+  };
+
+  saveNodeIO = (name: string, type: VariableType) => {
+    const selectedNodeIO = this.state.selectedNodeIO;
+    if (selectedNodeIO === null) {
+      return;
+    }
+
+    this.setChart(chart => {
+      if (chart === null) {
+        return chart;
+      }
+
+      const node = chart.nodes[selectedNodeIO.nodeId];
+      if (node === undefined) {
+        console.error(
+          `Cannot add variable to missing node: ${selectedNodeIO.nodeId}`
+        );
+        return chart;
+      }
+      if (name in node.ports) {
+        console.error(`Cannot add duplicate variable name: ${name}`);
+        return chart;
+      }
+
+      const cell = node.properties.cell;
+      const variable = { name, type };
+      const updatedNode = {
+        ...node,
+        properties: {
+          ...node.properties,
+          cell: {
+            ...cell,
+            inputs:
+              selectedNodeIO.direction === 'input'
+                ? [...cell.inputs, variable]
+                : cell.inputs,
+            outputs:
+              selectedNodeIO.direction === 'output'
+                ? [...cell.outputs, variable]
+                : cell.outputs
+          }
+        },
+        ports: {
+          ...node.ports,
+          [name]: {
+            id: name,
+            type: selectedNodeIO.direction === 'input' ? 'left' : 'right',
+            properties: {
+              color: getVariableColor(name),
+              parentNodeType: node.type,
+              parentNodeIsDraft: cell.is_draft === true
+            }
+          }
+        }
+      };
+      return {
+        ...chart,
+        nodes: {
+          ...chart.nodes,
+          [node.id]: updatedNode
+        }
+      };
+    });
+    this.setState({ selectedNodeIO: null });
+  };
+
+  saveNodeTitle = (title: string) => {
+    const selectedNodeTitle = this.state.selectedNodeTitle;
+    if (selectedNodeTitle === null) {
+      return;
+    }
+
+    this.setChart(chart => {
+      if (chart === null) {
+        return chart;
+      }
+
+      const node = chart.nodes[selectedNodeTitle.nodeId];
+      if (node === undefined || node.properties.cell.is_draft !== true) {
+        console.error(
+          `Cannot modify title for missing or non-draft node: ${selectedNodeTitle.nodeId}`
+        );
+        return chart;
+      }
+
+      return {
+        ...chart,
+        nodes: {
+          ...chart.nodes,
+          [node.id]: {
+            ...node,
+            properties: {
+              ...node.properties,
+              cell: {
+                ...node.properties.cell,
+                title
+              }
+            }
+          }
+        }
+      };
+    });
+    this.setState({ selectedNodeTitle: null });
   };
 
   setWorkflowActionDialog = (
@@ -175,7 +315,8 @@ export class Composer extends React.Component<IProps, IState> {
                 callbacks={this.chartStateActions}
                 config={this.chartConfig}
                 Components={{
-                  Node: NodeCustom as React.FunctionComponent<INodeDefaultProps>,
+                  Node: this
+                    .NodeCustom as React.FunctionComponent<INodeDefaultProps>,
                   NodeInner: nodeInnerCustomFactory(
                     this.state.chart,
                     this.setSelectedChartParam
@@ -197,6 +338,32 @@ export class Composer extends React.Component<IProps, IState> {
                 setChart={this.setChart}
                 chartParam={this.state.selectedChartParam}
                 setSelectedChartParam={this.setSelectedChartParam}
+              />
+              <NodeIODialog
+                open={this.state.selectedNodeIO !== null}
+                direction={this.state.selectedNodeIO?.direction ?? null}
+                existingNames={
+                  this.state.selectedNodeIO
+                    ? Object.keys(
+                        this.state.chart.nodes[this.state.selectedNodeIO.nodeId]
+                          ?.ports ?? {}
+                      )
+                    : []
+                }
+                onClose={() => this.setState({ selectedNodeIO: null })}
+                onSave={this.saveNodeIO}
+              />
+              <NodeTitleDialog
+                open={this.state.selectedNodeTitle !== null}
+                title={
+                  this.state.selectedNodeTitle
+                    ? (this.state.chart.nodes[
+                        this.state.selectedNodeTitle.nodeId
+                      ]?.properties.cell.title ?? '')
+                    : ''
+                }
+                onClose={() => this.setState({ selectedNodeTitle: null })}
+                onSave={this.saveNodeTitle}
               />
               {this.state.selectedCellInList && (
                 <CellPopup

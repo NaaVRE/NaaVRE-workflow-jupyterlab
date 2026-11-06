@@ -9,6 +9,9 @@ import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 import { TooltipOverflowLabel } from '../common/TooltipOverflowLabel';
 import { INode } from '../../utils/chart';
+import { NodeIODirection } from './NodeIODialog';
+import { ButtonAddIO } from './ButtonAddIO';
+import { ModifyTitle } from './ModifyTitle';
 
 const NodeContainer = styled.div<{
   width?: string;
@@ -31,11 +34,15 @@ const NodeContainer = styled.div<{
 function NodeTitle({
   cell,
   isSpecialNode,
-  backgroundColor
+  backgroundColor,
+  nodeId,
+  onModifyTitle
 }: {
   cell: ICell;
   isSpecialNode: boolean;
   backgroundColor: CSSProperties['color'];
+  nodeId: string;
+  onModifyTitle: (nodeId: string) => void;
 }) {
   const regex = new RegExp(`-${cell.owner}$`);
   const title = cell.title.replace(regex, '');
@@ -70,6 +77,7 @@ function NodeTitle({
         }}
       >
         <TooltipOverflowLabel variant="subtitle2" label={title} />
+        {cell.is_draft && <ModifyTitle onClick={() => onModifyTitle(nodeId)} />}
         {cell.is_draft && (
           <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
             draft
@@ -96,49 +104,87 @@ function getNodeHeight(node: INode) {
     Object.values(node.ports).filter(p => p.type === 'right').length
   );
   const portHeightPx = 26;
-  const heightPx = maxPortsCount * (portHeightPx || 1);
+  let additionalHeight = 0;
+  {
+    node.properties.cell.is_draft && (additionalHeight = 2);
+  }
+  const heightPx = (maxPortsCount + additionalHeight) * portHeightPx;
   return `${heightPx}px`;
 }
 
-function NodeCustomElement(
-  { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
-  ref: ForwardedRef<HTMLDivElement>
-) {
-  const isSpecialNode = node.type !== 'workflow-cell';
-
-  getNodeHeight(node);
-  const width = isSpecialNode ? '200px' : '250px';
-  const height = getNodeHeight(node);
-
-  return (
-    <NodeContainer
-      width={width}
-      height={height}
-      isDraft={node.properties.cell.is_draft}
-      ref={ref}
-      {...otherProps}
-    >
-      <NodeTitle
-        cell={node.properties.cell}
-        isSpecialNode={isSpecialNode}
-        backgroundColor={
-          isSpecialNode
-            ? 'rgb(195, 235, 202)'
-            : node.properties.cell.is_draft
-              ? 'rgb(240,240,240)'
-              : 'rgb(229,252,233)'
-        }
-      />
-      {children}
-    </NodeContainer>
-  );
+function getBottomPortPosition(node: INode, side: 'left' | 'right') {
+  return Object.values(node.ports)
+    .filter(port => port.type === side && port.position !== undefined)
+    .sort((a, b) => (b.position?.y ?? 0) - (a.position?.y ?? 0))[0]?.position;
 }
 
-export const NodeCustom = React.forwardRef(
-  (
-    { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
-    return NodeCustomElement({ node, children, ...otherProps }, ref);
-  }
-);
+export function nodeCustomFactory(
+  onAddIO: (nodeId: string, direction: NodeIODirection) => void,
+  onModifyTitle: (nodeId: string) => void
+) {
+  return React.forwardRef(
+    (
+      { node, children, ...otherProps }: INodeDefaultProps & { node: INode },
+      ref: ForwardedRef<HTMLDivElement>
+    ) => {
+      const isSpecialNode = node.type !== 'workflow-cell';
+      const width = isSpecialNode ? '200px' : '325px';
+      const height = getNodeHeight(node);
+      const yStandard = 5;
+      const leftPortY = getBottomPortPosition(node, 'left')?.y;
+      const insertInputButtonY =
+        leftPortY === undefined ? yStandard : leftPortY + yStandard;
+      const rightPortY = getBottomPortPosition(node, 'right')?.y;
+      const insertOutputButtonY =
+        rightPortY === undefined ? yStandard : rightPortY + yStandard;
+      const xCorrection = '5%';
+
+      return (
+        <NodeContainer
+          width={width}
+          height={height}
+          isDraft={node.properties.cell.is_draft}
+          ref={ref}
+          {...otherProps}
+        >
+          <NodeTitle
+            cell={node.properties.cell}
+            isSpecialNode={isSpecialNode}
+            nodeId={node.id}
+            onModifyTitle={onModifyTitle}
+            backgroundColor={
+              isSpecialNode
+                ? 'rgb(195, 235, 202)'
+                : node.properties.cell.is_draft
+                  ? 'rgb(240,240,240)'
+                  : 'rgb(229,252,233)'
+            }
+          />
+          {node.properties.cell.is_draft && (
+            <>
+              <ButtonAddIO
+                ariaLabel="Add input"
+                title="Add input"
+                style={{
+                  left: xCorrection,
+                  top: insertInputButtonY
+                }}
+                onClick={() => onAddIO(node.id, 'input')}
+              />
+              <ButtonAddIO
+                ariaLabel="Add output"
+                title="Add output"
+                style={{
+                  right: xCorrection,
+                  top: insertOutputButtonY
+                }}
+                onClick={() => onAddIO(node.id, 'output')}
+              />
+            </>
+          )}
+          {children}
+        </NodeContainer>
+      );
+    }
+  );
+}
