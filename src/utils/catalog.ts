@@ -113,12 +113,45 @@ export async function postDraftCellToCatalogue(
     throw Error('Catalogue service URL is not configured');
   }
 
-  const payload = { ...cell };
+  let existingDraft: ICell | undefined;
+  let existingCellWithTitle: ICell | undefined;
+  if (cell.url === 'draft') {
+    const cells = await fetchListFromCatalogue<ICell>(
+      `${settings.catalogueServiceUrl}/workflow-cells/`,
+      true
+    );
+    existingDraft = cells.results.find(
+      catalogueCell =>
+        catalogueCell.title === cell.title && catalogueCell.is_draft === true
+    );
+    existingCellWithTitle = cells.results.find(
+      catalogueCell => catalogueCell.title === cell.title
+    );
+  }
+
+  if (existingCellWithTitle && !existingDraft) {
+    throw Error(`A catalogue cell named "${cell.title}" already exists`);
+  }
+
+  const versionOneUrl =
+    cell.versions?.find(version => version.version === 1)?.url ??
+    existingDraft?.versions?.find(version => version.version === 1)?.url;
+  const targetUrl =
+    cell.url !== 'draft'
+      ? (versionOneUrl ?? cell.url)
+      : (versionOneUrl ?? existingDraft?.url);
+  const isUpdate = targetUrl !== undefined;
+
+  const payload: Partial<ICell> = { ...cell };
   delete payload.version;
   delete payload.versions;
+  delete payload.url;
+  if (isUpdate) {
+    payload.version = 1;
+  }
   const resp = await NaaVREExternalService(
-    'POST',
-    `${settings.catalogueServiceUrl}/workflow-cells/`,
+    isUpdate ? 'PATCH' : 'POST',
+    targetUrl ?? `${settings.catalogueServiceUrl}/workflow-cells/`,
     {},
     {
       ...payload,
@@ -126,8 +159,13 @@ export async function postDraftCellToCatalogue(
       virtual_lab: settings.virtualLab || undefined
     }
   );
-  if (resp.status_code !== 201) {
+  if (resp.status_code !== (isUpdate ? 200 : 201)) {
     throw `${resp.status_code} ${resp.reason}`;
   }
-  return JSON.parse(resp.content);
+  const savedCell: ICell = JSON.parse(resp.content);
+  return {
+    ...savedCell,
+    version: 1,
+    versions: savedCell.versions?.filter(version => version.version === 1)
+  };
 }

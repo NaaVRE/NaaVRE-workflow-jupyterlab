@@ -80,6 +80,7 @@ export class Composer extends React.Component<IProps, IState> {
   state = DefaultState;
   containerRef: React.RefObject<HTMLDivElement>;
   NodeCustom: ReturnType<typeof nodeCustomFactory>;
+  draftCellSaveQueue: Promise<void> = Promise.resolve();
   static contextType = SettingsContext;
   declare context: React.ContextType<typeof SettingsContext>;
 
@@ -175,23 +176,58 @@ export class Composer extends React.Component<IProps, IState> {
       const updatedCell =
         updatedChart.nodes[selectedNodeIO.nodeId]?.properties.cell;
       if (updatedCell?.is_draft === true) {
-        void this.saveDraftCellToCatalogue(updatedCell);
+        void this.saveDraftCellToCatalogue(selectedNodeIO.nodeId, updatedCell);
       }
     }
     this.setState({ selectedNodeIO: null });
   };
 
-  saveDraftCellToCatalogue = async (cell: ICell) => {
-    try {
-      await postDraftCellToCatalogue(cell, this.context);
-      this.setState({ draftCellSaveError: null });
-    } catch (error) {
-      console.error('Failed to save draft cell to catalogue', error);
-      this.setState({
-        draftCellSaveError:
-          error instanceof Error ? error.message : String(error)
+  saveDraftCellToCatalogue = (nodeId: string, cell: ICell) => {
+    const save = this.draftCellSaveQueue
+      .catch(() => undefined)
+      .then(async () => {
+        const savedCell = await postDraftCellToCatalogue(cell, this.context);
+        await new Promise<void>(resolve => {
+          this.setState(state => {
+            const chart = state.chart;
+            const node = chart?.nodes[nodeId];
+            if (chart === null || chart === undefined || node === undefined) {
+              return null;
+            }
+            return {
+              chart: {
+                ...chart,
+                nodes: {
+                  ...chart.nodes,
+                  [nodeId]: {
+                    ...node,
+                    properties: {
+                      ...node.properties,
+                      cell: {
+                        ...node.properties.cell,
+                        url: savedCell.url,
+                        version: 1,
+                        versions: savedCell.versions
+                      }
+                    }
+                  }
+                }
+              },
+              draftCellSaveError: null
+            };
+          }, resolve);
+        });
+      })
+      .catch(error => {
+        console.error('Failed to save draft cell to catalogue', error);
+        this.setState({
+          draftCellSaveError:
+            error instanceof Error ? error.message : String(error)
+        });
       });
-    }
+
+    this.draftCellSaveQueue = save;
+    return save;
   };
 
   saveNodeTitle = (title: string) => {
@@ -233,7 +269,7 @@ export class Composer extends React.Component<IProps, IState> {
         }
       }
     });
-    void this.saveDraftCellToCatalogue(updatedCell);
+    void this.saveDraftCellToCatalogue(node.id, updatedCell);
     this.setState({ selectedNodeTitle: null });
   };
 
