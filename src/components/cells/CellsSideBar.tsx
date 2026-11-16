@@ -83,6 +83,7 @@ export function CellsSideBar({
             selectedCellInList={selectedCellInList}
             setSelectedCell={setSelectedCell}
             fetchCellsListResponse={fetchCellsListResponse}
+            showShareButton
             button={
               <Tooltip title="Refresh" arrow>
                 <IconButton

@@ -73,12 +73,14 @@ export function CellNode({
   cell,
   selectedCellInList,
   setSelectedCell,
-  fetchCellsListResponse
+  fetchCellsListResponse,
+  showShareButton = false
 }: {
   cell: ICell | ISpecialCell;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
   fetchCellsListResponse: () => void;
+  showShareButton?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const node = cellToChartNode(cell);
@@ -138,7 +140,7 @@ export function CellNode({
         userIsOwner={userIsOwner}
         sx={{ width: 'calc(100% - 80px + 8px)' }}
       />
-      {isSpecialNode || (
+      {!showShareButton || isSpecialNode || (
         <>
           <IconButton
             aria-label="Info"

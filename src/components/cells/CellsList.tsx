@@ -11,6 +11,7 @@ export function CellsList({
   selectedCellInList,
   setSelectedCell,
   fetchCellsListResponse,
+  showShareButton = false,
   button,
   filter,
   pageNav
@@ -22,6 +23,7 @@ export function CellsList({
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
   fetchCellsListResponse: () => void;
+  showShareButton?: boolean;
   button?: ReactNode;
   filter?: ReactNode;
   pageNav?: ReactNode;
@@ -69,6 +71,7 @@ export function CellsList({
                 selectedCellInList={selectedCellInList}
                 setSelectedCell={setSelectedCell}
                 fetchCellsListResponse={fetchCellsListResponse}
+                showShareButton={showShareButton}
               />
             ))}
           </>
