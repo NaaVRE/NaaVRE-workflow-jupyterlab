@@ -11,9 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import {
-  VariableType
-} from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
+import { VariableType } from '../../naavre-common/types/NaaVRECatalogue/WorkflowCells';
 
 export type NodeIODirection = 'input' | 'output';
 
