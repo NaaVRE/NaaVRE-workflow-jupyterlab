@@ -60,6 +60,7 @@ export interface IState {
   selectedNodeTitle: ISelectedNodeTitle | null;
   workflowActionDialog: IWorkflowActionDialogState;
   draftCellSaveError: string | null;
+  catalogueRefreshKey: number;
 }
 
 export const DefaultState: IState = {
@@ -73,7 +74,8 @@ export const DefaultState: IState = {
     open: false,
     action: 'run'
   },
-  draftCellSaveError: null
+  draftCellSaveError: null,
+  catalogueRefreshKey: 0
 };
 
 export class Composer extends React.Component<IProps, IState> {
@@ -213,7 +215,8 @@ export class Composer extends React.Component<IProps, IState> {
                   }
                 }
               },
-              draftCellSaveError: null
+              draftCellSaveError: null,
+              catalogueRefreshKey: state.catalogueRefreshKey + 1
             };
           }, resolve);
         });
@@ -418,6 +421,7 @@ export class Composer extends React.Component<IProps, IState> {
                 />
               )}
               <CellsSideBar
+                refreshKey={this.state.catalogueRefreshKey}
                 selectedCellInList={this.state.selectedCellInList}
                 setSelectedCell={this.setSelectedCell}
               />
