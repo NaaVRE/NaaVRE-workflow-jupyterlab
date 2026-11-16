@@ -11,22 +11,50 @@ export function NodeTitleDialog({
   open,
   title,
   onClose,
-  onSave
+  onSave,
+  isTitleAvailable
 }: {
   open: boolean;
   title: string;
   onClose: () => void;
   onSave: (title: string) => void;
+  isTitleAvailable: (title: string) => Promise<boolean>;
 }) {
   const [value, setValue] = useState(title);
+  const [titleError, setTitleError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (open) {
       setValue(title);
+      setTitleError(null);
     }
   }, [open, title]);
 
   const trimmedTitle = value.trim();
+
+  const saveTitle = async () => {
+    setSaving(true);
+    setTitleError(null);
+    let titleAvailable: boolean;
+    try {
+      titleAvailable = await isTitleAvailable(trimmedTitle);
+    } catch (error) {
+      console.error('Failed to check draft cell title', error);
+      setTitleError(
+        'Could not check whether this name is available. Please try again.'
+      );
+      setSaving(false);
+      return;
+    }
+
+    if (!titleAvailable) {
+      setTitleError('A cell with this name already exists in the catalogue.');
+    } else {
+      onSave(trimmedTitle);
+    }
+    setSaving(false);
+  };
 
   return (
     <Dialog
@@ -42,10 +70,15 @@ export function NodeTitleDialog({
           <TextField
             label="Title"
             value={value}
-            onChange={event => setValue(event.target.value)}
+            onChange={event => {
+              setValue(event.target.value);
+              setTitleError(null);
+            }}
             autoFocus
             fullWidth
             required
+            error={titleError !== null}
+            helperText={titleError}
           />
         </Stack>
       </DialogContent>
@@ -53,8 +86,8 @@ export function NodeTitleDialog({
         <Button onClick={onClose}>Cancel</Button>
         <Button
           variant="contained"
-          disabled={trimmedTitle === ''}
-          onClick={() => onSave(trimmedTitle)}
+          disabled={trimmedTitle === '' || saving}
+          onClick={() => void saveTitle()}
         >
           Save
         </Button>

@@ -33,7 +33,10 @@ import { CellPopup } from './cells/CellPopup';
 import { NodeParamValueDialog } from './chart/NodeParamValue';
 import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
 import { NodeTitleDialog } from './chart/NodeTitleDialog';
-import { postDraftCellToCatalogue } from '../utils/catalog';
+import {
+  isCellNameAvailable,
+  postDraftCellToCatalogue
+} from '../utils/catalog';
 
 import { ISelectedNodeIO, saveNodeIO } from './chart/NodeIO';
 
@@ -358,6 +361,18 @@ export class Composer extends React.Component<IProps, IState> {
                 }
                 onClose={() => this.setState({ selectedNodeTitle: null })}
                 onSave={this.saveNodeTitle}
+                isTitleAvailable={title => {
+                  const node = this.state.selectedNodeTitle
+                    ? this.state.chart?.nodes[
+                        this.state.selectedNodeTitle.nodeId
+                      ]
+                    : undefined;
+                  return isCellNameAvailable(
+                    title,
+                    this.context,
+                    node?.properties.cell.url
+                  );
+                }}
               />
               {this.state.selectedCellInList && (
                 <CellPopup

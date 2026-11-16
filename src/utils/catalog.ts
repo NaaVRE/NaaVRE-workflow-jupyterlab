@@ -87,6 +87,24 @@ export async function fetchListFromCatalogue<T>(
   }
 }
 
+export async function isCellNameAvailable(
+  title: string,
+  settings: ISettings,
+  excludeCellUrl?: string
+): Promise<boolean> {
+  if (!settings.catalogueServiceUrl) {
+    throw Error('Catalogue service URL is not configured');
+  }
+
+  const cells = await fetchListFromCatalogue<ICell>(
+    `${settings.catalogueServiceUrl}/workflow-cells/`,
+    true
+  );
+  return !cells.results.some(
+    cell => cell.title === title && cell.url !== excludeCellUrl
+  );
+}
+
 export async function postDraftCellToCatalogue(
   cell: ICell,
   settings: ISettings

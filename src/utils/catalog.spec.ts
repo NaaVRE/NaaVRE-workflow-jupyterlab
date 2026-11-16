@@ -1,5 +1,76 @@
 import { ceil } from 'lodash';
-import { getPageNumberAndCount, urlToPageNumber } from './catalog';
+import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
+import {
+  getPageNumberAndCount,
+  isCellNameAvailable,
+  urlToPageNumber
+} from './catalog';
+import { ISettings } from '../settings';
+
+jest.mock('@naavre/communicator-jupyterlab', () => ({
+  NaaVREExternalService: jest.fn()
+}));
+
+const mockExternalService = jest.mocked(NaaVREExternalService);
+
+describe('isCellNameAvailable', () => {
+  const settings: ISettings = {
+    catalogueServiceUrl: 'https://catalogue.example'
+  };
+
+  beforeEach(() => {
+    mockExternalService.mockReset();
+  });
+
+  test('checks every catalogue page for an existing title', async () => {
+    mockExternalService
+      .mockResolvedValueOnce({
+        status_code: 200,
+        reason: 'OK',
+        headers: {},
+        content: JSON.stringify({
+          count: 2,
+          next: 'https://catalogue.example/workflow-cells/?page=2',
+          previous: null,
+          results: [{ title: 'other-cell', url: '/cells/1/' }]
+        })
+      })
+      .mockResolvedValueOnce({
+        status_code: 200,
+        reason: 'OK',
+        headers: {},
+        content: JSON.stringify({
+          count: 2,
+          next: null,
+          previous: 'https://catalogue.example/workflow-cells/',
+          results: [{ title: 'existing-cell', url: '/cells/2/' }]
+        })
+      });
+
+    await expect(isCellNameAvailable('existing-cell', settings)).resolves.toBe(
+      false
+    );
+    expect(mockExternalService).toHaveBeenCalledTimes(2);
+  });
+
+  test('ignores the cell being renamed', async () => {
+    mockExternalService.mockResolvedValueOnce({
+      status_code: 200,
+      reason: 'OK',
+      headers: {},
+      content: JSON.stringify({
+        count: 1,
+        next: null,
+        previous: null,
+        results: [{ title: 'current-cell', url: '/cells/current/' }]
+      })
+    });
+
+    await expect(
+      isCellNameAvailable('current-cell', settings, '/cells/current/')
+    ).resolves.toBe(true);
+  });
+});
 
 test.each([
   { url: 'https://example.com/path/to/', pageNumber: 1 },

@@ -169,6 +169,7 @@ function FlowChartStory() {
         }
         onClose={() => setSelectedNodeTitle(null)}
         onSave={saveNodeTitle}
+        isTitleAvailable={async () => true}
       />
     </>
   );
