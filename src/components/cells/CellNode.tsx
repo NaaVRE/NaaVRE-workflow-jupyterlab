@@ -118,11 +118,11 @@ export function CellNode({
         justifyContent: 'space-between',
         alignItems: 'center',
         background: 'rgb(195, 235, 202)',
-        backgroundColor: isSpecialNode
+        backgroundColor: cell.is_draft
+          ? 'rgb(240,240,240)'
+          : isSpecialNode
           ? 'rgb(195, 235, 202)'
-          : cell.is_draft
-            ? 'rgb(240,240,240)'
-            : 'rgb(229,252,233)',
+          : 'rgb(229,252,233)',
         borderRadius: '5px',
         padding: '10px',
         paddingRight: '1px',

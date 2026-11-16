@@ -111,10 +111,37 @@ export class Composer extends React.Component<IProps, IState> {
         }
         const droppedNodeId =
           actionKey === 'onCanvasDrop' ? args[0].id : undefined;
-        const droppedNode =
+        let droppedNode =
           droppedNodeId === undefined
             ? undefined
             : newChart.nodes[droppedNodeId];
+        if (droppedNode?.type === 'abstract-draft') {
+          const draftCell = {
+            ...droppedNode.properties.cell
+          } as ICell & { type?: string };
+          delete draftCell.type;
+          droppedNode = {
+            ...droppedNode,
+            type: 'workflow-cell',
+            properties: {
+              ...droppedNode.properties,
+              cell: draftCell
+            },
+            ports: Object.fromEntries(
+              Object.entries(droppedNode.ports).map(([portName, port]) => [
+                portName,
+                {
+                  ...port,
+                  properties: {
+                    ...port.properties,
+                    parentNodeType: 'workflow-cell'
+                  }
+                }
+              ])
+            )
+          };
+          newChart.nodes[droppedNode.id] = droppedNode;
+        }
         this.setState({
           chart: { ...this.state.chart, ...newChart },
           selectedNodeTitle:
