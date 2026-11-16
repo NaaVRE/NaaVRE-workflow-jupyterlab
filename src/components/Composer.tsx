@@ -111,16 +111,18 @@ export class Composer extends React.Component<IProps, IState> {
         }
         const droppedNodeId =
           actionKey === 'onCanvasDrop' ? args[0].id : undefined;
-        let droppedNode =
+        const droppedNode =
           droppedNodeId === undefined
             ? undefined
             : newChart.nodes[droppedNodeId];
-        if (droppedNode?.type === 'abstract-draft') {
+        const abstractDraftNodeId =
+          droppedNode?.type === 'abstract-draft' ? droppedNode.id : undefined;
+        if (abstractDraftNodeId !== undefined && droppedNode !== undefined) {
           const draftCell = {
             ...droppedNode.properties.cell
           } as ICell & { type?: string };
           delete draftCell.type;
-          droppedNode = {
+          const normalizedNode = {
             ...droppedNode,
             type: 'workflow-cell',
             properties: {
@@ -140,13 +142,13 @@ export class Composer extends React.Component<IProps, IState> {
               ])
             )
           };
-          newChart.nodes[droppedNode.id] = droppedNode;
+          newChart.nodes[abstractDraftNodeId] = normalizedNode;
         }
         this.setState({
           chart: { ...this.state.chart, ...newChart },
           selectedNodeTitle:
-            droppedNode?.properties.cell.is_draft === true
-              ? { nodeId: droppedNode.id }
+            abstractDraftNodeId !== undefined
+              ? { nodeId: abstractDraftNodeId }
               : this.state.selectedNodeTitle
         });
       }
