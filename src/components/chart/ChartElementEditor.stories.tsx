@@ -17,7 +17,6 @@ export const Default: Story = {
   args: {
     chart: mockChart,
     setChart: c => {},
-    onCellSaved: () => {},
     callbacks: mapValues(
       actions,
       (func: any) =>

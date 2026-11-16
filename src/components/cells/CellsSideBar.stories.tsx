@@ -13,7 +13,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     selectedCellInList: null,
-    setSelectedCell: (c, n) => {},
-    setFetchCellsListResponse: () => {}
+    setSelectedCell: (c, n) => {}
   }
 };
