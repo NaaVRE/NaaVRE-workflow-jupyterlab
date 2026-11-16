@@ -69,9 +69,9 @@ export const specialCells: Array<ISpecialCell> = [
   },
   {
     url: 'draft',
-    title: 'Draft component',
+    title: 'New draft component',
     description:
-      'Draft component to design a workflow.',
+      'Drag and drop this component onto the canvas to create a new draft component.',
     type: 'workflow-cell',
     created: undefined,
     modified: undefined,
