@@ -179,13 +179,10 @@ export async function patchDraftCellInCatalogue(
   if (!settings.catalogueServiceUrl) {
     throw Error('Catalogue service URL is not configured');
   }
-  if (!cell.url || cell.url === 'new-draft-component') {
+  if (!cell.url) {
     throw Error('Cannot patch a draft cell without a catalogue URL');
   }
-
-  const versionOneUrl =
-    cell.versions?.find(version => version.version === 1)?.url ?? cell.url;
-  return saveDraftCellToCatalogue(cell, settings, 'PATCH', versionOneUrl);
+  return saveDraftCellToCatalogue(cell, settings, 'PATCH', cell.url);
 }
 
 export async function upsertDraftCellInCatalogue(
