@@ -87,6 +87,19 @@ export async function fetchListFromCatalogue<T>(
   }
 }
 
+async function findCellsInCatalogue({
+  searchParams,
+  settings
+}: {
+  searchParams: URLSearchParams;
+  settings: ISettings;
+}): Promise<ICatalogueListResponse<ICell>> {
+  return fetchListFromCatalogue<ICell>(
+    `${settings.catalogueServiceUrl}/workflow-cells/?${searchParams}`,
+    true
+  );
+}
+
 export async function isCellNameAvailable(
   title: string,
   settings: ISettings,
@@ -96,10 +109,14 @@ export async function isCellNameAvailable(
     throw Error('Catalogue service URL is not configured');
   }
 
-  const cells = await fetchListFromCatalogue<ICell>(
-    `${settings.catalogueServiceUrl}/workflow-cells/`,
-    true
-  );
+  const searchParams = new URLSearchParams({ title });
+  if (settings.virtualLab) {
+    searchParams.set('virtual_lab', settings.virtualLab);
+  }
+  const cells = await findCellsInCatalogue({
+    searchParams,
+    settings
+  });
   return !cells.results.some(
     cell => cell.title === title && cell.url !== excludeCellUrl
   );
@@ -116,10 +133,14 @@ export async function postDraftCellToCatalogue(
   let existingDraft: ICell | undefined;
   let existingCellWithTitle: ICell | undefined;
   if (cell.url === 'draft') {
-    const cells = await fetchListFromCatalogue<ICell>(
-      `${settings.catalogueServiceUrl}/workflow-cells/`,
-      true
-    );
+    const searchParams = new URLSearchParams({ title: cell.title });
+    if (settings.virtualLab) {
+      searchParams.set('virtual_lab', settings.virtualLab);
+    }
+    const cells = await findCellsInCatalogue({
+      searchParams,
+      settings
+    });
     existingDraft = cells.results.find(
       catalogueCell =>
         catalogueCell.title === cell.title && catalogueCell.is_draft === true
