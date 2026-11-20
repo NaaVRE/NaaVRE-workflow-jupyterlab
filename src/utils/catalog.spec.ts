@@ -3,7 +3,7 @@ import { NaaVREExternalService } from '@naavre/communicator-jupyterlab';
 import {
   getPageNumberAndCount,
   isCellNameAvailable,
-  postDraftCellToCatalogue,
+  upsertDraftCellInCatalogue,
   urlToPageNumber
 } from './catalog';
 import { ISettings } from '../settings';
@@ -73,7 +73,7 @@ describe('isCellNameAvailable', () => {
   });
 });
 
-describe('postDraftCellToCatalogue', () => {
+describe('upsertDraftCellInCatalogue', () => {
   const settings: ISettings = {
     catalogueServiceUrl: 'https://catalogue.example'
   };
@@ -107,7 +107,7 @@ describe('postDraftCellToCatalogue', () => {
       content: JSON.stringify(savedCell)
     });
 
-    await postDraftCellToCatalogue(cell, settings);
+    await upsertDraftCellInCatalogue(cell, settings);
 
     expect(mockExternalService).toHaveBeenCalledTimes(1);
     expect(mockExternalService.mock.calls[0][0]).toBe('PATCH');
@@ -138,7 +138,7 @@ describe('postDraftCellToCatalogue', () => {
         content: JSON.stringify(savedCell)
       });
 
-    await postDraftCellToCatalogue({ ...cell, url: 'draft' }, settings);
+    await upsertDraftCellInCatalogue({ ...cell, url: 'draft' }, settings);
 
     expect(mockExternalService).toHaveBeenCalledTimes(2);
     expect(mockExternalService.mock.calls[1][0]).toBe('POST');
@@ -172,7 +172,7 @@ describe('postDraftCellToCatalogue', () => {
     });
 
     await expect(
-      postDraftCellToCatalogue({ ...cell, url: 'draft' }, settings)
+      upsertDraftCellInCatalogue({ ...cell, url: 'draft' }, settings)
     ).rejects.toThrow('A catalogue cell named "draft-cell" already exists');
     expect(mockExternalService).toHaveBeenCalledTimes(1);
   });
@@ -191,7 +191,7 @@ describe('postDraftCellToCatalogue', () => {
     });
 
     await expect(
-      postDraftCellToCatalogue({ ...cell, url: 'draft' }, settings)
+      upsertDraftCellInCatalogue({ ...cell, url: 'draft' }, settings)
     ).rejects.toThrow('A catalogue cell named "draft-cell" already exists');
     expect(mockExternalService).toHaveBeenCalledTimes(1);
   });

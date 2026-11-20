@@ -35,7 +35,7 @@ import { NodeIODialog, NodeIODirection } from './chart/NodeIODialog';
 import { NodeTitleDialog } from './chart/NodeTitleDialog';
 import {
   isCellNameAvailable,
-  postDraftCellToCatalogue
+  upsertDraftCellInCatalogue
 } from '../utils/catalog';
 
 import { ISelectedNodeIO, saveNodeIO } from './chart/NodeIO';
@@ -220,7 +220,7 @@ export class Composer extends React.Component<IProps, IState> {
     const save = this.draftCellSaveQueue
       .catch(() => undefined)
       .then(async () => {
-        const savedCell = await postDraftCellToCatalogue(cell, this.context);
+        const savedCell = await upsertDraftCellInCatalogue(cell, this.context);
         await new Promise<void>(resolve => {
           this.setState(state => {
             const chart = state.chart;

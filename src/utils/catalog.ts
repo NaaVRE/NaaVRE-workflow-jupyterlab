@@ -122,7 +122,7 @@ export async function isCellNameAvailable(
   );
 }
 
-export async function postDraftCellToCatalogue(
+export async function upsertDraftCellInCatalogue(
   cell: ICell,
   settings: ISettings
 ): Promise<ICell> {
