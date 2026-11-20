@@ -7,7 +7,7 @@ export interface ISelectedNodeIO {
   direction: NodeIODirection;
 }
 
-export function saveNodeIO(
+export function updateSelectedNodeIO(
   chart: IChart | null,
   selectedNodeIO: ISelectedNodeIO,
   name: string,

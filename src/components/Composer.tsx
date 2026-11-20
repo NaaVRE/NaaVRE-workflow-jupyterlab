@@ -38,7 +38,7 @@ import {
   upsertDraftCellInCatalogue
 } from '../utils/catalog';
 
-import { ISelectedNodeIO, saveNodeIO } from './chart/NodeIO';
+import { ISelectedNodeIO, updateSelectedNodeIO } from './chart/NodeIO';
 
 interface ISelectedNodeTitle {
   nodeId: string;
@@ -190,13 +190,13 @@ export class Composer extends React.Component<IProps, IState> {
     this.setState({ selectedNodeTitle: { nodeId } });
   };
 
-  saveNodeIO = (name: string, type: VariableType) => {
+  onSaveNodeIO = (name: string, type: VariableType) => {
     const selectedNodeIO = this.state.selectedNodeIO;
     if (selectedNodeIO === null) {
       return;
     }
 
-    const updatedChart = saveNodeIO(
+    const updatedChart = updateSelectedNodeIO(
       this.state.chart,
       selectedNodeIO,
       name,
@@ -407,7 +407,7 @@ export class Composer extends React.Component<IProps, IState> {
                     : []
                 }
                 onClose={() => this.setState({ selectedNodeIO: null })}
-                onSave={this.saveNodeIO}
+                onSave={this.onSaveNodeIO}
               />
               <NodeTitleDialog
                 open={this.state.selectedNodeTitle !== null}
