@@ -68,7 +68,7 @@ describe('isCellNameAvailable', () => {
     });
 
     await expect(
-      isCellNameAvailable('current-cell', settings, '/cells/current/')
+      isCellNameAvailable('current-cell', settings)
     ).resolves.toBe(true);
   });
 });

@@ -102,8 +102,7 @@ async function findCellsInCatalogue({
 
 export async function isCellNameAvailable(
   title: string,
-  settings: ISettings,
-  excludeCellUrl?: string
+  settings: ISettings
 ): Promise<boolean> {
   if (!settings.catalogueServiceUrl) {
     throw Error('Catalogue service URL is not configured');
@@ -118,7 +117,7 @@ export async function isCellNameAvailable(
     settings
   });
   return !cells.results.some(
-    cell => cell.title === title && cell.url !== excludeCellUrl
+    cell => cell.title === title
   );
 }
 

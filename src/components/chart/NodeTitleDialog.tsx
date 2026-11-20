@@ -36,11 +36,16 @@ export function NodeTitleDialog({
   const saveTitle = async () => {
     setSaving(true);
     setTitleError(null);
+    if (trimmedTitle === title) {
+        setTitleError('The title has not changed.');
+        setSaving(false);
+        return;
+      }
     let titleAvailable: boolean;
     try {
       titleAvailable = await isTitleAvailable(trimmedTitle);
     } catch (error) {
-      console.error('Failed to check draft cell title', error);
+      console.error('Failed to check draft workflow component title', error);
       setTitleError(
         'Could not check whether this name is available. Please try again.'
       );
@@ -49,7 +54,7 @@ export function NodeTitleDialog({
     }
 
     if (!titleAvailable) {
-      setTitleError('A cell with this name already exists in the catalogue.');
+      setTitleError('A workflow component with this name already exists in the catalogue.');
       setSaving(false);
       return;
     }

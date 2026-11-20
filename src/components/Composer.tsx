@@ -438,8 +438,7 @@ export class Composer extends React.Component<IProps, IState> {
                   }
                   return isCellNameAvailable(
                     title,
-                    this.context,
-                    node?.properties.cell.url
+                    this.context
                   );
                 }}
               />
