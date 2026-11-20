@@ -12,6 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    refreshKey: 0,
     selectedCellInList: null,
     setSelectedCell: (c, n) => {}
   }

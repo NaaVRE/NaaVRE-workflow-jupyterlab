@@ -459,3 +459,20 @@ export async function patchCell(
     content: JSON.stringify(cells[0])
   };
 }
+
+export async function postCell(
+  request: Request
+): Promise<INaaVREExternalServiceResponse> {
+  const draftCell = cells.find(cell => cell.is_draft);
+  if (!draftCell) {
+    throw Error('No draft cell available for the catalogue mock');
+  }
+  return {
+    status_code: 201,
+    reason: 'Created',
+    headers: {
+      'content-type': 'application/json'
+    },
+    content: JSON.stringify(draftCell)
+  };
+}
