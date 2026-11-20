@@ -101,55 +101,62 @@ export class Composer extends React.Component<IProps, IState> {
       (...args: any) => {
         const newChartTransformer = func(...args);
         const newChart: IChart = newChartTransformer(this.state.chart);
+        let selectedNodeTitle = this.state.selectedNodeTitle;
         switch (actionKey) {
           case 'onDeleteKey': {
             // Remove params that reference removed nodes
             newChart.properties.params = newChart.properties.params.filter(
               param => param.node_id in newChart.nodes
             );
+            break;
           }
-        }
-        const droppedNodeId =
-          actionKey === 'onCanvasDrop' ? args[0].id : undefined;
-        const droppedNode =
-          droppedNodeId === undefined
-            ? undefined
-            : newChart.nodes[droppedNodeId];
-        const abstractDraftNodeId =
-          droppedNode?.type === 'abstract-draft' ? droppedNode.id : undefined;
-        if (abstractDraftNodeId !== undefined && droppedNode !== undefined) {
-          const draftCell = {
-            ...droppedNode.properties.cell
-          } as ICell & { type?: string };
-          delete draftCell.type;
-          const normalizedNode = {
-            ...droppedNode,
-            type: 'workflow-cell',
-            properties: {
-              ...droppedNode.properties,
-              cell: draftCell
-            },
-            ports: Object.fromEntries(
-              Object.entries(droppedNode.ports).map(([portName, port]) => [
-                portName,
-                {
-                  ...port,
-                  properties: {
-                    ...port.properties,
-                    parentNodeType: 'workflow-cell'
-                  }
-                }
-              ])
-            )
-          };
-          newChart.nodes[abstractDraftNodeId] = normalizedNode;
+          case 'onCanvasDrop': {
+            const droppedNodeId = args[0]?.id;
+            const droppedNode =
+              droppedNodeId === undefined
+                ? undefined
+                : newChart.nodes[droppedNodeId];
+            const abstractDraftNodeId =
+              droppedNode?.type === 'abstract-draft'
+                ? droppedNode.id
+                : undefined;
+            if (
+              abstractDraftNodeId !== undefined &&
+              droppedNode !== undefined
+            ) {
+              const draftCell = {
+                ...droppedNode.properties.cell
+              } as ICell & { type?: string };
+              delete draftCell.type;
+              const normalizedNode = {
+                ...droppedNode,
+                type: 'workflow-cell',
+                properties: {
+                  ...droppedNode.properties,
+                  cell: draftCell
+                },
+                ports: Object.fromEntries(
+                  Object.entries(droppedNode.ports).map(([portName, port]) => [
+                    portName,
+                    {
+                      ...port,
+                      properties: {
+                        ...port.properties,
+                        parentNodeType: 'workflow-cell'
+                      }
+                    }
+                  ])
+                )
+              };
+              newChart.nodes[abstractDraftNodeId] = normalizedNode;
+              selectedNodeTitle = { nodeId: abstractDraftNodeId };
+            }
+            break;
+          }
         }
         this.setState({
           chart: { ...this.state.chart, ...newChart },
-          selectedNodeTitle:
-            abstractDraftNodeId !== undefined
-              ? { nodeId: abstractDraftNodeId }
-              : this.state.selectedNodeTitle
+          selectedNodeTitle
         });
       }
   ) as typeof actions;
