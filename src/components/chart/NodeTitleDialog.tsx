@@ -37,10 +37,10 @@ export function NodeTitleDialog({
     setSaving(true);
     setTitleError(null);
     if (trimmedTitle === title) {
-        setTitleError('The title has not changed.');
-        setSaving(false);
-        return;
-      }
+      setTitleError('The title has not changed.');
+      setSaving(false);
+      return;
+    }
     let titleAvailable: boolean;
     try {
       titleAvailable = await isTitleAvailable(trimmedTitle);
@@ -54,7 +54,9 @@ export function NodeTitleDialog({
     }
 
     if (!titleAvailable) {
-      setTitleError('A workflow component with this name already exists in the catalogue.');
+      setTitleError(
+        'A workflow component with this name already exists in the catalogue.'
+      );
       setSaving(false);
       return;
     }

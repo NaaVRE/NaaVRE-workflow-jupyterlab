@@ -161,7 +161,9 @@ export async function insertNewDraftCellInCatalogue(
     throw Error('Catalogue service URL is not configured');
   }
   if (!(await isCellNameAvailable(cell.title, settings))) {
-    throw Error(`A workflow component named "${cell.title}" already exists in the catalogue`);
+    throw Error(
+      `A workflow component named "${cell.title}" already exists in the catalogue`
+    );
   }
 
   return saveDraftCellToCatalogue(

@@ -362,7 +362,8 @@ export class Composer extends React.Component<IProps, IState> {
                   zIndex: 1
                 }}
               >
-                Failed to save draft workflow component: {this.state.draftCellSaveError}
+                Failed to save draft workflow component:{' '}
+                {this.state.draftCellSaveError}
               </Alert>
             )}
             <div
@@ -436,10 +437,7 @@ export class Composer extends React.Component<IProps, IState> {
                   if (node?.properties.cell.url === 'new-draft-component') {
                     return Promise.resolve(true);
                   }
-                  return isCellNameAvailable(
-                    title,
-                    this.context
-                  );
+                  return isCellNameAvailable(title, this.context);
                 }}
               />
               {this.state.selectedCellInList && (

@@ -179,7 +179,9 @@ describe('upsertDraftCellInCatalogue', () => {
         { ...cell, url: 'new-draft-component' },
         settings
       )
-    ).rejects.toThrow('A workflow component named "draft-cell" already exists in the catalogue');
+    ).rejects.toThrow(
+      'A workflow component named "draft-cell" already exists in the catalogue'
+    );
     expect(mockExternalService).toHaveBeenCalledTimes(1);
   });
 
@@ -201,7 +203,9 @@ describe('upsertDraftCellInCatalogue', () => {
         { ...cell, url: 'new-draft-component' },
         settings
       )
-    ).rejects.toThrow('A workflow component named "draft-cell" already exists in the catalogue');
+    ).rejects.toThrow(
+      'A workflow component named "draft-cell" already exists in the catalogue'
+    );
     expect(mockExternalService).toHaveBeenCalledTimes(1);
   });
 });
