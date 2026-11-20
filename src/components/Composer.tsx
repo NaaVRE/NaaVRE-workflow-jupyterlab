@@ -202,7 +202,7 @@ export class Composer extends React.Component<IProps, IState> {
       name,
       type
     );
-    if (updatedChart !== null && updatedChart !== this.state.chart) {
+    if (updatedChart !== null) {
       this.setChart(updatedChart);
       const updatedCell =
         updatedChart.nodes[selectedNodeIO.nodeId]?.properties.cell;
