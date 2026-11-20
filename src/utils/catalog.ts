@@ -116,53 +116,25 @@ export async function isCellNameAvailable(
     searchParams,
     settings
   });
-  return !cells.results.some(
-    cell => cell.title === title
-  );
+  return !cells.results.some(cell => cell.title === title);
 }
 
-export async function upsertDraftCellInCatalogue(
+async function saveDraftCellToCatalogue(
   cell: ICell,
-  settings: ISettings
+  settings: ISettings,
+  method: 'POST' | 'PATCH',
+  url: string
 ): Promise<ICell> {
-  if (!settings.catalogueServiceUrl) {
-    throw Error('Catalogue service URL is not configured');
-  }
-
-  if (cell.url === 'draft') {
-    const searchParams = new URLSearchParams({ title: cell.title });
-    if (settings.virtualLab) {
-      searchParams.set('virtual_lab', settings.virtualLab);
-    }
-    const cells = await findCellsInCatalogue({
-      searchParams,
-      settings
-    });
-    const existingCellWithTitle = cells.results.find(
-      catalogueCell => catalogueCell.title === cell.title
-    );
-    if (existingCellWithTitle) {
-      throw Error(`A catalogue cell named "${cell.title}" already exists`);
-    }
-  }
-
-  const versionOneUrl = cell.versions?.find(
-    version => version.version === 1
-  )?.url;
-  const targetUrl =
-    cell.url !== 'draft' ? (versionOneUrl ?? cell.url) : undefined;
-  const isUpdate = targetUrl !== undefined;
-
   const payload: Partial<ICell> = { ...cell };
   delete payload.version;
   delete payload.versions;
   delete payload.url;
-  if (isUpdate) {
+  if (method === 'PATCH') {
     payload.version = 1;
   }
   const resp = await NaaVREExternalService(
-    isUpdate ? 'PATCH' : 'POST',
-    targetUrl ?? `${settings.catalogueServiceUrl}/workflow-cells/`,
+    method,
+    url,
     {},
     {
       ...payload,
@@ -170,7 +142,7 @@ export async function upsertDraftCellInCatalogue(
       virtual_lab: settings.virtualLab || undefined
     }
   );
-  if (resp.status_code !== (isUpdate ? 200 : 201)) {
+  if (resp.status_code !== (method === 'PATCH' ? 200 : 201)) {
     throw `${resp.status_code} ${resp.reason}`;
   }
   const savedCell: ICell = JSON.parse(resp.content);
@@ -179,4 +151,49 @@ export async function upsertDraftCellInCatalogue(
     version: 1,
     versions: savedCell.versions?.filter(version => version.version === 1)
   };
+}
+
+export async function insertNewDraftCellInCatalogue(
+  cell: ICell,
+  settings: ISettings
+): Promise<ICell> {
+  if (!settings.catalogueServiceUrl) {
+    throw Error('Catalogue service URL is not configured');
+  }
+  if (!(await isCellNameAvailable(cell.title, settings))) {
+    throw Error(`A workflow component named "${cell.title}" already exists in the catalogue`);
+  }
+
+  return saveDraftCellToCatalogue(
+    cell,
+    settings,
+    'POST',
+    `${settings.catalogueServiceUrl}/workflow-cells/`
+  );
+}
+
+export async function patchDraftCellInCatalogue(
+  cell: ICell,
+  settings: ISettings
+): Promise<ICell> {
+  if (!settings.catalogueServiceUrl) {
+    throw Error('Catalogue service URL is not configured');
+  }
+  if (!cell.url || cell.url === 'new-draft-component') {
+    throw Error('Cannot patch a draft cell without a catalogue URL');
+  }
+
+  const versionOneUrl =
+    cell.versions?.find(version => version.version === 1)?.url ?? cell.url;
+  return saveDraftCellToCatalogue(cell, settings, 'PATCH', versionOneUrl);
+}
+
+export async function upsertDraftCellInCatalogue(
+  cell: ICell,
+  settings: ISettings
+): Promise<ICell> {
+  if (cell.url === 'new-draft-component') {
+    return insertNewDraftCellInCatalogue(cell, settings);
+  }
+  return patchDraftCellInCatalogue(cell, settings);
 }

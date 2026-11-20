@@ -54,7 +54,7 @@ describe('isCellNameAvailable', () => {
     expect(mockExternalService).toHaveBeenCalledTimes(2);
   });
 
-  test('ignores the cell being renamed', async () => {
+  test('reports a title as unavailable when it exists in the catalogue', async () => {
     mockExternalService.mockResolvedValueOnce({
       status_code: 200,
       reason: 'OK',
@@ -67,9 +67,9 @@ describe('isCellNameAvailable', () => {
       })
     });
 
-    await expect(
-      isCellNameAvailable('current-cell', settings)
-    ).resolves.toBe(true);
+    await expect(isCellNameAvailable('current-cell', settings)).resolves.toBe(
+      false
+    );
   });
 });
 
@@ -138,7 +138,10 @@ describe('upsertDraftCellInCatalogue', () => {
         content: JSON.stringify(savedCell)
       });
 
-    await upsertDraftCellInCatalogue({ ...cell, url: 'draft' }, settings);
+    await upsertDraftCellInCatalogue(
+      { ...cell, url: 'new-draft-component' },
+      settings
+    );
 
     expect(mockExternalService).toHaveBeenCalledTimes(2);
     expect(mockExternalService.mock.calls[1][0]).toBe('POST');
@@ -148,7 +151,7 @@ describe('upsertDraftCellInCatalogue', () => {
     expect(mockExternalService.mock.calls[1][3]).not.toHaveProperty('url');
   });
 
-  test('does not overwrite an existing same-title draft', async () => {
+  test('rejects inserting a new draft when a cell with the same title exists', async () => {
     const existingDraft = {
       ...savedCell,
       url: 'https://catalogue.example/workflow-cells/existing-draft/',
@@ -172,8 +175,11 @@ describe('upsertDraftCellInCatalogue', () => {
     });
 
     await expect(
-      upsertDraftCellInCatalogue({ ...cell, url: 'draft' }, settings)
-    ).rejects.toThrow('A catalogue cell named "draft-cell" already exists');
+      upsertDraftCellInCatalogue(
+        { ...cell, url: 'new-draft-component' },
+        settings
+      )
+    ).rejects.toThrow('A workflow component named "draft-cell" already exists in the catalogue');
     expect(mockExternalService).toHaveBeenCalledTimes(1);
   });
 
@@ -191,8 +197,11 @@ describe('upsertDraftCellInCatalogue', () => {
     });
 
     await expect(
-      upsertDraftCellInCatalogue({ ...cell, url: 'draft' }, settings)
-    ).rejects.toThrow('A catalogue cell named "draft-cell" already exists');
+      upsertDraftCellInCatalogue(
+        { ...cell, url: 'new-draft-component' },
+        settings
+      )
+    ).rejects.toThrow('A workflow component named "draft-cell" already exists in the catalogue');
     expect(mockExternalService).toHaveBeenCalledTimes(1);
   });
 });

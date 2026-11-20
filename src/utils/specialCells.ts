@@ -68,7 +68,7 @@ export const specialCells: Array<ISpecialCell> = [
     source_url: undefined
   },
   {
-    url: 'draft',
+    url: 'new-draft-component',
     title: 'New draft component',
     description:
       'Drag and drop this component onto the canvas to create a new draft component.',
