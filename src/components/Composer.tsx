@@ -207,7 +207,10 @@ export class Composer extends React.Component<IProps, IState> {
       const updatedCell =
         updatedChart.nodes[selectedNodeIO.nodeId]?.properties.cell;
       if (updatedCell?.is_draft === true) {
-        void this.saveDraftCellToCatalogue(selectedNodeIO.nodeId, updatedCell);
+        void this.saveDraftCellToCatalogue(
+          selectedNodeIO.nodeId,
+          updatedCell
+        ).catch(() => undefined);
       }
     }
     this.setState({ selectedNodeIO: null });
@@ -236,6 +239,7 @@ export class Composer extends React.Component<IProps, IState> {
                       ...node.properties,
                       cell: {
                         ...node.properties.cell,
+                        title: savedCell.title,
                         url: savedCell.url,
                         version: 1,
                         versions: savedCell.versions
@@ -256,13 +260,14 @@ export class Composer extends React.Component<IProps, IState> {
           draftCellSaveError:
             error instanceof Error ? error.message : String(error)
         });
+        throw error;
       });
 
     this.draftCellSaveQueue = save;
     return save;
   };
 
-  saveNodeTitle = (title: string) => {
+  saveNodeTitle = async (title: string) => {
     const selectedNodeTitle = this.state.selectedNodeTitle;
     if (selectedNodeTitle === null) {
       return;
@@ -288,21 +293,7 @@ export class Composer extends React.Component<IProps, IState> {
     }
 
     const updatedCell = { ...node.properties.cell, title };
-    this.setChart({
-      ...chart,
-      nodes: {
-        ...chart.nodes,
-        [node.id]: {
-          ...node,
-          properties: {
-            ...node.properties,
-            cell: updatedCell
-          }
-        }
-      }
-    });
-    void this.saveDraftCellToCatalogue(node.id, updatedCell);
-    this.setState({ selectedNodeTitle: null });
+    await this.saveDraftCellToCatalogue(node.id, updatedCell);
   };
 
   setWorkflowActionDialog = (
@@ -435,6 +426,9 @@ export class Composer extends React.Component<IProps, IState> {
                         this.state.selectedNodeTitle.nodeId
                       ]
                     : undefined;
+                  if (node?.properties.cell.url === 'draft') {
+                    return Promise.resolve(true);
+                  }
                   return isCellNameAvailable(
                     title,
                     this.context,

@@ -130,8 +130,6 @@ export async function postDraftCellToCatalogue(
     throw Error('Catalogue service URL is not configured');
   }
 
-  let existingDraft: ICell | undefined;
-  let existingCellWithTitle: ICell | undefined;
   if (cell.url === 'draft') {
     const searchParams = new URLSearchParams({ title: cell.title });
     if (settings.virtualLab) {
@@ -141,26 +139,19 @@ export async function postDraftCellToCatalogue(
       searchParams,
       settings
     });
-    existingDraft = cells.results.find(
-      catalogueCell =>
-        catalogueCell.title === cell.title && catalogueCell.is_draft === true
-    );
-    existingCellWithTitle = cells.results.find(
+    const existingCellWithTitle = cells.results.find(
       catalogueCell => catalogueCell.title === cell.title
     );
+    if (existingCellWithTitle) {
+      throw Error(`A catalogue cell named "${cell.title}" already exists`);
+    }
   }
 
-  if (existingCellWithTitle && !existingDraft) {
-    throw Error(`A catalogue cell named "${cell.title}" already exists`);
-  }
-
-  const versionOneUrl =
-    cell.versions?.find(version => version.version === 1)?.url ??
-    existingDraft?.versions?.find(version => version.version === 1)?.url;
+  const versionOneUrl = cell.versions?.find(
+    version => version.version === 1
+  )?.url;
   const targetUrl =
-    cell.url !== 'draft'
-      ? (versionOneUrl ?? cell.url)
-      : (versionOneUrl ?? existingDraft?.url);
+    cell.url !== 'draft' ? (versionOneUrl ?? cell.url) : undefined;
   const isUpdate = targetUrl !== undefined;
 
   const payload: Partial<ICell> = { ...cell };

@@ -148,7 +148,7 @@ describe('postDraftCellToCatalogue', () => {
     expect(mockExternalService.mock.calls[1][3]).not.toHaveProperty('url');
   });
 
-  test('uses an existing same-title draft instead of inserting another', async () => {
+  test('does not overwrite an existing same-title draft', async () => {
     const existingDraft = {
       ...savedCell,
       url: 'https://catalogue.example/workflow-cells/existing-draft/',
@@ -159,35 +159,22 @@ describe('postDraftCellToCatalogue', () => {
         }
       ]
     };
-    mockExternalService
-      .mockResolvedValueOnce({
-        status_code: 200,
-        reason: 'OK',
-        headers: {},
-        content: JSON.stringify({
-          count: 1,
-          next: null,
-          previous: null,
-          results: [existingDraft]
-        })
+    mockExternalService.mockResolvedValueOnce({
+      status_code: 200,
+      reason: 'OK',
+      headers: {},
+      content: JSON.stringify({
+        count: 1,
+        next: null,
+        previous: null,
+        results: [existingDraft]
       })
-      .mockResolvedValueOnce({
-        status_code: 200,
-        reason: 'OK',
-        headers: {},
-        content: JSON.stringify(existingDraft)
-      });
+    });
 
-    const result = await postDraftCellToCatalogue(
-      { ...cell, url: 'draft' },
-      settings
-    );
-
-    expect(mockExternalService).toHaveBeenCalledTimes(2);
-    expect(mockExternalService.mock.calls[1][0]).toBe('PATCH');
-    expect(mockExternalService.mock.calls[1][1]).toBe(existingDraft.url);
-    expect(result.url).toBe(existingDraft.url);
-    expect(result.version).toBe(1);
+    await expect(
+      postDraftCellToCatalogue({ ...cell, url: 'draft' }, settings)
+    ).rejects.toThrow('A catalogue cell named "draft-cell" already exists');
+    expect(mockExternalService).toHaveBeenCalledTimes(1);
   });
 
   test('does not insert a draft when a non-draft cell already has its title', async () => {

@@ -17,7 +17,7 @@ export function NodeTitleDialog({
   open: boolean;
   title: string;
   onClose: () => void;
-  onSave: (title: string) => void;
+  onSave: (title: string) => void | Promise<void>;
   isTitleAvailable: (title: string) => Promise<boolean>;
 }) {
   const [value, setValue] = useState(title);
@@ -50,17 +50,29 @@ export function NodeTitleDialog({
 
     if (!titleAvailable) {
       setTitleError('A cell with this name already exists in the catalogue.');
-    } else {
-      onSave(trimmedTitle);
+      setSaving(false);
+      return;
     }
-    setSaving(false);
+
+    try {
+      await onSave(trimmedTitle);
+      onClose();
+    } catch (error) {
+      setTitleError(error instanceof Error ? error.message : String(error));
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <Dialog
       aria-labelledby="node-title-dialog-title"
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        if (!saving) {
+          onClose();
+        }
+      }}
       fullWidth
       maxWidth="xs"
     >
@@ -83,7 +95,9 @@ export function NodeTitleDialog({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose} disabled={saving}>
+          Cancel
+        </Button>
         <Button
           variant="contained"
           disabled={trimmedTitle === '' || saving}
