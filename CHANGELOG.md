@@ -2,6 +2,37 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.6.5
+
+([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.6.5-alpha...4f8292ad661e0f58a03d8acf5bc8aabfafa5f68e))
+
+### Enhancements made
+
+- 215 create a draft workflow component in the experiment manager [#232](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/232) ([@KoenGreuell](https://github.com/KoenGreuell), [@gpelouze](https://github.com/gpelouze))
+
+### Bugs fixed
+
+- Replace minio with seaweedfs in dev docker compose [#236](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/236) ([@gpelouze](https://github.com/gpelouze))
+
+### Maintenance and upkeep improvements
+
+- Bump postcss-selector-parser from 6.1.4 to 6.1.5 [#230](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/230) ([@gpelouze](https://github.com/gpelouze))
+- Bump fast-uri from 3.1.6 to 3.1.9 [#229](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/229) ([@gpelouze](https://github.com/gpelouze))
+- Bump dompurify from 3.4.14 to 3.4.17 [#228](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/228) ([@gpelouze](https://github.com/gpelouze))
+- Bump storybook from 9.1.17 to 9.1.21 [#227](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/227) ([@gpelouze](https://github.com/gpelouze))
+- Bump js-yaml from 3.15.1 to 3.15.2 [#211](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/pull/211) ([@gpelouze](https://github.com/gpelouze))
+
+### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-10-13&to=2026-11-25&type=c))
+
+@gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-10-13..2026-11-25&type=Issues)) | @KoenGreuell ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3AKoenGreuell+updated%3A2026-10-13..2026-11-25&type=Issues))
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.6.4
 
 ([Full Changelog](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/compare/v0.6.3...22becf3c130afacbafaebfd3b831a91a51a4eea6))
@@ -24,8 +55,6 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 ([GitHub contributors page for this release](https://github.com/NaaVRE/NaaVRE-workflow-jupyterlab/graphs/contributors?from=2026-08-31&to=2026-09-09&type=c))
 
 @gpelouze ([activity](https://github.com/search?q=repo%3ANaaVRE%2FNaaVRE-workflow-jupyterlab+involves%3Agpelouze+updated%3A2026-08-31..2026-09-09&type=Issues))
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.6.3
 
