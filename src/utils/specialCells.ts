@@ -66,5 +66,34 @@ export const specialCells: Array<ISpecialCell> = [
     secrets: [],
     kernel: undefined,
     source_url: undefined
+  },
+  {
+    url: 'new-draft-component',
+    title: 'New draft component',
+    description:
+      'Drag and drop this component onto the canvas to create a new draft component.',
+    type: 'abstract-draft',
+    created: undefined,
+    modified: undefined,
+    owner: undefined,
+    virtual_lab: undefined,
+    shared_with_scopes: [],
+    shared_with_users: [],
+    version: 1,
+    versions: [],
+    container_image: '',
+    base_container_image: {
+      build: '',
+      runtime: ''
+    },
+    dependencies: [],
+    inputs: [],
+    outputs: [],
+    confs: [],
+    params: [],
+    secrets: [],
+    kernel: undefined,
+    source_url: undefined,
+    is_draft: true
   }
 ];

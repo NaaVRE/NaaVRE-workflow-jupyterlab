@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
@@ -17,9 +17,11 @@ import { useUserInfo } from '../../hooks/use-user-info';
 import { UserInfoContext } from './UserInfoContext';
 
 export function CellsSideBar({
+  refreshKey,
   selectedCellInList,
   setSelectedCell
 }: {
+  refreshKey: number;
   selectedCellInList: ICell | null;
   setSelectedCell: (c: ICell | null, n: HTMLDivElement | null) => void;
 }) {
@@ -34,6 +36,12 @@ export function CellsSideBar({
     settings,
     initialPath: 'workflow-cells/?ordering=-created'
   });
+
+  useEffect(() => {
+    if (refreshKey > 0) {
+      fetchCellsListResponse();
+    }
+  }, [fetchCellsListResponse, refreshKey]);
 
   const { response: sharingScopesResponse } = useCatalogueList<ISharingScope>({
     settings,
